@@ -6,14 +6,17 @@
 #include <string>
 #include "Piece.h"
 
+class InvalidMoveException {};
+class InvalidMoveStringException {};
+
 class Chess
 {
 private:
     //--- variables
     Piece board[8][8]; //[y][x]
     const std::string pos{"TCADRACT"};
-    int[] king_white{7,4};
-    int[] king_black{0,4};
+    int king_white[2] {7,4}; //y x
+    int king_black[2] {0,4};
 
     //--- methods
     bool is_valid_move(std::string move);

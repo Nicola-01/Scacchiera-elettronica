@@ -37,8 +37,7 @@ void Chess::print()
     cout << "\n\n    A B C D E F G H\n\n";
 }
 
-class InvalidMoveException {};
-class InvalidMoveStringException {};
+
 
 bool Chess::move(const string move)
 {
@@ -55,12 +54,11 @@ bool Chess::move(const string move)
         end_x = (toupper(move[3]) - 'A'),
         end_y = abs(move[4] - '0' - 8);
 
-    Piece tmp{};
-    if (board[str_y][str_x] == ' ' || !tmp.is_valid_move(board[str_y][str_x], str_x, str_y, end_x, end_y))
+    if (board[str_y][str_x].type() == ' ')
         throw InvalidMoveException();
 
     board[end_y][end_x] = board[str_y][str_x];
-    board[str_y][str_x] = ' ';
+    board[str_y][str_x] = piece_space();
 
     return true;
 }
