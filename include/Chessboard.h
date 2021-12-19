@@ -19,12 +19,12 @@ private:
     int king_black[2] {0,4};
 
     //--- methods
-    bool is_valid_move(std::string move);
     Piece inizializer_piece(char p);
+    bool is_valid_move(std::string move, bool white_turne);
+    void print();
 public:
     Chess();
-    void print();
-    bool move(std::string move);
+    int move(std::string move, bool white_turne);
 };
 
 #endif
