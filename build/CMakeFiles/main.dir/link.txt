@@ -1,0 +1,1 @@
+/usr/bin/c++ -rdynamic CMakeFiles/main.dir/src/Main.cpp.o CMakeFiles/main.dir/src/Chessboard.cpp.o CMakeFiles/main.dir/src/Piece.cpp.o -o main  liblibs.a 
