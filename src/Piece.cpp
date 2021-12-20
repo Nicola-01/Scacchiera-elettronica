@@ -33,3 +33,4 @@ bool Piece::is_valid_move(char letter, int str_x, int str_y, int end_x, int end_
             return false;
     }
 }
+
