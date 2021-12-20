@@ -28,7 +28,7 @@ protected:
     int ex_position_x = -1;
     int ex_position_y = -1;
     bool is_white;
-}
+};
 // bool white_turne(); // = true se e' turno del bianco
 class Re : public Piece
 {
@@ -55,7 +55,7 @@ public:
 
 private:
     bool arrocco = false; //se e' stato fatto l'arrocco -> true
-}
+};
 
 class Donna : public Piece
 {
@@ -84,7 +84,7 @@ class Donna : public Piece
     }
 
 
-}
+};
 
 class Torre : public Piece
 {
@@ -97,7 +97,7 @@ class Torre : public Piece
             type = 'T';
         
     };
-}
+};
 
 class Alfiere : public Piece
 {   
@@ -111,7 +111,7 @@ class Alfiere : public Piece
         
     };
 
-} class Cavallo : public Piece
+}; class Cavallo : public Piece
 {
     public:
     Cavallo(bool color, int y, int x):Piece(color, y, x)
@@ -122,7 +122,7 @@ class Alfiere : public Piece
             type = 'C';
         
     };
-} class Pedone : public Piece
+}; class Pedone : public Piece
 {
     public:
     Pedone(bool color, int y, int x):Piece(color, y, x)
@@ -134,7 +134,7 @@ class Alfiere : public Piece
         
     };
 
-} class Nullo : public Piece
+}; class Nullo : public Piece
 {
     public:
     Nullo(bool color, int y, int x):Piece(color, y, x)
@@ -145,5 +145,5 @@ class Alfiere : public Piece
             type = ' ';
         
     };
-}
+};
 #endif
