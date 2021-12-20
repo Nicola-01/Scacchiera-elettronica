@@ -9,33 +9,33 @@
 
 using namespace std;
 
-Chess::Chess()
+Chessboard::Chessboard()
 {
     for (int x = 0; x < 8; x++)
     {
-        board[0][x] = inizializer_piece(pos[x]);
-        board[1][x] = inizializer_piece('P');
+        board[0][x] = inizializer_piece(pos[x], 0, x);
+        board[1][x] = inizializer_piece('P', 1, x);
         for (int y = 2; y <= 5; y++)
-            board[y][x] = inizializer_piece(' ');
-        board[6][x] = inizializer_piece('p');
-        board[7][x] = inizializer_piece(tolower(pos[x]));
+            board[y][x] = inizializer_piece(' ', y, x);
+        board[6][x] = inizializer_piece('p', 6, x);
+        board[7][x] = inizializer_piece(tolower(pos[x]), 7, x);
     }
 }
 
-void Chess::print()
+void Chessboard::print()
 {
     cout << "\n\n";
     for (int y = 0; y < 8; y++)
     {
         cout << 8 - y << "   ";
         for (int x = 0; x < 8; x++)
-            cout << board[y][x].type() << " ";
+            cout << board[y][x].print() << " ";
         cout << "\n";
     }
     cout << "\n\n    A B C D E F G H\n\n";
 }
 
-int Chess::move(string move, bool white_turne)
+int Chessboard::move(string move, bool white_turne)
 {
     for (int i = 0; i < move.size(); i++)
         move[i] = toupper(move[i]);
@@ -54,38 +54,38 @@ int Chess::move(string move, bool white_turne)
         end_x = (move[3] - 'A'),
         end_y = abs(move[4] - '0' - 8);
 
-    if (board[str_y][str_x].type() == ' ')
+    if (board[str_y][str_x].print() == ' ')
         return 2; // nessun pezzo nella posizione indicata  // throw InvalidMoveException();
 
-    if (!board[str_y][str_x].move(str_x, str_y, end_x, end_y))
+    if (!board[str_y][str_x].move(board, str_x, str_y, end_x, end_y))
         return 3; // Mossa non possibil
 
     board[end_y][end_x] = board[str_y][str_x];
-    board[str_y][str_x] = piece_space();
+    board[str_y][str_x] = Nullo(false, str_y, str_y);
 
-    if (board[end_y][end_x].type() == 'R') // Re nero
+    if (board[end_y][end_x].print() == 'R') // Re nero
     {
         king_black[0] = end_y;
         king_black[1] = end_y;
     }
-    else if (board[end_y][end_x].type() == 'r')
+    else if (board[end_y][end_x].print() == 'r')
     {
         king_white[0] = end_y;
         king_white[1] = end_y;
     }
 
-    if (is_check(white_turne))
+    if (r.is_check(*this, white_turne))
     {
 
         board[str_y][str_x] = board[end_y][end_x];
-        board[str_y][str_x] = piece_space();
+        board[str_y][str_x] = Nullo(false, str_y, str_y);
 
-        if (board[str_y][str_x].type() == 'R') // Re nero
+        if (board[str_y][str_x].print() == 'R') // Re nero
         {
             king_black[0] = end_y;
             king_black[1] = end_y;
         }
-        else if (board[str_y][str_x].type() == 'r')
+        else if (board[str_y][str_x].print() == 'r')
         {
             king_white[0] = end_y;
             king_white[1] = end_y;
@@ -97,7 +97,7 @@ int Chess::move(string move, bool white_turne)
     return 0; // mossa valida
 }
 
-bool Chess::is_valid_move(string move, bool white_turne) // Ln Ln    L->Lettera n->Numero
+bool Chessboard::is_valid_move(string move, bool white_turne) // Ln Ln    L->Lettera n->Numero
 {
     return move.size() == 5 && move[2] == ' ' &&
            65 <= move[0] && move[0] <= 72 &&
@@ -106,33 +106,33 @@ bool Chess::is_valid_move(string move, bool white_turne) // Ln Ln    L->Lettera 
            0 < move[4] - '0' && move[4] - '0' <= 8;
 }
 
-bool Chess::is_right_piece(int y, int x, bool white_turne)
+bool Chessboard::is_right_piece(int y, int x, bool white_turne)
 {
-    return (board[str_y][str_x].type() != ' ' && board[y][x].is_white() == white_turne)
+    return (board[y][x].print() != ' ' && board[y][x].is_white() == white_turne);
 }
 
-bool Chess::is_piece_valid_move(int y, int x, bool white_turne, int end_y, int end_x);
+bool Chessboard::random_move(int y, int x, bool white_turne)
 {
-    return (board[y][x].is_valid_move(x, y, end_x, end_y, white_turne))}
+    //return board[y][x].random_move() // restituisce le cordinate di arrivo
+}
 
-Piece
-Chess::inizializer_piece(char p)
+Piece Chessboard::inizializer_piece(char p, int y, int x)
 {
     switch (toupper(p))
     {
     case 'R':
-        return piece_king(this, p == 'r');
+        return Re(p == 'r', y, x);
     case 'D':
-        return piece_queen(this, p == 'd');
+        return Donna(p == 'd', y, x);
     case 'C':
-        return piece_knight(this, p == 'c');
+        return Cavallo(p == 'c', y, x);
     case 'A':
-        return piece_bishop(this, p == 'a');
+        return Alfiere(p == 'a', y, x);
     case 'T':
-        return piece_rook(this, p == 't');
+        return Torre(p == 't', y, x);
     case 'P':
-        return piece_pawn(this, p == 'p');
+        return Pedone(p == 'p', y, x);
     default:
-        return piece_space();
+        return Nullo(false, y, x);
     }
 }

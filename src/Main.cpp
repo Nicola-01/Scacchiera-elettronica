@@ -1,16 +1,27 @@
 
 #include <iostream>
-#include "Chessboard.h"
 #include <cctype>
 #include <fstream>
 
 #include <time.h> /* time */
 
+#include "Chessboard.h"
+#include "Rules.h"
+
 using namespace std;
 
-class ArgumentsException {};
+class ArgumentsException
+{
+};
 
 constexpr int moves_max = 100;
+
+string result_type(int t);
+void player_turne(Chessboard &c, bool white_turne, ofstream &myfile);
+void computer_turne(Chessboard &c, bool white_turne, ofstream &myfile);
+
+void send_error(string s);
+void send_green(string s);
 
 int main(int argc, char *argv[])
 {
@@ -28,8 +39,8 @@ int main(int argc, char *argv[])
     if (argv[0] == "pc")
         int player = rand() % 2 + 1; // 0, se non è un giocatore ,1 se è bianco, 2 se è nero
 
-    Chess c{};
-    //Rules rul{c};
+    Chessboard c{};
+    Rules rul;
     int n = 0;
     bool white_turne = true;
 
@@ -47,17 +58,25 @@ int main(int argc, char *argv[])
 
         white_turne = !white_turne;
 
-        if (rul.is_check(white_turne))
+        if (rul.is_check(c, white_turne))
         {
-            if (rul.is_checkmate(white_turne))
+            if (rul.is_check_mate(c, white_turne))
             {
                 (white_turne) ? send_green("Ha vinto il bianco") : send_green("Ha vinto il Nero");
                 myfile.close();
                 return 0;
             }
-            else
-                (white_turne) ? send_green("Il Bianco ha fatto scacco al Nero") : send_green("Il Nero ha fatto scacco al Bianco");
+            // else
+
+            (white_turne) ? send_green("Il Bianco ha fatto scacco al Nero") : send_green("Il Nero ha fatto scacco al Bianco");
+            myfile.close();
         }
+        if(rul.is_draw(c))
+        {
+            send_green("Partita finita in patta");
+            myfile.close();
+        }
+
         n++;
     }
     myfile.close();
@@ -83,7 +102,7 @@ string result_type(int t)
     }
 }
 
-void player_turne(Chess &c, bool white_turne, ofstream &myfile)
+void player_turne(Chessboard &c, bool white_turne, ofstream &myfile)
 {
     int output_type;
     string line;
@@ -96,27 +115,23 @@ void player_turne(Chess &c, bool white_turne, ofstream &myfile)
 
         send_error(result_type(output_type));
         getline(cin, line);
-        
     }
     myfile << line + "\n";
 }
 
-void computer_turne(Chess &c, bool white_turne, ofstream &myfile)
+void computer_turne(Chessboard &c, bool white_turne, ofstream &myfile)
 {
     string line;
     int y, x, end_y, end_x;
     do
     {
-        y = rand() % 8;
-        x = rand() % 8;
-    } while (!c.is_right_piece(y, x, white_turne));
+        do
+        {
+            y = rand() % 8;
+            x = rand() % 8;
+        } while (!c.is_right_piece(y, x, white_turne));
 
-    do
-    {
-        end_y = rand() % 8;
-        end_x = rand() % 8;
-        line = (char)('A' + x) + (y+1) + " " + (char)('A' + end_x) + (end_y+1);
-    } while (c.move(line, white_turne) != 0);
+    } while (c.random_move(y, x, white_turne));
 
     myfile << line + "\n";
 }
