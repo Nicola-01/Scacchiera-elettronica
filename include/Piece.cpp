@@ -1,3 +1,5 @@
+//Riccardo Miele 2008594
+
 #ifndef Piece_hpp
 #define Piece_hpp
 
@@ -20,7 +22,7 @@ Donna::Donna(bool color, int y, int x) : Piece(color, y, x)
     };
 Piece::Piece(bool color, int y, int x)
     {
-        is_white = color;
+        white = color;
         ex_position_x = x;
         ex_position_y = y;
     };
@@ -101,4 +103,9 @@ Pedone::Pedone(bool color, int y, int x) : Piece(color, y, x)
             type = ' ';
     };
 
+    template <int Y, int X>
+bool Cavallo::is_valid_move(Piece (&Board)[Y][X], int str_x, int str_y, int end_x, int end_y)
+{
+
+};
 #endif
