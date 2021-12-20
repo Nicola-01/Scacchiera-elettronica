@@ -8,9 +8,7 @@
 
 using namespace std;
 
-class ArgumentsException
-{
-};
+class ArgumentsException {};
 
 constexpr int moves_max = 100;
 
@@ -49,9 +47,9 @@ int main(int argc, char *argv[])
 
         white_turne = !white_turne;
 
-        if (is_check(white_turne))
+        if (rul.is_check(white_turne))
         {
-            if (is_checkmate(white_turne))
+            if (rul.is_checkmate(white_turne))
             {
                 (white_turne) ? send_green("Ha vinto il bianco") : send_green("Ha vinto il Nero");
                 myfile.close();

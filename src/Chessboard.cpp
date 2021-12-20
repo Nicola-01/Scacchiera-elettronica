@@ -15,13 +15,11 @@ Chess::Chess()
     {
         board[0][x] = inizializer_piece(pos[x]);
         board[1][x] = inizializer_piece('P');
+        for (int y = 2; y <= 5; y++)
+            board[y][x] = inizializer_piece(' ');
         board[6][x] = inizializer_piece('p');
         board[7][x] = inizializer_piece(tolower(pos[x]));
     }
-
-    for (int y = 2; y <= 5; y++)
-        for (int x = 0; x < 8; x++)
-            board[y][x] = inizializer_piece(' ');
 }
 
 void Chess::print()
@@ -31,7 +29,7 @@ void Chess::print()
     {
         cout << 8 - y << "   ";
         for (int x = 0; x < 8; x++)
-            cout << board[y][x] << " ";
+            cout << board[y][x].type() << " ";
         cout << "\n";
     }
     cout << "\n\n    A B C D E F G H\n\n";
@@ -59,17 +57,41 @@ int Chess::move(string move, bool white_turne)
     if (board[str_y][str_x].type() == ' ')
         return 2; // nessun pezzo nella posizione indicata  // throw InvalidMoveException();
 
-    if (!board[str_y][str_x].move(str_x, str_y, end_x, end_y, white_turne))
+    if (!board[str_y][str_x].move(str_x, str_y, end_x, end_y))
         return 3; // Mossa non possibil
 
     board[end_y][end_x] = board[str_y][str_x];
     board[str_y][str_x] = piece_space();
 
+    if (board[end_y][end_x].type() == 'R') // Re nero
+    {
+        king_black[0] = end_y;
+        king_black[1] = end_y;
+    }
+    else if (board[end_y][end_x].type() == 'r')
+    {
+        king_white[0] = end_y;
+        king_white[1] = end_y;
+    }
+
     if (is_check(white_turne))
     {
-        return 4; // scacco, mossa annullata
+
         board[str_y][str_x] = board[end_y][end_x];
         board[str_y][str_x] = piece_space();
+
+        if (board[str_y][str_x].type() == 'R') // Re nero
+        {
+            king_black[0] = end_y;
+            king_black[1] = end_y;
+        }
+        else if (board[str_y][str_x].type() == 'r')
+        {
+            king_white[0] = end_y;
+            king_white[1] = end_y;
+        }
+
+        return 4; // scacco, mossa annullata
     }
 
     return 0; // mossa valida
