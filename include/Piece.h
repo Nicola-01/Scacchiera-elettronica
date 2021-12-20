@@ -88,20 +88,62 @@ class Donna : public Piece
 
 class Torre : public Piece
 {
-
+    public:
+    Torre(bool color, int y, int x):Piece(color, y, x)
+    {
+        if (color)
+            type = 't';
+        else
+            type = 'T';
+        
+    };
 }
 
-class A : public Piece
-{
+class Alfiere : public Piece
+{   
+    public:
+    Alfiere(bool color, int y, int x):Piece(color, y, x)
+    {
+        if (color)
+            type = 'a';
+        else
+            type = 'A';
+        
+    };
 
 } class Cavallo : public Piece
 {
-
-} class P : public Piece
+    public:
+    Cavallo(bool color, int y, int x):Piece(color, y, x)
+    {
+        if (color)
+            type = 'c';
+        else
+            type = 'C';
+        
+    };
+} class Pedone : public Piece
 {
+    public:
+    Pedone(bool color, int y, int x):Piece(color, y, x)
+    {
+        if (color)
+            type = 'p';
+        else
+            type = 'P';
+        
+    };
 
-} class N : public Piece
+} class Nullo : public Piece
 {
-    type = ' ';
+    public:
+    Nullo(bool color, int y, int x):Piece(color, y, x)
+    {
+        if (color)
+            type = ' ';
+        else
+            type = ' ';
+        
+    };
 }
 #endif
