@@ -84,22 +84,32 @@ bool Chess::is_valid_move(string move, bool white_turne) // Ln Ln    L->Lettera 
            0 < move[4] - '0' && move[4] - '0' <= 8;
 }
 
-Piece Chess::inizializer_piece(char p)
+bool Chess::is_right_piece(int y, int x, bool white_turne)
+{
+    return (board[str_y][str_x].type() != ' ' && board[y][x].is_white() == white_turne)
+}
+
+bool Chess::is_piece_valid_move(int y, int x, bool white_turne, int end_y, int end_x);
+{
+    return (board[y][x].is_valid_move(x, y, end_x, end_y, white_turne))}
+
+Piece
+Chess::inizializer_piece(char p)
 {
     switch (toupper(p))
     {
     case 'R':
-        return piece_king((p == 'R')? "Black" : "White");
+        return piece_king(this, p == 'r');
     case 'D':
-        return piece_queen((p == 'D')? "Black" : "White");
+        return piece_queen(this, p == 'd');
     case 'C':
-        return piece_knight((p == 'C')? "Black" : "White");
+        return piece_knight(this, p == 'c');
     case 'A':
-        return piece_bishop((p == 'A')? "Black" : "White");
+        return piece_bishop(this, p == 'a');
     case 'T':
-        return piece_rook((p == 'T')? "Black" : "White");
+        return piece_rook(this, p == 't');
     case 'P':
-        return piece_pawn((p == 'P')? "Black" : "White");
+        return piece_pawn(this, p == 'p');
     default:
         return piece_space();
     }

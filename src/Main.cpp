@@ -4,6 +4,8 @@
 #include <cctype>
 #include <fstream>
 
+#include <time.h> /* time */
+
 using namespace std;
 
 class ArgumentsException
@@ -22,30 +24,29 @@ int main(int argc, char *argv[])
 
     ofstream myfile;
     myfile.open("example.txt");
-    
-    bool player = (argv[0] == "pc");
+
+    int player = 0;
+    srand(time(NULL));
+    if (argv[0] == "pc")
+        int player = rand() % 2 + 1; // 0, se non è un giocatore ,1 se è bianco, 2 se è nero
 
     Chess c{};
-    string line;
+    //Rules rul{c};
     int n = 0;
     bool white_turne = true;
-    int output_type;
 
-    while (moves_max < n)
+    while (n < moves_max)
     {
         // if (system("CLS")) system("clear");
         c.move("XX XX", white_turne);
 
-        cout << "Inserire la mossa:\n";
-        getline(cin, line);
-        while ((output_type = c.move(line, white_turne)) != 0)
-        {
-            // if (system("CLS")) system("clear");
-            // c.move("XX XX");
+        if (player == 1 && white_turne)
+            player_turne(c, white_turne, myfile);
+        else if (player == 2 && !white_turne)
+            player_turne(c, white_turne, myfile);
+        else
+            computer_turne(c, white_turne, myfile);
 
-            send_error(result_type(output_type));
-        }
-        myfile << line+"\n";
         white_turne = !white_turne;
 
         if (is_check(white_turne))
@@ -59,6 +60,7 @@ int main(int argc, char *argv[])
             else
                 (white_turne) ? send_green("Il Bianco ha fatto scacco al Nero") : send_green("Il Nero ha fatto scacco al Bianco");
         }
+        n++;
     }
     myfile.close();
     return 0;
@@ -81,6 +83,44 @@ string result_type(int t)
     default:
         return "";
     }
+}
+
+void player_turne(Chess &c, bool white_turne, ofstream &myfile)
+{
+    int output_type;
+    string line;
+    cout << "Inserire la mossa:\n";
+    getline(cin, line);
+    while ((output_type = c.move(line, white_turne)) != 0)
+    {
+        // if (system("CLS")) system("clear");
+        // c.move("XX XX");
+
+        send_error(result_type(output_type));
+        getline(cin, line);
+        
+    }
+    myfile << line + "\n";
+}
+
+void computer_turne(Chess &c, bool white_turne, ofstream &myfile)
+{
+    string line;
+    int y, x, end_y, end_x;
+    do
+    {
+        y = rand() % 8;
+        x = rand() % 8;
+    } while (!c.is_right_piece(y, x, white_turne));
+
+    do
+    {
+        end_y = rand() % 8;
+        end_x = rand() % 8;
+        line = (char)('A' + x) + (y+1) + " " + (char)('A' + end_x) + (end_y+1);
+    } while (c.move(line, white_turne) != 0);
+
+    myfile << line + "\n";
 }
 
 // area di funzioni in test
@@ -120,6 +160,6 @@ void send_green(string s)
     }
     else
     {
-        cout << "\032[;31m" << s << "\033[0m" << endl; // https://www.tutorialspoint.com/how-to-output-colored-text-to-a-linux-terminal
+        cout << "\033[;32m" << s << "\033[0m" << endl; // https://www.tutorialspoint.com/how-to-output-colored-text-to-a-linux-terminal
     }
 }

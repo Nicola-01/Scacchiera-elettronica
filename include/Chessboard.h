@@ -25,6 +25,8 @@ private:
 public:
     Chess();
     int move(std::string move, bool white_turne);
+    bool is_right_piece(int y, int x, bool white_turne);
+    bool is_piece_valid_move(int y, int x, bool white_turne, int end_y, int end_x);
 };
 
 #endif
