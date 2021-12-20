@@ -4,12 +4,19 @@
 #include "Piece.h" 
 
 //Pezzo (variabili colore, tipo) (funzioni move, isValidMove(?), cout)
-Re::Re(bool color, int y, int x) 
+Re::Re(bool color, int y, int x) : Piece(color, y, x)
     {
         if (color)
             type = 'r';
         else
             type = 'R';
+    };
+Donna::Donna(bool color, int y, int x) : Piece(color, y, x)
+    {
+        if (color)
+            type = 'd';
+        else
+            type = 'D';
     };
 Piece::Piece(bool color, int y, int x)
     {
@@ -44,27 +51,12 @@ bool Piece::move(Piece (&Board)[Y][X], int str_x, int str_y, int end_x, int end_
         if (is_white == Board[end_y][end_x].is_white)
             return false; //destinazione diverso colore;
         return true;
-    }
-
-
-    Donna::Donna(bool color, int y, int x) : Piece(color, y, x)
-    {
-        if (color)
-            type = 'd';
-        else
-            type = 'D';
     };
-    template <int Y, int X>
-    bool Donna::move(Piece (&Board)[Y][X], int str_x, int str_y, int end_x, int end_y)
-    {
-        if (is_valid_move(Piece(&Board)[Y][X], int str_x, int str_y, int end_x, int end_y))
-        {
-            ex_position_x = str_x;
-            ex_position_y = str_y;
-            return true;
-        }
-        return false;
-    }
+
+
+    
+    
+    
      template <int Y, int X>
     bool Donna::is_valid_move(Piece (&Board)[Y][X], int str_x, int str_y, int end_x, int end_y)
     {

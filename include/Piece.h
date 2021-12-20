@@ -19,53 +19,58 @@ protected:
     bool is_white;
 };
 // bool white_turne(); // = true se e' turno del bianco
-template <int Y, int X>
+
 class Re : public Piece
 {
     public:
-        Re(bool color, int y, int x) : Piece(color, y, x);
+        Re(bool color, int y, int x) : Piece(color, y, x){};
+        template <int Y, int X>
         bool is_valid_move(Piece (&Board)[Y][X], int str_x, int str_y, int end_x, int end_y);
 
     private:
     bool arrocco = false; //se e' stato fatto l'arrocco -> true
 };
-template <int Y, int X>
+
+
 class Donna : public Piece
 {
-    Donna(bool color, int y, int x) : Piece(color, y, x);
+    Donna(bool color, int y, int x) : Piece(color, y, x){};
+    template <int Y, int X>
 
-    bool move(Piece (&Board)[Y][X], int str_x, int str_y, int end_x, int end_y);
 
     bool is_valid_move(Piece (&Board)[Y][X], int str_x, int str_y, int end_x, int end_y);
 };
-template <int Y, int X>
+
+
 class Torre : public Piece
 {
 public:
-    Torre(bool color, int y, int x) : Piece(color, y, x);
+    Torre(bool color, int y, int x) : Piece(color, y, x){};
 };
-template <int Y, int X>
+
+
 class Alfiere : public Piece
 {
 public:
-    Alfiere(bool color, int y, int x) : Piece(color, y, x);
+    Alfiere(bool color, int y, int x) : Piece(color, y, x){};
 };
-template <int Y, int X>
+
 class Cavallo : public Piece
 {
 public:
-    Cavallo(bool color, int y, int x) : Piece(color, y, x);
+    Cavallo(bool color, int y, int x) : Piece(color, y, x){};
 };
-template <int Y, int X>
+
 class Pedone : public Piece
 {
 public:
-    Pedone(bool color, int y, int x) : Piece(color, y, x);
+    Pedone(bool color, int y, int x) : Piece(color, y, x){};
 };
-template <int Y, int X>
+
 class Nullo : public Piece
 {
 public:
-    Nullo(bool color, int y, int x) : Piece(color, y, x);
+    Nullo(bool color, int y, int x) : Piece(color, y, x){};
 };
+
 #endif
