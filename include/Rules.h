@@ -11,9 +11,9 @@
 
 struct Rules
 {
-    bool is_check(const Chess& board, bool white_turne);
-    bool is_check_mate(const Chess& board, bool white_turne);
-    bool is_draw(const Chess& board);
+    bool is_check(const Chessboard& board, bool in_black);
+    bool is_checkmate(const Chessboard& board, bool in_black);
+    bool is_draw(const Chessboard& board);
 };
 
 
