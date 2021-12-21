@@ -136,3 +136,8 @@ Piece Chessboard::inizializer_piece(char p, int y, int x)
         return Nullo(false, y, x);
     }
 }
+
+Piece &Chessboard::get_piece(int y, int x)
+{
+    return board[y][x];
+}
