@@ -77,8 +77,11 @@ public:
     Pedone(bool color, int y, int x) : Piece(color, y, x){};
     template <int Y, int X>
     bool is_valid_move(Piece (&Board)[Y][X], int str_x, int str_y, int end_x, int end_y);
+<<<<<<< HEAD
 private:
     bool is_moved = false; 
+=======
+>>>>>>> 8d0e4e6edfe7c80647331c85e0a32495ea716483
 };
 
 class Nullo : public Piece
