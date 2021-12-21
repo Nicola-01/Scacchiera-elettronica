@@ -15,7 +15,7 @@
 
 //if(in_black) -> controllo scacco del re nero tra i pezzi bianchi -> pezzo.is_white() 
 
-bool Rules::is_check(const Chessboard& board, bool in_black, bool mate)
+bool Rules::is_check(Chessboard& board, bool in_black/*, bool mate*/)
 {
     int* king_pos = board.get_white_king();
     if(in_black)
@@ -48,8 +48,10 @@ bool Rules::is_check(const Chessboard& board, bool in_black, bool mate)
                 {
                     //in_exam puo' catturare il re minacciato
                     threat = in_exam;
-                    if(!mate)
+                    return true;
+                    /*if(!mate)
                         return true;
+                    */
                 }
             }
         }
@@ -70,8 +72,10 @@ bool Rules::is_check(const Chessboard& board, bool in_black, bool mate)
                 {
                     //in_exam puo' catturare il re minacciato
                     threat = in_exam;
-                    if(!mate)
+                    return true;
+                    /*if(!mate)
                         return true;
+                    */
                 }
             }
         }
@@ -92,19 +96,21 @@ bool Rules::is_check(const Chessboard& board, bool in_black, bool mate)
                 {
                     //in_exam puo' catturare il re minacciato
                     threat = in_exam;
-                    if(!mate)
+                    return true;
+                    /*if(!mate)
                         return true;
+                    */
                 }
             }
         }
     }
     return false;
 }
-bool Rules::is_checkmate(const Chessboard& board, bool in_black)
+bool Rules::is_checkmate(Chessboard& board, bool in_black)
 {
     return false;
 }
-bool Rules::is_draw(const Chessboard& board)
+bool Rules::is_draw(Chessboard& board)
 {
     return false;
 }
