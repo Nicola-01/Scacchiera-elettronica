@@ -57,7 +57,7 @@ int Chessboard::move(string move, bool white_turne)
     if (board[str_y][str_x].print() == ' ')
         return 2; // nessun pezzo nella posizione indicata  // throw InvalidMoveException();
 
-    if(!is_right_piece(str_y,str_x,white_turne))
+    if (!is_right_piece(str_y, str_x, white_turne))
         return 3; // Muove pezzo avverstaio
 
     if (!board[str_y][str_x].move(board, str_x, str_y, end_x, end_y))
@@ -77,7 +77,7 @@ int Chessboard::move(string move, bool white_turne)
         king_white[1] = end_y;
     }
 
-    if (r.is_check(this, white_turne))
+    if (r.is_check(*this, !white_turne))
     {
 
         board[str_y][str_x] = board[end_y][end_x];
@@ -117,9 +117,9 @@ bool Chessboard::is_right_piece(int y, int x, bool white_turne)
 bool Chessboard::random_move(int y, int x, bool white_turne)
 {
     int *a = board[y][x].random_move(); // restituisce le cordinate di arrivo
-    if(a>0)
+    if (*a > 0)
     {
-        return ('A'+x) + (abs(y-8)) + " " + ('A'+a[1]) + (abs(a[0]-8));
+        return ('A' + x) + (abs(y - 8)) + " " + ('A' + a[1]) + (abs(a[0] - 8));
     }
     // restituisce un array di 2, se è lo spostamento possibile da la posizione [y][x] altrimenti -1, -1
 }

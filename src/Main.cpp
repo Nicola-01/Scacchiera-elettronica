@@ -90,7 +90,7 @@ string result_type(int t)
         return "Formato stringa non valido, inserirne una valida:\n";
     case 2:
         return "Non puoi spostare l'aria, inserirne una valida:\n";
-    case 2:
+    case 3:
         return "Non puoi muovere il pezzi del avversario, fai una altra mossa:\n";
     case 4:
         return "Mossa non e' valida, inserirne una valida:\n";
