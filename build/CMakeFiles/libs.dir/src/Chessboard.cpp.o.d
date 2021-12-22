@@ -104,6 +104,7 @@ CMakeFiles/libs.dir/src/Chessboard.cpp.o: \
  /usr/include/c++/11/bits/hash_bytes.h \
  /usr/include/c++/11/bits/basic_string.tcc \
  /home/nicola/Documents/Scacchiera-elettronica/include/Piece.h \
+ /home/nicola/Documents/Scacchiera-elettronica/include/Piece.cpp \
  /home/nicola/Documents/Scacchiera-elettronica/include/Rules.h \
  /home/nicola/Documents/Scacchiera-elettronica/include/Chessboard.h \
  /home/nicola/Documents/Scacchiera-elettronica/include/Piece.h \

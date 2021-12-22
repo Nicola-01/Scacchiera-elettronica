@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/nicola/Documents/Progetto/Scacchiera-elettronica/include
+CXX_INCLUDES = -I/home/nicola/Documents/Scacchiera-elettronica/include
 
 CXX_FLAGS = -std=gnu++11
 
