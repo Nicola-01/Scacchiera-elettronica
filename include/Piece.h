@@ -8,10 +8,11 @@ class Piece
 {
 public:
     Piece(bool color, int y, int x);
+    Piece();
     template <int Y, int X>
     bool move(Piece (&Board)[Y][X], int str_x, int str_y, int end_x, int end_y);
     virtual bool is_valid_move();
-    bool is_white() { return is_white; }; // = true se e' un pezzo bianco
+    bool is_white() { return white; }; // = true se e' un pezzo bianco
     char print() { return type; };
     // void undo_move();
 protected:
@@ -36,6 +37,7 @@ class Re : public Piece
 
 class Donna : public Piece
 {
+    public:
     Donna(bool color, int y, int x) : Piece(color, y, x){};
     template <int Y, int X>
 
@@ -77,11 +79,8 @@ public:
     Pedone(bool color, int y, int x) : Piece(color, y, x){};
     template <int Y, int X>
     bool is_valid_move(Piece (&Board)[Y][X], int str_x, int str_y, int end_x, int end_y);
-<<<<<<< HEAD
 private:
     bool is_moved = false; 
-=======
->>>>>>> 8d0e4e6edfe7c80647331c85e0a32495ea716483
 };
 
 class Nullo : public Piece

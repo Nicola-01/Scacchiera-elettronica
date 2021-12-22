@@ -4,7 +4,11 @@
 #define Piece_hpp
 
 #include "Piece.h" 
-
+Piece::Piece(){
+    white = false;
+    ex_position_x = -1;
+    ex_position_y = -1;
+}
 //Pezzo (variabili colore, tipo) (funzioni move, isValidMove(?), cout)
 Re::Re(bool color, int y, int x) : Piece(color, y, x)
     {
