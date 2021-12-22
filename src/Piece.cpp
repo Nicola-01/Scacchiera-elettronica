@@ -253,21 +253,23 @@ bool Pedone::is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y
     int delta_y = abs(str_y - end_y);
     if (delta_x > 1 || delta_x < 0)
         return false; //non si può muovere in diagonale
-    if (delta_y != 1 && is_moved)
+    if (delta_y != 1 && moved)
         return false; //non si può muovere piu' di 2 caselle
     if (is_end_same_color(end_y, end_x))
         return false; //destinazione diverso colore;
     if (Board[end_y][end_x].print() != ' ' && str_x == end_x)
         return false;
-    is_moved = true;
+    moved = true;
     if (check_promotion(end_y))
     {
         cout << "Inserisci il carattere del pezzo che vuoi";
+        string input;
         char in;
-        while (in.length() != 1 && in != 'D' && in != 'T' && in != 'A' && in != 'C')
+        while (input.length() != 1 || (in != 'D' && in != 'T' && in != 'A' && in != 'C'))
         {
             cout << "Inserisci il carattere del pezzo che vuoi";
-            cin >> in;
+            cin >> input;
+            in = input[0];
             in = toupper(in);
         }
         switch (in)
@@ -293,26 +295,167 @@ string Piece::random_position(Piece (&Board)[Y][X], int str_y, int str_x) //rito
     srand(time(NULL));
     switch (in)
     {
-    case 'R':
+        string output;
+        int end_x;
+        int end_y;
+    case 'R': //funziona
     {
         do
         {
-            int i = rand() % -1 + 1;
-            int j = rand() % -1 + 1;
-            int end_y = str_y + i;
-            int end_x = str_x + j;
-        } while (!Board[end_y][end_x].is_valid_move(Piece (&Board)[end_y][end_x], int str_y, int str_x, int end_y, int end_x); return "" + end_y + end_x;
+            end_x = rand() % (3) + (str_x - 1); //3 possibili numeri a partire da quello a sinistra
+            end_y = rand() % (3) + (str_y - 1);
+            output = end_y + end_x;
+        } while (end_y < 0 || end_x < 0 || !Board[end_y][end_x].is_valid_move(Piece (&Board)[end_y][end_x], str_y, str_x, end_y, end_x); return output;
     };
-    case 'D':
-        return;
+    case 'D': //poco efficiente
+    {
+        do
+        {
+            end_x = rand() % 8; //7 possibili numeri a partire da 0
+            end_y = rand() % 8;
+        } while (!Board[end_y][end_x].is_valid_move(Piece(&Board)[end_y][end_x], str_y, str_x, end_y, end_x); return output;)
+    }
     case 'T':
-        return;
-    case 'C':
-        return;
-    case 'A':
-        return;
-    case 'P'
-        return;
-    }   
+    {
+        do
+        {
+            int random = rand() % 2;
+            if (random)
+            {
+                end_x = str_x;
+                end_y = rand() % 8;
+            }
+            else
+            {
+                end_y = str_y;
+                end_x = rand() % 8;
+            }
+
+        } while (!Board[end_y][end_x].is_valid_move(Piece(&Board)[end_y][end_x], str_y, str_x, end_y, end_x); return output;)
+    }
+    case 'C': //o cosi' o con uno switch -> riga 414
+    {
+        do
+        {
+            int random_1 = rand() % 2;
+            int random_2 = rand() % 2;
+            int random_3 = rand() % 2;
+            if (random_1)
+            {
+                if (random_2)
+                    end_y = str_y + 1;
+                else
+                {
+                    end_y = str_y - 1;
+                }
+                if (random_3)
+                {
+                    end_x = str_x + 2;
+                }
+                else
+                {
+                    end_x = str_x - 2;
+                }
+            }
+            else
+            {
+                if (random_2)
+                    end_y = str_y + 2;
+                else
+                {
+                    end_y = str_y - 2;
+                }
+                if (random_3)
+                    end_x = str_x + 1;
+                else
+                {
+                    end_x = str_x - 1;
+                }
+            }
+        } while (!Board[end_y][end_x].is_valid_move(Piece(&Board)[end_y][end_x], str_y, str_x, end_y, end_x); return output;)
+    }
+    case 'A': //poco efficiente
+    {
+        do
+        {
+            int i = rand() % 8;
+            if (end_y > str_y)
+            {
+                end_y = str_y + i;
+                end_x = str_x - i;
+            }
+            else
+            {
+                end_y = str_y - i;
+                end_x = str_x + i;
+            }
+        } while (end_y < 0 || end_x < 0 || !Board[end_y][end_x].is_valid_move(Piece(&Board)[end_y][end_x], str_y, str_x, end_y, end_x); return output;)
+    }
+    case 'P':
+    {
+        do
+        {
+            if (!is_moved())
+            {
+                end_x = rand() % (3) + (str_x - 1); //3 possibili numeri a partire da quello a sinistra
+                end_y = rand() % (2) + (str_y + 1);
+            }
+            else
+            {
+                end_x = rand() % (3) + (str_x - 1); //3 possibili numeri a partire da quello a sinistra
+                end_y = (str_y + 1);
+            }
+        } while (end_x < 0 || !Board[end_y][end_x].is_valid_move(Piece(&Board)[end_y][end_x], str_y, str_x, end_y, end_x); return output;)
+    }
+    }
 };
 #endif
+
+/*
+int random = rand() % 8
+switch(random){
+    case '0':
+    {
+        end_y = str_y + 1;
+        end_x = str_x + 2;
+    }
+    case '1':
+    {
+        end_y = str_y + 1;
+        end_x = str_x - 2;
+    }
+    case '2':
+    {
+        end_y = str_y - 1;
+        end_x = str_x + 2;
+    }
+    case '3':
+    {
+        end_y = str_y - 1;
+        end_x = str_x - 2;
+    }
+    case '4':
+    {
+        end_y = str_y + 2;
+        end_x = str_x + 1;
+    }
+    case '5':
+    {
+        end_y = str_y + 2;
+        end_x = str_x - 1;
+    }
+    case '6':
+    {
+        end_y = str_y - 2;
+        end_x = str_x + 1;
+    }
+    case '7':
+    {
+        end_y = str_y - 2;
+        end_x = str_x - 1;
+    }
+
+}
+
+
+*/

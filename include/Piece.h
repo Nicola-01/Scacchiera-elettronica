@@ -85,9 +85,9 @@ public:
     Pedone(bool color, int y, int x) : Piece(color, y, x){};
     template <int Y, int X>
     bool is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x);
-
+    bool is_moved() {return moved; };
 private:
-    bool is_moved = false;
+    bool moved = false;
     bool check_promotion(int y) { return y == 0 || y == 7; }; //se arrivato alla fine e' true
 };
 
