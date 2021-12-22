@@ -6,6 +6,7 @@
 #include "Piece.h"
 //#include <string>
 #include <iostream>
+#include <time.h>
 using namespace std;
 
 //COSTRUTTORI
@@ -88,7 +89,7 @@ bool Piece::is_end_same_color(int end_y, int end_x) //ritorna true se la destina
 }
 
 template <int Y, int X>
-bool Piece::move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x);
+bool Piece::move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x)
 {
     if (is_valid_move(Piece(&Board)[Y][X], int str_x, int str_y, int end_x, int end_y))
     {
@@ -102,7 +103,7 @@ bool Piece::move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_
 //FUNZIONE IS_VALID_MOVE
 
 template <int Y, int X> //manca arrocco
-bool Re::is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x);
+bool Re::is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x)
 {
     int delta_x = abs(str_x - end_x);
     int delta_y = abs(str_y - end_y);
@@ -120,7 +121,7 @@ bool Re::is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, in
 };
 
 template <int Y, int X>
-bool Donna::is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x);
+bool Donna::is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x)
 {
     int delta_x = abs(str_x - end_x);
     int delta_y = abs(str_y - end_y);
@@ -181,7 +182,7 @@ bool Donna::is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y,
 }
 
 template <int Y, int X> //manca arrocco
-bool Torre::is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x);
+bool Torre::is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x)
 {
     int delta_x = abs(str_x - end_x);
     int delta_y = abs(str_y - end_y);
@@ -216,7 +217,7 @@ bool Torre::is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y,
 
 // return (abs(delta_x) <= 2 && abs(delta_y) <= 1) || (abs(delta_x) <= 1 && abs(delta_y) <= 2)
 template <int Y, int X>
-bool Cavallo::is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x);
+bool Cavallo::is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x)
 {
     int delta_x = abs(str_x - end_x);
     int delta_y = abs(str_y - end_y);
@@ -226,7 +227,7 @@ bool Cavallo::is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_
 };
 
 template <int Y, int X>
-bool Alfiere::is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x);
+bool Alfiere::is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x)
 {
     int delta_x = abs(str_x - end_x);
     int delta_y = abs(str_y - end_y);
@@ -246,7 +247,7 @@ bool Alfiere::is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_
 };
 
 template <int Y, int X>
-bool Pedone::is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x); //promozione probabilmente sbagliata
+bool Pedone::is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x) //promozione probabilmente sbagliata
 {
     int delta_x = abs(str_x - end_x);
     int delta_y = abs(str_y - end_y);
@@ -285,19 +286,6 @@ bool Pedone::is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y
 };
 
 //RANDOM MOVE
-
-template <int Y, int X>
-bool Piece::random_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x);
-{
-    if (is_valid_random_move(Piece(&Board)[Y][X], int str_x, int str_y, int end_x, int end_y))
-    {
-        ex_position_x = str_x;
-        ex_position_y = str_y;
-        return true;
-    }
-    return false;
-}
-
 template <int Y, int X>
 string Piece::random_position(Piece (&Board)[Y][X], int str_y, int str_x) //ritorna le coordinate sotto forma di stringa
 {
@@ -313,15 +301,18 @@ string Piece::random_position(Piece (&Board)[Y][X], int str_y, int str_x) //rito
             int j = rand() % -1 + 1;
             int end_y = str_y + i;
             int end_x = str_x + j;
-        } while (!Board[end_y][end_x].is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x);) return end_y + end_x;
+        } while (!Board[end_y][end_x].is_valid_move(Piece (&Board)[end_y][end_x], int str_y, int str_x, int end_y, int end_x); return "" + end_y + end_x;
     };
-    case 'D':;
-    case 'T':;
-    case 'C':;
-    case 'A':;
-        case 'P'
-            ;
-        }
-}
-
+    case 'D':
+        return;
+    case 'T':
+        return;
+    case 'C':
+        return;
+    case 'A':
+        return;
+    case 'P'
+        return;
+    }   
+};
 #endif

@@ -2,7 +2,8 @@
 
 #ifndef Piece_h
 #define Piece_h
-
+#include <string>
+using namespace std;
 //#include "Piece.cpp"
 class Piece
 {
@@ -13,8 +14,13 @@ public:
     bool move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x);
     template <int Y, int X>
     bool random_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x);
+
     virtual bool is_valid_move();
     virtual bool is_random_move_valid();
+
+    template <int Y, int X>
+    string random_position(Piece (&Board)[Y][X], int str_y, int str_x); //ritorna le coordinate sotto forma di stringa
+
     bool is_white() { return white; }; // = true se e' un pezzo bianco
     char print() { return type; };
     template <int Y, int X>
