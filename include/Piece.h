@@ -12,7 +12,7 @@ public:
     Piece();
     template <int Y, int X>
     bool move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x);
-    
+
     virtual bool is_valid_move();
 
     template <int Y, int X>
@@ -24,7 +24,7 @@ public:
     bool is_white() { return white; }; // = true se e' un pezzo bianco
     char print() { return type; };
     template <int Y, int X>
-    bool is_end_same_color(int end_y, int end_x);
+    bool is_end_same_color(Piece (&Board)[Y][X], int end_y, int end_x);
     // void undo_move();
 protected:
     char type;
@@ -41,7 +41,8 @@ public:
 
     template <int Y, int X>
     bool is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x);
-    bool is_moved() {return moved; };
+    bool is_moved() { return moved; };
+
 private:
     //bool arrocco_re = false; //se l'arrocco non e' piu' possibile -> true
     bool moved = false; //dopo la prima mossa diventa true
@@ -61,7 +62,8 @@ public:
     Torre(bool color, int y, int x) : Piece(color, y, x){};
     template <int Y, int X>
     bool is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x);
-    bool is_moved() {return moved; };
+    bool is_moved() { return moved; };
+
 private:
     bool moved = false;
     bool arrocco_torre = false;
@@ -89,7 +91,8 @@ public:
     Pedone(bool color, int y, int x) : Piece(color, y, x){};
     template <int Y, int X>
     bool is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x);
-    bool is_moved() {return moved; };
+    bool is_moved() { return moved; };
+
 private:
     bool moved = false;
     bool check_promotion(int y) { return y == 0 || y == 7; }; //se arrivato alla fine e' true

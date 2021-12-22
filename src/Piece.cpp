@@ -81,11 +81,11 @@ Nullo::Nullo(bool color, int y, int x) : Piece(color, y, x) //costruttore (Pezzo
 //FUNZIONI DI PIECE
 
 template <int Y, int X>
-bool Piece::is_end_same_color(int end_y, int end_x) //ritorna true se la destinazione
+bool Piece::is_end_same_color(Piece (&Board)[Y][X], int end_y, int end_x) //ritorna true se la destinazione
 {
     if (Board[end_y][end_x].print() == ' ')
         return false;
-    return (is_white == Board[end_y][end_x].is_white); //posso crearlo nella classe padre is_friend
+    return (is_white() == Board[end_y][end_x].is_white()); //posso crearlo nella classe padre is_friend
 }
 
 template <int Y, int X>
@@ -216,7 +216,6 @@ bool Torre::is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y,
     return true;
 }
 
-// return (abs(delta_x) <= 2 && abs(delta_y) <= 1) || (abs(delta_x) <= 1 && abs(delta_y) <= 2)
 template <int Y, int X>
 bool Cavallo::is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x)
 {
@@ -289,6 +288,7 @@ bool Pedone::is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y
 };
 
 //RANDOM MOVE
+
 template <int Y, int X>
 string Piece::random_position(Piece (&Board)[Y][X], int str_y, int str_x) //ritorna le coordinate sotto forma di stringa
 {
