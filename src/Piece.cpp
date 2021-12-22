@@ -109,14 +109,14 @@ bool Re::is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, in
     int delta_y = abs(str_y - end_y);
     if (is_end_same_color(end_y, end_x))
         return false; //destinazione diverso colore;
-    if (delta_x != 1 && arrocco_re && delta_y != 1)
+    if (delta_x != 1 && is_moved() && delta_y != 1)
         return false; //percorso > 1
     /*
     NON SO COME GESTIRE
-    if (!arrocco_re)
+    if (!is_moved())
         check_arrocco(Piece (&Board)[end_y][end_x], end_y, end_x);
     */
-    arrocco_re = true; //e' stata fatta una mossa
+    moved = true;
     return true;
 };
 
@@ -212,6 +212,7 @@ bool Torre::is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y,
             else if (Board[str_y - i][end_y].print() != ' ')
                 return false;
     }
+    moved = true;
     return true;
 }
 
@@ -246,7 +247,7 @@ bool Alfiere::is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_
     return true;
 };
 
-template <int Y, int X>
+template <int Y, int X>                                                                      //manca en passant
 bool Pedone::is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x) //promozione probabilmente sbagliata
 {
     int delta_x = abs(str_x - end_x);
@@ -265,7 +266,7 @@ bool Pedone::is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y
         cout << "Inserisci il carattere del pezzo che vuoi";
         string input;
         char in;
-        while (input.length() != 1 || (in != 'D' && in != 'T' && in != 'A' && in != 'C'))
+        while (input.length() != 1 || (in != 'D' && in != 'T' && in != 'A' && in != 'C')) //funziona
         {
             cout << "Inserisci il carattere del pezzo che vuoi";
             cin >> input;
@@ -412,6 +413,7 @@ string Piece::random_position(Piece (&Board)[Y][X], int str_y, int str_x) //rito
 #endif
 
 /*
+//RANDOM MOVE CAVALLO
 int random = rand() % 8
 switch(random){
     case '0':
@@ -457,5 +459,21 @@ switch(random){
 
 }
 
+//ARROCCO
+template <int Y, int X>
+bool Piece::check_arrocco(Piece (&Board)[Y][X], int end_y, int end_x) //non so come gestirlo
+{
+    if (end_x == 3)
+    {   
+        if (Board[end_y][end_x - 1].is_moved() || Board[end_y][end_x].print() != ' ' || Board[end_y][end_x + 1].print() != ' ')
+            return false;
+        Board[end_y][end_x - 1].move
+    }
+    else{
+        if (Board[end_y][end_x + 1].is_moved())
+            return false;
+        
+    }
+};
 
 */

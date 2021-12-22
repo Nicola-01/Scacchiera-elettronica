@@ -18,6 +18,9 @@ public:
     template <int Y, int X>
     string random_position(Piece (&Board)[Y][X], int str_y, int str_x); //ritorna le coordinate sotto forma di stringa
 
+    template <int Y, int X>
+    bool check_arrocco(Piece (&Board)[Y][X], int end_y, int end_x); //non so come gestirlo
+
     bool is_white() { return white; }; // = true se e' un pezzo bianco
     char print() { return type; };
     template <int Y, int X>
@@ -35,13 +38,13 @@ class Re : public Piece
 {
 public:
     Re(bool color, int y, int x) : Piece(color, y, x){};
+
     template <int Y, int X>
     bool is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x);
-
+    bool is_moved() {return moved; };
 private:
-    bool arrocco_re = false; //se l'arrocco non e' piu' possibile -> true
-    template <int Y, int X>
-    bool check_arrocco(Piece (&Board)[Y][X], int y, int x); //non so come gestirlo
+    //bool arrocco_re = false; //se l'arrocco non e' piu' possibile -> true
+    bool moved = false; //dopo la prima mossa diventa true
 };
 
 class Donna : public Piece
@@ -58,8 +61,9 @@ public:
     Torre(bool color, int y, int x) : Piece(color, y, x){};
     template <int Y, int X>
     bool is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x);
-
+    bool is_moved() {return moved; };
 private:
+    bool moved = false;
     bool arrocco_torre = false;
 };
 
