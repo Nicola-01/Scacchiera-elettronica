@@ -27,7 +27,7 @@ private:
 
     //--- methods
     Piece inizializer_piece(char p, int y, int x);
-    bool is_valid_move(std::string move, bool white_turne);
+    bool is_valid_string(std::string move);
     void print();
 
 public:

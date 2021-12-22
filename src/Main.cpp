@@ -1,3 +1,4 @@
+// Nicola Busato 2009663
 
 #include <iostream>
 #include <cctype>
@@ -89,9 +90,11 @@ string result_type(int t)
         return "Formato stringa non valido, inserirne una valida:\n";
     case 2:
         return "Non puoi spostare l'aria, inserirne una valida:\n";
-    case 3:
-        return "Mossa non e' valida, inserirne una valida:\n";
+    case 2:
+        return "Non puoi muovere il pezzi del avversario, fai una altra mossa:\n";
     case 4:
+        return "Mossa non e' valida, inserirne una valida:\n";
+    case 5:
         return "Scacco, mossa non valida, forse è meglio cambiarla:\n";
         // case 5:  return "Scacco matto:\n";
 
@@ -129,7 +132,7 @@ void computer_turne(Chessboard &c, bool white_turne, ofstream &myfile)
             x = rand() % 8;
         } while (!c.is_right_piece(y, x, white_turne));
 
-    } while (c.random_move(y, x, white_turne));
+    } while ((line = c.random_move(y, x, white_turne) ) == "NV NV"); //Not Valid
 
     myfile << line + "\n";
 }

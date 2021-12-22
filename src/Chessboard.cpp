@@ -46,7 +46,7 @@ int Chessboard::move(string move, bool white_turne)
         return -1;
     }
 
-    if (!is_valid_move(move, white_turne))
+    if (!is_valid_string(move))
         return 1; // formato string non valido   // throw InvalidMoveStringException();
 
     int str_x = (move[0] - 'A'),
@@ -57,8 +57,11 @@ int Chessboard::move(string move, bool white_turne)
     if (board[str_y][str_x].print() == ' ')
         return 2; // nessun pezzo nella posizione indicata  // throw InvalidMoveException();
 
+    if(!is_right_piece(str_y,str_x,white_turne))
+        return 3; // Muove pezzo avverstaio
+
     if (!board[str_y][str_x].move(board, str_x, str_y, end_x, end_y))
-        return 3; // Mossa non possibil
+        return 4; // Mossa non possibil
 
     board[end_y][end_x] = board[str_y][str_x];
     board[str_y][str_x] = Nullo(false, str_y, str_y);
@@ -74,7 +77,7 @@ int Chessboard::move(string move, bool white_turne)
         king_white[1] = end_y;
     }
 
-    if (r.is_check(*this, white_turne))
+    if (r.is_check(this, white_turne))
     {
 
         board[str_y][str_x] = board[end_y][end_x];
@@ -97,7 +100,7 @@ int Chessboard::move(string move, bool white_turne)
     return 0; // mossa valida
 }
 
-bool Chessboard::is_valid_move(string move, bool white_turne) // Ln Ln    L->Lettera n->Numero
+bool Chessboard::is_valid_string(string move) // Ln Ln    L->Lettera n->Numero
 {
     return move.size() == 5 && move[2] == ' ' &&
            65 <= move[0] && move[0] <= 72 &&
@@ -113,7 +116,12 @@ bool Chessboard::is_right_piece(int y, int x, bool white_turne)
 
 bool Chessboard::random_move(int y, int x, bool white_turne)
 {
-    //return board[y][x].random_move() // restituisce le cordinate di arrivo
+    int *a = board[y][x].random_move(); // restituisce le cordinate di arrivo
+    if(a>0)
+    {
+        return ('A'+x) + (abs(y-8)) + " " + ('A'+a[1]) + (abs(a[0]-8));
+    }
+    // restituisce un array di 2, se è lo spostamento possibile da la posizione [y][x] altrimenti -1, -1
 }
 
 Piece Chessboard::inizializer_piece(char p, int y, int x)
