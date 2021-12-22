@@ -15,7 +15,7 @@ public:
     bool is_white() { return white; }; // = true se e' un pezzo bianco
     char print() { return type; };
     template <int Y, int X>
-    bool is_end_same_color();
+    bool is_end_same_color(int end_y, int end_x);
     // void undo_move();
 protected:
     char type;
