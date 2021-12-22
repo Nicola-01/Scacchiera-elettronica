@@ -116,7 +116,7 @@ bool Chessboard::is_right_piece(int y, int x, bool white_turne)
 
 bool Chessboard::random_move(int y, int x, bool white_turne)
 {
-    int *a = board[y][x].random_move(); // restituisce le cordinate di arrivo
+    int *a; // = board[y][x].random_move(); // restituisce le cordinate di arrivo
     if (*a > 0)
     {
         return ('A' + x) + (abs(y - 8)) + " " + ('A' + a[1]) + (abs(a[0] - 8));

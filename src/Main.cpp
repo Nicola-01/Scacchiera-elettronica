@@ -57,9 +57,9 @@ int main(int argc, char *argv[])
 
         white_turne = !white_turne;
 
-        if (rul.is_check(c, white_turne))
+        if (rul.is_check(c, !white_turne))
         {
-            if (rul.is_checkmate(c, white_turne))
+            if (rul.is_checkmate(c, !white_turne))
             {
                 (white_turne) ? send_green("Ha vinto il bianco") : send_green("Ha vinto il Nero");
                 myfile.close();
