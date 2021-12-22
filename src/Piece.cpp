@@ -4,6 +4,12 @@
 #define Piece_cpp
 
 #include "Piece.h"
+//#include <string>
+#include <iostream>
+using namespace std;
+
+//COSTRUTTORI
+
 Piece::Piece() //costruttore di default
 {
     white = false;
@@ -71,6 +77,8 @@ Nullo::Nullo(bool color, int y, int x) : Piece(color, y, x) //costruttore (Pezzo
     type = ' ';
 };
 
+//FUNZIONI DI PIECE
+
 template <int Y, int X>
 bool Piece::is_end_same_color(int end_y, int end_x) //ritorna true se la destinazione
 {
@@ -90,6 +98,8 @@ bool Piece::move(Piece (&Board)[Y][X], int str_x, int str_y, int end_x, int end_
     }
     return false;
 };
+
+//FUNZIONE IS_VALID_MOVE
 
 template <int Y, int X> //manca arrocco
 bool Re::is_valid_move(Piece (&Board)[Y][X], int str_x, int str_y, int end_x, int end_y)
@@ -170,9 +180,9 @@ bool Torre::is_valid_move(Piece (&Board)[Y][X], int str_x, int str_y, int end_x,
     int delta_x = abs(str_x - end_x);
     int delta_y = abs(str_y - end_y);
     if (str_x != end_x && str_y != end_y)
-        return false;        //non si muove verticalmente o orizzontalmente
+        return false;                    //non si muove verticalmente o orizzontalmente
     if (is_end_same_color(end_y, end_x)) //posso crearlo nella classe padre is_friend
-        return false;        //destinazione diverso colore;
+        return false;                    //destinazione diverso colore;
     for (int i = 1; i < delta_x; i++)
     {
         if (end_x > str_x)
@@ -198,7 +208,7 @@ bool Cavallo::is_valid_move(Piece (&Board)[Y][X], int str_x, int str_y, int end_
     int delta_x = abs(str_x - end_x);
     int delta_y = abs(str_y - end_y);
     if (is_end_same_color(end_y, end_x)) //posso crearlo nella classe padre is_friend
-        return false;        //destinazione diverso colore;
+        return false;                    //destinazione diverso colore;
     return (delta_x <= 2 && delta_y <= 1) || (delta_x <= 1 && delta_y <= 2);
 };
 
@@ -228,14 +238,36 @@ bool Pedone::is_valid_move(Piece (&Board)[Y][X], int str_x, int str_y, int end_x
     int delta_x = abs(str_x - end_x);
     int delta_y = abs(str_y - end_y);
     if (delta_x > 1 || delta_x < 0)
-        return false;   //non si può muovere in diagonale
+        return false; //non si può muovere in diagonale
     if (delta_y != 1 && is_moved)
-        return false;   //non si può muovere piu' di 2 caselle
-    if (is_end_same_color(end_y, end_x)) 
-        return false;        //destinazione diverso colore;
+        return false; //non si può muovere piu' di 2 caselle
+    if (is_end_same_color(end_y, end_x))
+        return false; //destinazione diverso colore;
     if (Board[end_y][end_x].print() != ' ' && str_x == end_x)
-        return false;    
+        return false;
     is_moved = true;
+    if (check_promotion(end_y))
+    {
+        cout << "Inserisci il carattere del pezzo che vuoi";
+        char in;
+        while (in.length() != 1 && in != 'D' && in != 'T' && in != 'A' && in != 'C')
+        {
+            cout << "Inserisci il carattere del pezzo che vuoi";
+            cin >> in;
+            in = toupper(in);
+        }
+        switch (in)
+        {
+        case 'D':
+            &Board[end_y][end_x] = Donna(is_white; end_y; end_x);
+        case 'T':
+            &Board[end_y][end_x] = Torre(is_white; end_y; end_x);
+        case 'C':
+            &Board[end_y][end_x] = Torre(is_white; end_y; end_x);
+        case 'A':
+            &Board[end_y][end_x] = Torre(is_white; end_y; end_x);
+        }
+    }
     return true;
 };
 

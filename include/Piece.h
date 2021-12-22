@@ -81,6 +81,7 @@ public:
 
 private:
     bool is_moved = false;
+    bool check_promotion(int y){ return y==0 || y==7; }; //se arrivato alla fine e' true
 };
 
 class Nullo : public Piece
