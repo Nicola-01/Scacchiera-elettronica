@@ -12,11 +12,8 @@ public:
     Piece();
     template <int Y, int X>
     bool move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x);
-    template <int Y, int X>
-    bool random_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x);
-
+    
     virtual bool is_valid_move();
-    virtual bool is_random_move_valid();
 
     template <int Y, int X>
     string random_position(Piece (&Board)[Y][X], int str_y, int str_x); //ritorna le coordinate sotto forma di stringa
@@ -40,8 +37,7 @@ public:
     Re(bool color, int y, int x) : Piece(color, y, x){};
     template <int Y, int X>
     bool is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x);
-    template <int Y, int X>
-    bool is_random_move_valid(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x);
+
 private:
     bool arrocco_re = false; //se l'arrocco non e' piu' possibile -> true
     template <int Y, int X>
@@ -54,8 +50,6 @@ public:
     Donna(bool color, int y, int x) : Piece(color, y, x){};
     template <int Y, int X>
     bool is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x);
-    template <int Y, int X>
-    bool is_random_move_valid(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x);
 };
 
 class Torre : public Piece
@@ -64,8 +58,7 @@ public:
     Torre(bool color, int y, int x) : Piece(color, y, x){};
     template <int Y, int X>
     bool is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x);
-    template <int Y, int X>
-    bool is_random_move_valid(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x);
+
 private:
     bool arrocco_torre = false;
 };
@@ -76,8 +69,6 @@ public:
     Alfiere(bool color, int y, int x) : Piece(color, y, x){};
     template <int Y, int X>
     bool is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x);
-    template <int Y, int X>
-    bool is_random_move_valid(Piece (&Board)[Y][X], int str_x, int str_y);
 };
 
 class Cavallo : public Piece
@@ -86,8 +77,6 @@ public:
     Cavallo(bool color, int y, int x) : Piece(color, y, x){};
     template <int Y, int X>
     bool is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x);
-    template <int Y, int X>
-    bool is_random_move_valid(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x);
 };
 
 class Pedone : public Piece
@@ -96,11 +85,10 @@ public:
     Pedone(bool color, int y, int x) : Piece(color, y, x){};
     template <int Y, int X>
     bool is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x);
-    template <int Y, int X>
-    bool is_random_move_valid(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x);
+
 private:
     bool is_moved = false;
-    bool check_promotion(int y){ return y==0 || y==7; }; //se arrivato alla fine e' true
+    bool check_promotion(int y) { return y == 0 || y == 7; }; //se arrivato alla fine e' true
 };
 
 class Nullo : public Piece
@@ -109,8 +97,6 @@ public:
     Nullo(bool color, int y, int x) : Piece(color, y, x){};
     template <int Y, int X>
     bool is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x) { return false; };
-    template <int Y, int X>
-    bool is_random_move_valid(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x){ return false; };
 };
 
 #endif
