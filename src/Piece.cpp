@@ -88,7 +88,7 @@ bool Piece::is_end_same_color(int end_y, int end_x) //ritorna true se la destina
 }
 
 template <int Y, int X>
-bool Piece::move(Piece (&Board)[Y][X], int str_x, int str_y, int end_x, int end_y)
+bool Piece::move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x);
 {
     if (is_valid_move(Piece(&Board)[Y][X], int str_x, int str_y, int end_x, int end_y))
     {
@@ -102,19 +102,25 @@ bool Piece::move(Piece (&Board)[Y][X], int str_x, int str_y, int end_x, int end_
 //FUNZIONE IS_VALID_MOVE
 
 template <int Y, int X> //manca arrocco
-bool Re::is_valid_move(Piece (&Board)[Y][X], int str_x, int str_y, int end_x, int end_y)
+bool Re::is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x);
 {
     int delta_x = abs(str_x - end_x);
     int delta_y = abs(str_y - end_y);
-    if ((delta_x != 1 && arrocco) || delta_y != 1)
-        return false; //percorso > 1
     if (is_end_same_color(end_y, end_x))
         return false; //destinazione diverso colore;
+    if (delta_x != 1 && arrocco_re && delta_y != 1)
+        return false; //percorso > 1
+    /*
+    NON SO COME GESTIRE
+    if (!arrocco_re)
+        check_arrocco(Piece (&Board)[end_y][end_x], end_y, end_x);
+    */
+    arrocco_re = true; //e' stata fatta una mossa
     return true;
 };
 
 template <int Y, int X>
-bool Donna::is_valid_move(Piece (&Board)[Y][X], int str_x, int str_y, int end_x, int end_y)
+bool Donna::is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x);
 {
     int delta_x = abs(str_x - end_x);
     int delta_y = abs(str_y - end_y);
@@ -175,7 +181,7 @@ bool Donna::is_valid_move(Piece (&Board)[Y][X], int str_x, int str_y, int end_x,
 }
 
 template <int Y, int X> //manca arrocco
-bool Torre::is_valid_move(Piece (&Board)[Y][X], int str_x, int str_y, int end_x, int end_y)
+bool Torre::is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x);
 {
     int delta_x = abs(str_x - end_x);
     int delta_y = abs(str_y - end_y);
@@ -183,6 +189,12 @@ bool Torre::is_valid_move(Piece (&Board)[Y][X], int str_x, int str_y, int end_x,
         return false;                    //non si muove verticalmente o orizzontalmente
     if (is_end_same_color(end_y, end_x)) //posso crearlo nella classe padre is_friend
         return false;                    //destinazione diverso colore;
+    /*          
+    if (arrocco_torre)
+    {   
+        return;     NON SO COME GESTIRE
+    }
+    */
     for (int i = 1; i < delta_x; i++)
     {
         if (end_x > str_x)
@@ -199,11 +211,12 @@ bool Torre::is_valid_move(Piece (&Board)[Y][X], int str_x, int str_y, int end_x,
             else if (Board[str_y - i][end_y].print() != ' ')
                 return false;
     }
+    return true;
 }
 
 // return (abs(delta_x) <= 2 && abs(delta_y) <= 1) || (abs(delta_x) <= 1 && abs(delta_y) <= 2)
 template <int Y, int X>
-bool Cavallo::is_valid_move(Piece (&Board)[Y][X], int str_x, int str_y, int end_x, int end_y)
+bool Cavallo::is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x);
 {
     int delta_x = abs(str_x - end_x);
     int delta_y = abs(str_y - end_y);
@@ -213,7 +226,7 @@ bool Cavallo::is_valid_move(Piece (&Board)[Y][X], int str_x, int str_y, int end_
 };
 
 template <int Y, int X>
-bool Alfiere::is_valid_move(Piece (&Board)[Y][X], int str_x, int str_y, int end_x, int end_y)
+bool Alfiere::is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x);
 {
     int delta_x = abs(str_x - end_x);
     int delta_y = abs(str_y - end_y);
@@ -233,7 +246,7 @@ bool Alfiere::is_valid_move(Piece (&Board)[Y][X], int str_x, int str_y, int end_
 };
 
 template <int Y, int X>
-bool Pedone::is_valid_move(Piece (&Board)[Y][X], int str_x, int str_y, int end_x, int end_y) //manca promozione
+bool Pedone::is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x); //promozione probabilmente sbagliata
 {
     int delta_x = abs(str_x - end_x);
     int delta_y = abs(str_y - end_y);
@@ -270,5 +283,45 @@ bool Pedone::is_valid_move(Piece (&Board)[Y][X], int str_x, int str_y, int end_x
     }
     return true;
 };
+
+//RANDOM MOVE
+
+template <int Y, int X>
+bool Piece::random_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x);
+{
+    if (is_valid_random_move(Piece(&Board)[Y][X], int str_x, int str_y, int end_x, int end_y))
+    {
+        ex_position_x = str_x;
+        ex_position_y = str_y;
+        return true;
+    }
+    return false;
+}
+
+template <int Y, int X>
+string Piece::random_position(Piece (&Board)[Y][X], int str_y, int str_x) //ritorna le coordinate sotto forma di stringa
+{
+    char in = toupper(type);
+    srand(time(NULL));
+    switch (in)
+    {
+    case 'R':
+    {
+        do
+        {
+            int i = rand() % -1 + 1;
+            int j = rand() % -1 + 1;
+            int end_y = str_y + i;
+            int end_x = str_x + j;
+        } while (!Board[end_y][end_x].is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x);) return end_y + end_x;
+    };
+    case 'D':;
+    case 'T':;
+    case 'C':;
+    case 'A':;
+        case 'P'
+            ;
+        }
+}
 
 #endif
