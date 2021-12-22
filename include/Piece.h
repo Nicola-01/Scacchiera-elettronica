@@ -3,7 +3,7 @@
 #ifndef Piece_h
 #define Piece_h
 
-#include "Piece.cpp"
+//#include "Piece.cpp"
 class Piece
 {
 public:
@@ -14,6 +14,8 @@ public:
     virtual bool is_valid_move();
     bool is_white() { return white; }; // = true se e' un pezzo bianco
     char print() { return type; };
+    template <int Y, int X>
+    bool is_end_same_color();
     // void undo_move();
 protected:
     char type;
@@ -22,29 +24,26 @@ protected:
     bool white;
 };
 // bool white_turne(); // = true se e' turno del bianco
-
+//Pezzo (variabili colore, tipo) (funzioni move, isValidMove(?), cout)
 class Re : public Piece
 {
-    public:
-        Re(bool color, int y, int x) : Piece(color, y, x){};
-        template <int Y, int X>
-        bool is_valid_move(Piece (&Board)[Y][X], int str_x, int str_y, int end_x, int end_y);
+public:
+    Re(bool color, int y, int x) : Piece(color, y, x){};
+    template <int Y, int X>
+    bool is_valid_move(Piece (&Board)[Y][X], int str_x, int str_y, int end_x, int end_y);
 
-    private:
+private:
     bool arrocco_re = false; //se e' stato fatto l'arrocco -> true
 };
 
-
 class Donna : public Piece
 {
-    public:
+public:
     Donna(bool color, int y, int x) : Piece(color, y, x){};
     template <int Y, int X>
 
-
     bool is_valid_move(Piece (&Board)[Y][X], int str_x, int str_y, int end_x, int end_y);
 };
-
 
 class Torre : public Piece
 {
@@ -52,10 +51,10 @@ public:
     Torre(bool color, int y, int x) : Piece(color, y, x){};
     template <int Y, int X>
     bool is_valid_move(Piece (&Board)[Y][X], int str_x, int str_y, int end_x, int end_y);
+
 private:
     bool arrocco_torre = false;
 };
-
 
 class Alfiere : public Piece
 {
@@ -79,8 +78,9 @@ public:
     Pedone(bool color, int y, int x) : Piece(color, y, x){};
     template <int Y, int X>
     bool is_valid_move(Piece (&Board)[Y][X], int str_x, int str_y, int end_x, int end_y);
+
 private:
-    bool is_moved = false; 
+    bool is_moved = false;
 };
 
 class Nullo : public Piece
@@ -88,7 +88,7 @@ class Nullo : public Piece
 public:
     Nullo(bool color, int y, int x) : Piece(color, y, x){};
     template <int Y, int X>
-    bool is_valid_move(Piece (&Board)[Y][X], int str_x, int str_y, int end_x, int end_y){ return false; };
+    bool is_valid_move(Piece (&Board)[Y][X], int str_x, int str_y, int end_x, int end_y) { return false; };
 };
 
 #endif

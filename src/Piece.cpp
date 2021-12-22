@@ -72,6 +72,12 @@ Nullo::Nullo(bool color, int y, int x) : Piece(color, y, x) //costruttore (Pezzo
 };
 
 template <int Y, int X>
+bool Piece::is_end_same_color() //ritorna true se la destinazione
+{
+    return (is_white == Board[end_y][end_x].is_white); //posso crearlo nella classe padre is_friend
+}
+
+template <int Y, int X>
 bool Piece::move(Piece (&Board)[Y][X], int str_x, int str_y, int end_x, int end_y)
 {
     if (is_valid_move(Piece(&Board)[Y][X], int str_x, int str_y, int end_x, int end_y))
@@ -83,14 +89,14 @@ bool Piece::move(Piece (&Board)[Y][X], int str_x, int str_y, int end_x, int end_
     return false;
 };
 
-template <int Y, int X>
+template <int Y, int X> //manca arrocco
 bool Re::is_valid_move(Piece (&Board)[Y][X], int str_x, int str_y, int end_x, int end_y)
 {
     int delta_x = abs(str_x - end_x);
     int delta_y = abs(str_y - end_y);
     if ((delta_x != 1 && arrocco) || delta_y != 1)
         return false; //percorso > 1
-    if (is_white == Board[end_y][end_x].is_white)
+    if (is_end_same_color())
         return false; //destinazione diverso colore;
     return true;
 };
@@ -100,18 +106,72 @@ bool Donna::is_valid_move(Piece (&Board)[Y][X], int str_x, int str_y, int end_x,
 {
     int delta_x = abs(str_x - end_x);
     int delta_y = abs(str_y - end_y);
+    if (is_end_same_color()) //posso crearlo nella classe padre is_friend
+        return false;
+    if (str_x != end_x && str_y != end_y)
+        return false;              //destinazione diverso colore;
+    bool control_condition = true; //
+    if (delta_x == delta_y)        //controllo come se fosse un alfiere
+    {
+        for (int i = 1; i < delta_x; i++)
+        {
+            if (end_y > str_y)
+                if (Board[str_y + i][str_x - i].print() != ' ')
+                {
+                    control_condition = false;
+                    break;
+                }
+                else if (Board[str_y - i][str_x + i].print() != ' ')
+                {
+                    control_condition = false;
+                    break;
+                }
+        }
+    }
+    else
+    {
+        for (int i = 1; i < delta_x; i++) //controllo come se fosse una torre
+        {
+            if (end_x > str_x)
+                if (Board[end_y][str_x + i].print() != ' ')
+                {
+                    control_condition = false;
+                    break;
+                }
+                else if (Board[end_y][str_x - i].print() != ' ')
+                {
+                    control_condition = false;
+                    break;
+                }
+        }
+        for (int i = 1; i < delta_y; i++)
+        {
+            if (end_y > str_y)
+                if (Board[str_y + i][end_y].print() != ' ')
+                {
+                    control_condition = false;
+                    break;
+                }
+                else if (Board[str_y - i][end_y].print() != ' ')
+                {
+                    control_condition = false;
+                    break;
+                }
+        }
+    }
+    return control_condition;
 }
 
-template <int Y, int X>
+template <int Y, int X> //manca arrocco
 bool Torre::is_valid_move(Piece (&Board)[Y][X], int str_x, int str_y, int end_x, int end_y)
 {
     int delta_x = abs(str_x - end_x);
     int delta_y = abs(str_y - end_y);
     if (str_x != end_x && str_y != end_y)
-        return false;            //non si muove verticalmente o orizzontalmente
-    if (is_white == Board[end_y][end_x].is_white) //posso crearlo nella classe padre is_friend
-        return false;            //destinazione diverso colore;
-    for (int i = 0; i < delta_x; i++)
+        return false;        //non si muove verticalmente o orizzontalmente
+    if (is_end_same_color()) //posso crearlo nella classe padre is_friend
+        return false;        //destinazione diverso colore;
+    for (int i = 1; i < delta_x; i++)
     {
         if (end_x > str_x)
             if (Board[end_y][str_x + i].print() != ' ')
@@ -119,7 +179,7 @@ bool Torre::is_valid_move(Piece (&Board)[Y][X], int str_x, int str_y, int end_x,
             else if (Board[end_y][str_x - i].print() != ' ')
                 return false;
     }
-    for (int i = 0; i < delta_y; i++)
+    for (int i = 1; i < delta_y; i++)
     {
         if (end_y > str_y)
             if (Board[str_y + i][end_y].print() != ' ')
@@ -129,17 +189,35 @@ bool Torre::is_valid_move(Piece (&Board)[Y][X], int str_x, int str_y, int end_x,
     }
 }
 
-    // return (abs(delta_x) <= 2 && abs(delta_y) <= 1) || (abs(delta_x) <= 1 && abs(delta_y) <= 2)
-    template <int Y, int X>
-    bool Cavallo::is_valid_move(Piece(&Board)[Y][X], int str_x, int str_y, int end_x, int end_y)
+// return (abs(delta_x) <= 2 && abs(delta_y) <= 1) || (abs(delta_x) <= 1 && abs(delta_y) <= 2)
+template <int Y, int X>
+bool Cavallo::is_valid_move(Piece (&Board)[Y][X], int str_x, int str_y, int end_x, int end_y)
+{
+    int delta_x = abs(str_x - end_x);
+    int delta_y = abs(str_y - end_y);
+    if (is_end_same_color()) //posso crearlo nella classe padre is_friend
+        return false;        //destinazione diverso colore;
+    return (delta_x <= 2 && delta_y <= 1) || (delta_x <= 1 && delta_y <= 2);
+};
+
+template <int Y, int X>
+bool Alfiere::is_valid_move(Piece (&Board)[Y][X], int str_x, int str_y, int end_x, int end_y)
+{
+    int delta_x = abs(str_x - end_x);
+    int delta_y = abs(str_y - end_y);
+    if (is_end_same_color()) //posso crearlo nella classe padre is_friend
+        return false;        //destinazione diverso colore;
+    if (delta_x != delta_y)
+        return false; //non si muove in diagonale
+    for (int i = 1; i < delta_x; i++)
     {
-        int delta_x = end_x - str_x;
-        int delta_y = end_y - str_y;
-        int delta_x = abs(str_x - end_x);
-        int delta_y = abs(str_y - end_y);
-        if (is_white == Board[end_y][end_x].is_white) //posso crearlo nella classe padre is_friend
-            return false;                             //destinazione diverso colore;
-        return (delta_x <= 2 && delta_y <= 1) || (delta_x <= 1 && delta_y <= 2);
-    };
+        if (end_y > str_y)
+            if (Board[str_y + i][str_x - i].print() != ' ')
+                return false;
+            else if (Board[str_y - i][str_x + i].print() != ' ')
+                return false;
+    }
+    return true;
+}
 
 #endif
