@@ -57,10 +57,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/nicola/Documents/Progetto/Scacchiera-elettronica
+CMAKE_SOURCE_DIR = /home/nicola/Documents/Scacchiera-elettronica
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/nicola/Documents/Progetto/Scacchiera-elettronica/build
+CMAKE_BINARY_DIR = /home/nicola/Documents/Scacchiera-elettronica/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -87,9 +87,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/nicola/Documents/Progetto/Scacchiera-elettronica/build/CMakeFiles /home/nicola/Documents/Progetto/Scacchiera-elettronica/build//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/nicola/Documents/Scacchiera-elettronica/build/CMakeFiles /home/nicola/Documents/Scacchiera-elettronica/build//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/nicola/Documents/Progetto/Scacchiera-elettronica/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/nicola/Documents/Scacchiera-elettronica/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -220,6 +220,33 @@ src/Piece.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/Piece.cpp.s
 .PHONY : src/Piece.cpp.s
 
+src/Rules.o: src/Rules.cpp.o
+.PHONY : src/Rules.o
+
+# target to build an object file
+src/Rules.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/libs.dir/build.make CMakeFiles/libs.dir/src/Rules.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/Rules.cpp.o
+.PHONY : src/Rules.cpp.o
+
+src/Rules.i: src/Rules.cpp.i
+.PHONY : src/Rules.i
+
+# target to preprocess a source file
+src/Rules.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/libs.dir/build.make CMakeFiles/libs.dir/src/Rules.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/Rules.cpp.i
+.PHONY : src/Rules.cpp.i
+
+src/Rules.s: src/Rules.cpp.s
+.PHONY : src/Rules.s
+
+# target to generate assembly for a file
+src/Rules.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/libs.dir/build.make CMakeFiles/libs.dir/src/Rules.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/Rules.cpp.s
+.PHONY : src/Rules.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -239,6 +266,9 @@ help:
 	@echo "... src/Piece.o"
 	@echo "... src/Piece.i"
 	@echo "... src/Piece.s"
+	@echo "... src/Rules.o"
+	@echo "... src/Rules.i"
+	@echo "... src/Rules.s"
 .PHONY : help
 
 

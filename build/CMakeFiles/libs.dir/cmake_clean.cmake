@@ -3,6 +3,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/libs.dir/src/Chessboard.cpp.o.d"
   "CMakeFiles/libs.dir/src/Piece.cpp.o"
   "CMakeFiles/libs.dir/src/Piece.cpp.o.d"
+  "CMakeFiles/libs.dir/src/Rules.cpp.o"
+  "CMakeFiles/libs.dir/src/Rules.cpp.o.d"
   "liblibs.a"
   "liblibs.pdb"
 )

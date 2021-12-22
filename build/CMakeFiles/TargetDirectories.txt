@@ -1,4 +1,4 @@
-/home/nicola/Documents/Progetto/Scacchiera-elettronica/build/CMakeFiles/libs.dir
-/home/nicola/Documents/Progetto/Scacchiera-elettronica/build/CMakeFiles/main.dir
-/home/nicola/Documents/Progetto/Scacchiera-elettronica/build/CMakeFiles/edit_cache.dir
-/home/nicola/Documents/Progetto/Scacchiera-elettronica/build/CMakeFiles/rebuild_cache.dir
+/home/nicola/Documents/Scacchiera-elettronica/build/CMakeFiles/libs.dir
+/home/nicola/Documents/Scacchiera-elettronica/build/CMakeFiles/main.dir
+/home/nicola/Documents/Scacchiera-elettronica/build/CMakeFiles/edit_cache.dir
+/home/nicola/Documents/Scacchiera-elettronica/build/CMakeFiles/rebuild_cache.dir
