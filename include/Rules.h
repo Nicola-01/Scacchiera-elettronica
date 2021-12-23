@@ -8,12 +8,20 @@
 
 #include "Chessboard.h"
 
+class CheckmateException{};
 
-struct Rules
+class Rules
 {
-    bool is_check(Chessboard& board, bool in_black);
-    bool is_checkmate(Chessboard& board, bool in_black);
-    bool is_draw(Chessboard& board);
+private:
+    Chessboard board;
+public:
+    Rules(Chessboard& b): board{b}{}
+    bool is_check(bool in_black);
+    //Seconda versione in via di sviluppo
+    //bool is_check(bool in_black, int st_x, int st_y, int end_x, int end_y);
+    bool is_checkmate(bool in_black);
+    //bool is_checkmate(int k_x, int k_y, Piece threat, Piece s_thr);
+    bool is_draw();
 };
 
 
