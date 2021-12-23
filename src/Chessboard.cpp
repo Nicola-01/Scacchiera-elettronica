@@ -114,13 +114,14 @@ bool Chessboard::is_right_piece(int y, int x, bool white_turne)
     return (board[y][x].print() != ' ' && board[y][x].is_white() == white_turne);
 }
 
-bool Chessboard::random_move(int y, int x, bool white_turne)
+string Chessboard::random_move(int y, int x)
 {
-    int *a; // = board[y][x].random_move(); // restituisce le cordinate di arrivo
-    if (*a > 0)
+    string a = board[y][x].random_position(board,y,x); // restituisce le cordinate di arrivo
+    if (a != "xx")
     {
-        return ('A' + x) + (abs(y - 8)) + " " + ('A' + a[1]) + (abs(a[0] - 8));
+        return ('A' + x) + (abs(y - 8)) + " " + ('A' + (int)a[1]) + (abs((int)a[0] - 8));
     }
+    return "NV NV";
     // restituisce un array di 2, se è lo spostamento possibile da la posizione [y][x] altrimenti -1, -1
 }
 

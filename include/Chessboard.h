@@ -37,7 +37,7 @@ public:
     bool is_piece_valid_move(int y, int x, bool white_turne, int end_y, int end_x);
     int *get_white_king() { return king_white; };
     int *get_black_king() { return king_black; };
-    bool random_move(int y, int x, bool white_turne);
+    string random_move(int y, int x);
     Piece &get_piece(int y, int x);
 };
 

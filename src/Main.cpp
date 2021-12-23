@@ -11,13 +11,15 @@
 
 using namespace std;
 
-class ArgumentsException {};
+class ArgumentsException
+{
+};
 
 constexpr int moves_max = 100;
 
 string result_type(int t);
-void player_turne(Chessboard &c, bool white_turne, ofstream &myfile);
-void computer_turne(Chessboard &c, bool white_turne, ofstream &myfile);
+void player_turne(Chessboard &c, bool white_turne, ofstream &log_file);
+void computer_turne(Chessboard &c, bool white_turne, ofstream &log_file);
 
 void send_error(string s);
 void send_green(string s);
@@ -30,8 +32,8 @@ int main(int argc, char *argv[])
         throw ArgumentsException();
     }
 
-    ofstream myfile;
-    myfile.open("example.txt");
+    ofstream log_file;
+    log_file.open("../log.txt");
 
     int player = 0;
     srand(time(NULL));
@@ -49,11 +51,11 @@ int main(int argc, char *argv[])
         c.move("XX XX", white_turne);
 
         if (player == 1 && white_turne)
-            player_turne(c, white_turne, myfile);
+            player_turne(c, white_turne, log_file);
         else if (player == 2 && !white_turne)
-            player_turne(c, white_turne, myfile);
+            player_turne(c, white_turne, log_file);
         else
-            computer_turne(c, white_turne, myfile);
+            computer_turne(c, white_turne, log_file);
 
         white_turne = !white_turne;
 
@@ -62,23 +64,23 @@ int main(int argc, char *argv[])
             if (rul.is_checkmate(c, !white_turne))
             {
                 (white_turne) ? send_green("Ha vinto il bianco") : send_green("Ha vinto il Nero");
-                myfile.close();
+                log_file.close();
                 return 0;
             }
             // else
 
             (white_turne) ? send_green("Il Bianco ha fatto scacco al Nero") : send_green("Il Nero ha fatto scacco al Bianco");
-            myfile.close();
+            log_file.close();
         }
-        if(rul.is_draw(c))
+        if (rul.is_draw(c))
         {
             send_green("Partita finita in patta");
-            myfile.close();
+            log_file.close();
         }
 
         n++;
     }
-    myfile.close();
+    log_file.close();
     return 0;
 }
 
@@ -103,7 +105,7 @@ string result_type(int t)
     }
 }
 
-void player_turne(Chessboard &c, bool white_turne, ofstream &myfile)
+void player_turne(Chessboard &c, bool white_turne, ofstream &log_file)
 {
     int output_type;
     string line;
@@ -117,13 +119,13 @@ void player_turne(Chessboard &c, bool white_turne, ofstream &myfile)
         send_error(result_type(output_type));
         getline(cin, line);
     }
-    myfile << line + "\n";
+    log_file << line + "\n";
 }
 
-void computer_turne(Chessboard &c, bool white_turne, ofstream &myfile)
+void computer_turne(Chessboard &c, bool white_turne, ofstream &log_file)
 {
     string line;
-    int y, x, end_y, end_x;
+    int y, x;
     do
     {
         do
@@ -132,9 +134,9 @@ void computer_turne(Chessboard &c, bool white_turne, ofstream &myfile)
             x = rand() % 8;
         } while (!c.is_right_piece(y, x, white_turne));
 
-    } while ((line = c.random_move(y, x, white_turne) ) == "NV NV"); //Not Valid
-
-    myfile << line + "\n";
+    } while ((line = c.random_move(y, x)) == "NV NV"); //Not Valid
+    c.move(line, white_turne);
+    log_file << line + "\n";
 }
 
 // area di funzioni in test
