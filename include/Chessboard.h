@@ -20,7 +20,7 @@ class Chessboard
 private:
     //--- variables
     Piece board[8][8]; //[y][x]
-    Rules r;
+    Rules rul;
     const std::string pos{"TCADRACT"};
     int king_white[2]{7, 4}; //y x
     int king_black[2]{0, 4};

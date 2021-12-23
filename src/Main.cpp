@@ -139,18 +139,28 @@ void computer_turne(Chessboard &c, bool white_turne, ofstream &log_file)
     log_file << line + "\n";
 }
 
-// area di funzioni in test
+void send_error(string s)
+{
+    cout << s << endl;
+}
+
+void send_green(string s)
+{
+    cout << s << endl;
+}
+/* 
+    // area di funzioni in test
 #ifdef __unix__ /* __unix__ is usually defined by compilers targeting Unix systems */
+// #define OS_Windows 0
 
-#define OS_Windows 0
+// #elif defined(_WIN32) || defined(WIN32) /* _Win32 is usually defined by compilers targeting 32 or   64 bit Windows systems */
 
-#elif defined(_WIN32) || defined(WIN32) /* _Win32 is usually defined by compilers targeting 32 or   64 bit Windows systems */
+// #define OS_Windows 1
+// #include <windows.h>
+// HANDLE color = GetStdHandle(STD_OUTPUT_HANDLE); // -- probabilmente funziona solo per windows
 
-#define OS_Windows 1
-#include <windows.h>
-HANDLE color = GetStdHandle(STD_OUTPUT_HANDLE); // -- probabilmente funziona solo per windows
-
-#endif
+// #endif
+/*
 
 void send_error(string s)
 {
@@ -179,3 +189,4 @@ void send_green(string s)
         cout << "\033[;32m" << s << "\033[0m" << endl; // https://www.tutorialspoint.com/how-to-output-colored-text-to-a-linux-terminal
     }
 }
+*/

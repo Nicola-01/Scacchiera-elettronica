@@ -77,7 +77,7 @@ int Chessboard::move(string move, bool white_turne)
         king_white[1] = end_y;
     }
 
-    if (r.is_check(*this, !white_turne))
+    if (rul.is_check(*this, !white_turne))
     {
 
         board[str_y][str_x] = board[end_y][end_x];
