@@ -25,6 +25,7 @@ public:
     char print() { return type; };
     template <int Y, int X>
     bool is_end_same_color(Piece (&Board)[Y][X], int end_y, int end_x);
+    int get_ex_position_y() { return ex_position_y; };
     // void undo_move();
 protected:
     char type;
@@ -92,7 +93,7 @@ public:
     template <int Y, int X>
     bool is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x);
     bool is_moved() { return moved; };
-
+    class PromotionException{};
 private:
     bool moved = false;
     bool check_promotion(int y) { return y == 0 || y == 7; }; //se arrivato alla fine e' true
