@@ -16,7 +16,7 @@ Piece::Piece() //costruttore di default
     white = false;
     ex_position_x = -1;
     ex_position_y = -1;
-}
+};
 
 Piece::Piece(bool color, int y, int x) //costruttore
 {
@@ -86,12 +86,12 @@ bool Piece::is_end_same_color(Piece (&Board)[Y][X], int end_y, int end_x) //rito
     if (Board[end_y][end_x].print() == ' ')
         return false;
     return (is_white() == Board[end_y][end_x].is_white());
-}
+};
 
 template <int Y, int X>
 bool Piece::move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x)
 {
-    if (is_valid_move(Piece(&Board)[Y][X], int str_x, int str_y, int end_x, int end_y))
+    if (is_valid_move(Board, str_x, str_y, end_x, end_y))
     {
         ex_position_x = str_x;
         ex_position_y = str_y;
@@ -136,13 +136,10 @@ bool Re::is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, in
         return false; //destinazione stesso colore;
     if (delta_x != 1 || delta_y != 1)
     {
-        if (!is_moved())
+        if (!is_moved() && check_arrocco(Board, end_y, end_x))
         {
-            if (check_arrocco(Board, end_y, end_x))
-            {
-                moved = true;
-                return true;
-            }
+            moved = true;
+            return true;
         }
         return false; //percorso > 1
     }
@@ -209,7 +206,7 @@ bool Donna::is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y,
         }
     }
     return control_condition;
-}
+};
 
 template <int Y, int X> //manca arrocco
 bool Torre::is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x)
@@ -220,12 +217,11 @@ bool Torre::is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y,
         return false;                    //non si muove verticalmente o orizzontalmente
     if (is_end_same_color(end_y, end_x)) //posso crearlo nella classe padre is_friend
         return false;                    //destinazione diverso colore;
-    /*          
-    if (arrocco_torre)
-    {   
-        return;     NON SO COME GESTIRE
+    if (!is_moved() && check_arrocco(Board, end_y, end_x))
+    {
+        moved = true;
+        return true;
     }
-    */
     for (int i = 1; i < delta_x; i++)
     {
         if (end_x > str_x)
@@ -244,7 +240,7 @@ bool Torre::is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y,
     }
     moved = true;
     return true;
-}
+};
 
 template <int Y, int X>
 bool Cavallo::is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x)
@@ -318,7 +314,7 @@ bool Pedone::is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y
         case 'A':
             Board[end_y][end_x] = Torre(is_white, end_y, end_x);
         }
-        Board[str_y][str_x] = Nullo (false, str_y, str_x);
+        Board[str_y][str_x] = Nullo(false, str_y, str_x);
         throw PromotionException();
     }
     return true;
