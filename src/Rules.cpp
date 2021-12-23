@@ -15,7 +15,7 @@
 
 //if(in_black) -> controllo scacco del re nero tra i pezzi bianchi -> pezzo.is_white() 
 
-bool Rules::is_check(Chessboard& board, bool in_black/*, bool mate*/)
+bool Rules::is_check(bool in_black)
 {
     int* king_pos = board.get_white_king();
     if(in_black)
@@ -24,7 +24,7 @@ bool Rules::is_check(Chessboard& board, bool in_black/*, bool mate*/)
     int k_y = king_pos[0];
     delete king_pos;
     //______Ricerca del pezzo che minaccia_______
-    Piece threat = Nullo();//*****DA IMPLEMENTARE
+    Piece threat = Piece();//*****DA IMPLEMENTARE COSTRUTTORE DEFAULT NULLO
     //Controllando tutti i possibili attaccanti
     //Nel caso sia stato il re minacciato a muoversi
     //Ricerca nelle vicinanze (per comprendere possibili cavalli)
@@ -44,7 +44,7 @@ bool Rules::is_check(Chessboard& board, bool in_black/*, bool mate*/)
                 Piece in_exam = board.get_piece(s_y, s_x);//****DA IMPLEMENTARE
                 if( (in_exam.print() != ' ') && 
                     (in_exam.is_white() == in_black) && 
-                    (in_exam.is_valid_move(in_exam, s_x, s_y, k_x, k_y)) )
+                    (board.is_piece_valid_move(s_y, s_x, in_exam.is_white(), k_y, k_x)) )
                 {
                     //in_exam puo' catturare il re minacciato
                     threat = in_exam;
@@ -68,7 +68,7 @@ bool Rules::is_check(Chessboard& board, bool in_black/*, bool mate*/)
                 Piece in_exam = board.get_piece(s_y, s_x);//DA IMPLEMENTARE
                 if( (in_exam.print() != ' ') && 
                     (in_exam.is_white() == in_black) && 
-                    (in_exam.is_valid_move(in_exam, s_x, s_y, k_x, k_y)) )
+                    (board.is_piece_valid_move(s_y, s_x, in_exam.is_white(), k_y, k_x)) )
                 {
                     //in_exam puo' catturare il re minacciato
                     threat = in_exam;
@@ -92,7 +92,7 @@ bool Rules::is_check(Chessboard& board, bool in_black/*, bool mate*/)
                 Piece in_exam = board.get_piece(s_y, s_x);//DA IMPLEMENTARE
                 if( (in_exam.print() != ' ') && 
                     (in_exam.is_white() == in_black) && 
-                    (in_exam.is_valid_move(in_exam, s_x, s_y, k_x, k_y)) )
+                    (board.is_piece_valid_move(s_y, s_x, in_exam.is_white(), k_y, k_x)) )
                 {
                     //in_exam puo' catturare il re minacciato
                     threat = in_exam;
@@ -106,20 +106,63 @@ bool Rules::is_check(Chessboard& board, bool in_black/*, bool mate*/)
     }
     return false;
 }
-bool Rules::is_checkmate(Chessboard& board, bool in_black)
+bool Rules::is_checkmate(bool in_black)
 {
     return false;
 }
-bool Rules::is_draw(Chessboard& board)
+bool Rules::is_draw()
 {
     return false;
 }
+
+/*
+//SECONDA VERSIONE OTTIMIZZATA
+//Ritorna 1 se il re indicato da in_black e' sotto scacco
+// 2 se e' anche scacco matto
+// 0 se non è nulla
+//Lancia CheckmateException nel caso lo scacco sia matto 
+int Rules::is_check(bool in_black, int st_x, int st_y, int end_x, int end_y)
+{
+    Piece moved = board.get_piece(end_y, end_x);
+    Piece threat = Piece();
+    //Se ho mosso bianco e cerco scacco nel nero e viceversa devo verificare lo scacco matto
+    bool mate = (moved.is_white() == in_black);
+    int* king_pos;
+    king_pos = board.get_white_king();
+    if(in_black)
+        king_pos = board.get_black_king();
+    int k_x = king_pos[1];
+    int k_y = king_pos[0];
+    delete king_pos;
+    if(mate)//La mossa e' d'attacco
+    {
+        bool found = false;
+        //controllo se il pezzo mosso minaccia
+        if (board.is_piece_valid_move(end_y, end_x, moved.is_white(), k_y, k_x))
+        {
+            found = true;
+            threat = moved;
+        }
+        //controllo se il pezzo scoperto da moved minaccia
+
+
+    }
+    return 0;
+}
+bool Rules::is_checkmate(int k_x, int k_y, Piece threat, Piece s_thr)
+{
+
+}
+//*/
 
 
 // DEFINIZIONE HELPER FUNCTIONS
-/*
+///*
 bool direction_treat(const Chessboard& board, int king_x, int king_y, int x_dir, int y_dir)
 {
+    
     return false;
 }
+
+
 //*/
