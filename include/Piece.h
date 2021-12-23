@@ -4,7 +4,7 @@
 #define Piece_h
 #include <string>
 using namespace std;
-//#include "Piece.cpp"
+
 class Piece
 {
 public:
@@ -38,7 +38,7 @@ protected:
 class Re : public Piece
 {
 public:
-    Re(bool color, int y, int x) : Piece(color, y, x){};
+    Re(bool color, int y, int x);
 
     template <int Y, int X>
     bool is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x);
@@ -52,7 +52,7 @@ private:
 class Donna : public Piece
 {
 public:
-    Donna(bool color, int y, int x) : Piece(color, y, x){};
+    Donna(bool color, int y, int x);
     template <int Y, int X>
     bool is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x);
 };
@@ -60,7 +60,7 @@ public:
 class Torre : public Piece
 {
 public:
-    Torre(bool color, int y, int x) : Piece(color, y, x){};
+    Torre(bool color, int y, int x);
     template <int Y, int X>
     bool is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x);
     bool is_moved() { return moved; };
@@ -73,7 +73,7 @@ private:
 class Alfiere : public Piece
 {
 public:
-    Alfiere(bool color, int y, int x) : Piece(color, y, x){};
+    Alfiere(bool color, int y, int x);
     template <int Y, int X>
     bool is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x);
 };
@@ -81,7 +81,7 @@ public:
 class Cavallo : public Piece
 {
 public:
-    Cavallo(bool color, int y, int x) : Piece(color, y, x){};
+    Cavallo(bool color, int y, int x);
     template <int Y, int X>
     bool is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x);
 };
@@ -89,7 +89,7 @@ public:
 class Pedone : public Piece
 {
 public:
-    Pedone(bool color, int y, int x) : Piece(color, y, x){};
+    Pedone(bool color, int y, int x);
     template <int Y, int X>
     bool is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x);
     bool is_moved() { return moved; };
@@ -102,7 +102,7 @@ private:
 class Nullo : public Piece
 {
 public:
-    Nullo(bool color, int y, int x) : Piece(color, y, x){};
+    Nullo(bool color, int y, int x);
     template <int Y, int X>
     bool is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x) { return false; };
 };
