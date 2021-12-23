@@ -12,20 +12,18 @@ public:
     Piece();
     template <int Y, int X>
     bool move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x);
-
     virtual bool is_valid_move();
-
+    //virtual bool is_valid_move();
+    //Piece(const Piece&) = delete;
     template <int Y, int X>
     string random_position(Piece (&Board)[Y][X], int str_y, int str_x); //ritorna le coordinate sotto forma di stringa
-
-    template <int Y, int X>
-    bool check_arrocco(Piece (&Board)[Y][X], int end_y, int end_x); //non so come gestirlo
-
-    bool is_white() { return white; }; // = true se e' un pezzo bianco
-    char print() { return type; };
     template <int Y, int X>
     bool is_end_same_color(Piece (&Board)[Y][X], int end_y, int end_x);
+    template <int Y, int X>
+    bool check_arrocco(Piece (&Board)[Y][X], int end_y, int end_x); //non so come gestirlo
     int get_ex_position_y() { return ex_position_y; };
+    bool is_white() { return white; }; // = true se e' un pezzo bianco
+    char print() { return type; };
     // void undo_move();
 protected:
     char type;
@@ -93,7 +91,10 @@ public:
     template <int Y, int X>
     bool is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x);
     bool is_moved() { return moved; };
-    class PromotionException{};
+    class PromotionException
+    {
+    };
+
 private:
     bool moved = false;
     bool check_promotion(int y) { return y == 0 || y == 7; }; //se arrivato alla fine e' true

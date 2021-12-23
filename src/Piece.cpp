@@ -257,7 +257,7 @@ bool Alfiere::is_valid_move(Piece (&Board)[Y][X], int str_y, int str_x, int end_
 {
     int delta_x = abs(str_x - end_x);
     int delta_y = abs(str_y - end_y);
-    if (is_end_same_color(end_y, end_x)) //posso crearlo nella classe padre is_friend
+    if (is_end_same_color(&Board, end_y, end_x)) //posso crearlo nella classe padre is_friend
         return false;        //destinazione diverso colore;
     if (delta_x != delta_y)
         return false; //non si muove in diagonale
