@@ -13,7 +13,7 @@ public:
     template <int Y, int X>
     bool move(Piece (&Board)[Y][X], int str_y, int str_x, int end_y, int end_x);
     virtual bool is_valid_move();
-    //virtual bool is_valid_move();
+    
     //Piece(const Piece&) = delete;
     template <int Y, int X>
     string random_position(Piece (&Board)[Y][X], int str_y, int str_x); //ritorna le coordinate sotto forma di stringa
