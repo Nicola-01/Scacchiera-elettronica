@@ -7,7 +7,7 @@
 #include <time.h> /* time */
 
 #include "Chessboard.h"
-#include "Rules.h"
+//#include "Rules.h"
 
 using namespace std;
 
@@ -26,7 +26,8 @@ void send_green(string s);
 
 int main(int argc, char *argv[])
 {
-    if (argc != 2 || argv[0] != "pc" || argv[0] != "cc")
+    string inp = argv[1];
+    if (argc != 2 || (inp != "pc" && inp != "cc"))
     {
         cout << "Argomenti non validi";
         throw ArgumentsException();
@@ -37,31 +38,33 @@ int main(int argc, char *argv[])
 
     int player = 0;
     srand(time(NULL));
-    if (argv[0] == "pc")
-        int player = rand() % 2 + 1; // 0, se non è un giocatore ,1 se è bianco, 2 se è nero
+    if (inp == "pc")
+        player = rand() % 2 + 1; // 0, se non è un giocatore ,1 se è bianco, 2 se è nero
 
     Chessboard c{};
-    Rules rul;
+    //Rules rul;
     int n = 0;
     bool white_turne = true;
-
     while (n < moves_max)
     {
-        // if (system("CLS")) system("clear");
+        if (system("CLS")) system("clear");
         c.move("XX XX", white_turne);
+        cout << "p "<<player<< " turne " << white_turne<<endl;
 
-        if (player == 1 && white_turne)
+        player_turne(c, white_turne, log_file);
+
+        /*if (player == 1 && white_turne)
             player_turne(c, white_turne, log_file);
         else if (player == 2 && !white_turne)
             player_turne(c, white_turne, log_file);
         else
-            computer_turne(c, white_turne, log_file);
+            computer_turne(c, white_turne, log_file);*/
 
         white_turne = !white_turne;
 
-        if (rul.is_check(c, !white_turne))
+        if (c.is_check(!white_turne))
         {
-            if (rul.is_checkmate(c, !white_turne))
+            if (c.is_checkmate(!white_turne))
             {
                 (white_turne) ? send_green("Ha vinto il bianco") : send_green("Ha vinto il Nero");
                 log_file.close();
@@ -72,7 +75,7 @@ int main(int argc, char *argv[])
             (white_turne) ? send_green("Il Bianco ha fatto scacco al Nero") : send_green("Il Nero ha fatto scacco al Bianco");
             log_file.close();
         }
-        if (rul.is_draw(c))
+        if (c.is_draw())
         {
             send_green("Partita finita in patta");
             log_file.close();
@@ -89,15 +92,15 @@ string result_type(int t)
     switch (t)
     {
     case 1:
-        return "Formato stringa non valido, inserirne una valida:\n";
+        return "Formato stringa non valido, inserirne una valida:";
     case 2:
-        return "Non puoi spostare l'aria, inserirne una valida:\n";
+        return "Non puoi spostare l'aria, inserirne una valida:";
     case 3:
-        return "Non puoi muovere il pezzi del avversario, fai una altra mossa:\n";
+        return "Non puoi muovere il pezzi del avversario, fai una altra mossa:";
     case 4:
-        return "Mossa non e' valida, inserirne una valida:\n";
+        return "Mossa non e' valida, inserirne una valida:";
     case 5:
-        return "Scacco, mossa non valida, forse è meglio cambiarla:\n";
+        return "Scacco, mossa non valida, forse è meglio cambiarla:";
         // case 5:  return "Scacco matto:\n";
 
     default:
@@ -109,12 +112,12 @@ void player_turne(Chessboard &c, bool white_turne, ofstream &log_file)
 {
     int output_type;
     string line;
-    cout << "Inserire la mossa:\n";
+    send_green("Inserire la mossa:");
     getline(cin, line);
     while ((output_type = c.move(line, white_turne)) != 0)
     {
-        // if (system("CLS")) system("clear");
-        // c.move("XX XX");
+        if (system("CLS")) system("clear");
+        c.move("XX XX", white_turne);
 
         send_error(result_type(output_type));
         getline(cin, line);
@@ -142,11 +145,13 @@ void computer_turne(Chessboard &c, bool white_turne, ofstream &log_file)
 void send_error(string s)
 {
     cout << s << endl;
+    cout << "\033[;31m" << s << "\033[0m" << endl;
 }
 
 void send_green(string s)
 {
     cout << s << endl;
+    cout << "\033[;32m" << s << "\033[0m" << endl; 
 }
 /* 
     // area di funzioni in test

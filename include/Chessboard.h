@@ -20,7 +20,7 @@ class Chessboard
 private:
     //--- variables
     Piece board[8][8]; //[y][x]
-    Rules rul;
+    //Rules rul;
     const std::string pos{"TCADRACT"};
     int king_white[2]{7, 4}; //y x
     int king_black[2]{0, 4};
@@ -39,6 +39,10 @@ public:
     int *get_black_king() { return king_black; };
     string random_move(int y, int x);
     Piece &get_piece(int y, int x);
+
+    bool is_check(bool in_black);
+    bool is_checkmate(bool in_black);
+    bool is_draw();
 };
 
 #endif

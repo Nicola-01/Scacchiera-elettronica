@@ -77,7 +77,7 @@ int Chessboard::move(string move, bool white_turne)
         king_white[1] = end_y;
     }
 
-    if (rul.is_check(*this, !white_turne))
+    if (is_check(!white_turne))
     {
 
         board[str_y][str_x] = board[end_y][end_x];
@@ -117,7 +117,7 @@ bool Chessboard::is_right_piece(int y, int x, bool white_turne)
 string Chessboard::random_move(int y, int x)
 {
     string a = board[y][x].random_position(board,y,x); // restituisce le cordinate di arrivo
-    if (a != "xx")
+    if (a != "XX")
     {
         return ('A' + x) + (abs(y - 8)) + " " + ('A' + (int)a[1]) + (abs((int)a[0] - 8));
     }
