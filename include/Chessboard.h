@@ -4,6 +4,7 @@
 #define Chessboard_h
 
 #include <string>
+include <utility>
 #include "Piece.h"
 #include "Rules.h"
 #include "Piece.h"
@@ -29,6 +30,8 @@ private:
     Piece inizializer_piece(char p, int y, int x);
     bool is_valid_string(std::string move);
     void print();
+
+    std::pair<int, int> Chessboard::direction_treat(int king_y, int king_x, int dir_y, int dir_x);
 
 public:
     Chessboard();
