@@ -96,60 +96,42 @@ bool Piece::move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_
     case 'R':
     {
         Re r = Board[str_y][str_x];
-        if (r.is_valid_move(Board, str_x, str_y, end_x, end_y))
-        {
-            control = true;
-        }
-    }
+        control = r.is_valid_move(Board, str_x, str_y, end_x, end_y);
     case 'D':
     {
         Donna d = Board[str_y][str_x];
-        if (d.is_valid_move(Board, str_x, str_y, end_x, end_y))
-        {
-            control = true;
-        }
+        control = d.is_valid_move(Board, str_x, str_y, end_x, end_y);
     }
     case 'T':
     {
         Torre t = Board[str_y][str_x];
-        if (t.is_valid_move(Board, str_x, str_y, end_x, end_y))
-        {
-            control = true;
-        }
+        control = t.is_valid_move(Board, str_x, str_y, end_x, end_y);
     }
     case 'A':
     {
         Alfiere a = Board[str_y][str_x];
-        if (a.is_valid_move(Board, str_x, str_y, end_x, end_y))
-        {
-            control = true;
-        }
+        control = a.is_valid_move(Board, str_x, str_y, end_x, end_y);
     }
     case 'C':
     {
         Cavallo c = Board[str_y][str_x];
-        if (c.is_valid_move(Board, str_x, str_y, end_x, end_y))
-        {
-            control = true;
-        }
+        control = c.is_valid_move(Board, str_x, str_y, end_x, end_y);
     }
     case 'P':
     {
         Pedone p = Board[str_y][str_x];
-        if (p.is_valid_move(Board, str_x, str_y, end_x, end_y))
-        {
-            control = true;
-        }
+        control = p.is_valid_move(Board, str_x, str_y, end_x, end_y);
     }
     };
-    if (control)
-    {
-        ex_position_x = str_x;
-        ex_position_y = str_y;
-        return true;
-    }
-    return false;
-};
+        if (control)
+        {
+            ex_position_x = str_x;
+            ex_position_y = str_y;
+            return true;
+        }
+        return false;
+    };
+}
 
 //ARROCCO
 
@@ -177,7 +159,7 @@ bool Piece::check_arrocco_re(Piece (&Board)[8][8], int end_y, int end_x)
         }
         return false;
     }
-};
+}
 
 bool Piece::check_arrocco_torre(Piece (&Board)[8][8], int end_y, int end_x)
 {
@@ -325,7 +307,7 @@ bool Cavallo::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_
     int delta_y = std::abs(str_y - end_y);
     if (is_end_same_color(Board, end_y, end_x))
         return false; //destinazione diverso colore;
-    return (delta_x <= 2 && delta_y <= 1) || (delta_x <= 1 && delta_y <= 2);
+    return (delta_x == 2 && delta_y == 1) || (delta_x == 1 && delta_y == 2);
 };
 
 bool Alfiere::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x)
@@ -494,7 +476,7 @@ string Piece::random_position(Piece (&Board)[8][8], int str_y, int str_x) //rito
             i++;
         } while (!move(Board, str_y, str_x, end_y, end_x));
     }
-    case 'A': 
+    case 'A':
     {
         do
         {
@@ -520,7 +502,7 @@ string Piece::random_position(Piece (&Board)[8][8], int str_y, int str_x) //rito
     }
     case 'P':
     {
-        Pedone p = (Pedone) Board[str_y][str_x];
+        Pedone p = (Pedone)Board[str_y][str_x];
         do
         {
             if (!p.is_moved()) //si può muovere di due

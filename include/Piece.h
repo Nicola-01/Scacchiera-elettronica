@@ -14,7 +14,7 @@ public:
     bool move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x);
     string random_position(Piece (&Board)[8][8], int str_y, int str_x); //ritorna le coordinate sotto forma di stringa
 
-    bool check_arrocco_re(Piece (&Board)[8][8], int end_y, int end_x); //non so come gestirlo
+    bool check_arrocco_re(Piece (&Board)[8][8], int end_y, int end_x); 
     bool check_arrocco_torre(Piece (&Board)[8][8], int end_y, int end_x);
     bool is_white() { return white; }; // = true se e' un pezzo bianco
     char print() { return type; };
