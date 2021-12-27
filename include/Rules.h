@@ -3,6 +3,8 @@
 
     file: Rules.h
 */
+
+/*
 #ifndef RULES_H
 #define RULES_H
 
@@ -26,3 +28,5 @@ public:
 
 
 #endif //RULES_H
+
+*/

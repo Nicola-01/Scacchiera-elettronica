@@ -5,7 +5,6 @@
 */
 #include "Rules.h"
 #include "Chessboard.h"
-//#include "Piece.h"
 
 #include <utility>
 #include <memory>
@@ -122,17 +121,47 @@ bool Chessboard::is_checkmate_d(int k_y, int k_x)
 }
 //Se un pezzo attacca o questo puo' muoversi o un pezzo alleato 
 //Puo' mettersi nella traiettoria
-bool Chessboard::is_checkmate(int k_y, int k_x, std::pair<int,int> t_pos)
+bool Chessboard::is_checkmate_s(int k_y, int k_x, std::pair<int,int> t_pos)
 {
     //controllo se il re si puo' muovere
     if(!is_checkmate_d(k_y, k_x))
         return false;
     //controllo se puo' essere difeso
-    int dir_x = 
+    int dir_x = (t_pos.second - k_x)/std::abs(t_pos.second - k_x);
+    int dir_y = (t_pos.first - k_y)/std::abs(t_pos.first - k_y);
+    //scansione di tutti i pezzi alleati
+    for(int x = 0; x < 8; x++)
+    {
+        for(int y = 0; y < 8; y++)
+        {
+            if( ((board[y][x].is_white()) != (board[k_y][k_x].is_white())) )
+            {
+                for(int t_x = k_x + dir_x; (t_x + dir_x)!=(t_pos.second) ; t_x = t_x + dir_x)
+                {
+                    for(int t_y = k_y + dir_y; (t_y + dir_y)!=(t_pos.first); t_y = t_y + dir_y)
+                    {
+                        if(board[y][x].is_valid_move(board, y, x, t_y, t_x))//se si puo' mettere in mezzo
+                            return false;
+                    }
+                }
+            }
+
+        }
+    }
     return true;
 }
-
-//Ritorna la posizione della minaccia nella direzione indicata, (-1,-1) altrimenti
+bool Chessboard::is_checkmate(bool in_black, int st_y, int st_x, int end_y, int end_x)
+{
+    int flag = is_check(in_black, st_y, st_x, end_y, end_x);
+    switch(flag)
+    {
+        case 0: case 1:
+            return false;
+        case 2:
+            return true;
+    }
+}
+//Ritorna la posizione (y,x) della minaccia nella direzione indicata, (-1,-1) altrimenti
 std::pair<int, int> Chessboard::direction_threat(int king_y, int king_x, bool black_king, int dir_y, int dir_x)
 {
     int i_x = king_x + dir_x;
