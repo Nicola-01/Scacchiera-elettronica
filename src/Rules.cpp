@@ -3,7 +3,6 @@
 
     file: Rules.cpp
 */
-#include "Rules.h"
 #include "Chessboard.h"
 
 #include <utility>
