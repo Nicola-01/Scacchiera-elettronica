@@ -48,7 +48,7 @@ int Chessboard::is_check(bool in_black, int st_y, int st_x, int end_y, int end_x
         //controllo se il pezzo scoperto da moved minaccia
         if(is_valid_traj(st_y, st_x, k_y, k_x))
         {
-            std::pair<int, int> second_t_pos = direction_threat(k_y, k_x, in_black ,((st_y-k_y)/std::abs(st_y-k_y)), ((st_x-k_x)/std::abs(st_x-k_x));
+            std::pair<int, int> second_t_pos = direction_threat(k_y, k_x, in_black ,((st_y-k_y)/std::abs(st_y-k_y)), ((st_x-k_x)/std::abs(st_x-k_x)));
             if( second_t_pos.first >= 0)
             {
                 if(found)
@@ -70,7 +70,7 @@ int Chessboard::is_check(bool in_black, int st_y, int st_x, int end_y, int end_x
         //un pezzo minaccia
         if(found)
         {
-            if(is_checkmate(k_y, k_x, threat_pos))
+            if(is_checkmate_s(k_y, k_x, threat_pos))
                 return 2;
             return 1;
         }
