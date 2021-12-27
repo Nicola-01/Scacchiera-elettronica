@@ -77,7 +77,7 @@ int Chessboard::move(string move, bool white_turne)
         king_white[1] = end_y;
     }
 
-    if (is_check(!white_turne))
+    if (is_check(!white_turne, str_y, str_x, end_y, end_x))
     {
 
         board[str_y][str_x] = board[end_y][end_x];
@@ -144,9 +144,4 @@ Piece Chessboard::inizializer_piece(char p, int y, int x)
     default:
         return Nullo(false, y, x);
     }
-}
-
-Piece &Chessboard::get_piece(int y, int x)
-{
-    return board[y][x];
 }

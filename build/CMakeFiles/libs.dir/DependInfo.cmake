@@ -8,9 +8,9 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/nicola/Documents/Scacchiera-elettronica/src/Chessboard.cpp" "CMakeFiles/libs.dir/src/Chessboard.cpp.o" "gcc" "CMakeFiles/libs.dir/src/Chessboard.cpp.o.d"
-  "/home/nicola/Documents/Scacchiera-elettronica/src/Piece.cpp" "CMakeFiles/libs.dir/src/Piece.cpp.o" "gcc" "CMakeFiles/libs.dir/src/Piece.cpp.o.d"
-  "/home/nicola/Documents/Scacchiera-elettronica/src/Rules.cpp" "CMakeFiles/libs.dir/src/Rules.cpp.o" "gcc" "CMakeFiles/libs.dir/src/Rules.cpp.o.d"
+  "/home/nicola/Documents/Progetto/Scacchiera-elettronica/src/Chessboard.cpp" "CMakeFiles/libs.dir/src/Chessboard.cpp.o" "gcc" "CMakeFiles/libs.dir/src/Chessboard.cpp.o.d"
+  "/home/nicola/Documents/Progetto/Scacchiera-elettronica/src/Piece.cpp" "CMakeFiles/libs.dir/src/Piece.cpp.o" "gcc" "CMakeFiles/libs.dir/src/Piece.cpp.o.d"
+  "/home/nicola/Documents/Progetto/Scacchiera-elettronica/src/Rules.cpp" "CMakeFiles/libs.dir/src/Rules.cpp.o" "gcc" "CMakeFiles/libs.dir/src/Rules.cpp.o.d"
   )
 
 # Targets to which this target links.

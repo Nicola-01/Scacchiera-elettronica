@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/nicola/Documents/Scacchiera-elettronica
+CMAKE_SOURCE_DIR = /home/nicola/Documents/Progetto/Scacchiera-elettronica
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/nicola/Documents/Scacchiera-elettronica/build
+CMAKE_BINARY_DIR = /home/nicola/Documents/Progetto/Scacchiera-elettronica/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/libs.dir/depend.make
@@ -72,44 +72,44 @@ include CMakeFiles/libs.dir/flags.make
 CMakeFiles/libs.dir/src/Chessboard.cpp.o: CMakeFiles/libs.dir/flags.make
 CMakeFiles/libs.dir/src/Chessboard.cpp.o: ../src/Chessboard.cpp
 CMakeFiles/libs.dir/src/Chessboard.cpp.o: CMakeFiles/libs.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/nicola/Documents/Scacchiera-elettronica/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/libs.dir/src/Chessboard.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/libs.dir/src/Chessboard.cpp.o -MF CMakeFiles/libs.dir/src/Chessboard.cpp.o.d -o CMakeFiles/libs.dir/src/Chessboard.cpp.o -c /home/nicola/Documents/Scacchiera-elettronica/src/Chessboard.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/nicola/Documents/Progetto/Scacchiera-elettronica/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/libs.dir/src/Chessboard.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/libs.dir/src/Chessboard.cpp.o -MF CMakeFiles/libs.dir/src/Chessboard.cpp.o.d -o CMakeFiles/libs.dir/src/Chessboard.cpp.o -c /home/nicola/Documents/Progetto/Scacchiera-elettronica/src/Chessboard.cpp
 
 CMakeFiles/libs.dir/src/Chessboard.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/libs.dir/src/Chessboard.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/nicola/Documents/Scacchiera-elettronica/src/Chessboard.cpp > CMakeFiles/libs.dir/src/Chessboard.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/nicola/Documents/Progetto/Scacchiera-elettronica/src/Chessboard.cpp > CMakeFiles/libs.dir/src/Chessboard.cpp.i
 
 CMakeFiles/libs.dir/src/Chessboard.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/libs.dir/src/Chessboard.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/nicola/Documents/Scacchiera-elettronica/src/Chessboard.cpp -o CMakeFiles/libs.dir/src/Chessboard.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/nicola/Documents/Progetto/Scacchiera-elettronica/src/Chessboard.cpp -o CMakeFiles/libs.dir/src/Chessboard.cpp.s
 
 CMakeFiles/libs.dir/src/Piece.cpp.o: CMakeFiles/libs.dir/flags.make
 CMakeFiles/libs.dir/src/Piece.cpp.o: ../src/Piece.cpp
 CMakeFiles/libs.dir/src/Piece.cpp.o: CMakeFiles/libs.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/nicola/Documents/Scacchiera-elettronica/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/libs.dir/src/Piece.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/libs.dir/src/Piece.cpp.o -MF CMakeFiles/libs.dir/src/Piece.cpp.o.d -o CMakeFiles/libs.dir/src/Piece.cpp.o -c /home/nicola/Documents/Scacchiera-elettronica/src/Piece.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/nicola/Documents/Progetto/Scacchiera-elettronica/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/libs.dir/src/Piece.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/libs.dir/src/Piece.cpp.o -MF CMakeFiles/libs.dir/src/Piece.cpp.o.d -o CMakeFiles/libs.dir/src/Piece.cpp.o -c /home/nicola/Documents/Progetto/Scacchiera-elettronica/src/Piece.cpp
 
 CMakeFiles/libs.dir/src/Piece.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/libs.dir/src/Piece.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/nicola/Documents/Scacchiera-elettronica/src/Piece.cpp > CMakeFiles/libs.dir/src/Piece.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/nicola/Documents/Progetto/Scacchiera-elettronica/src/Piece.cpp > CMakeFiles/libs.dir/src/Piece.cpp.i
 
 CMakeFiles/libs.dir/src/Piece.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/libs.dir/src/Piece.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/nicola/Documents/Scacchiera-elettronica/src/Piece.cpp -o CMakeFiles/libs.dir/src/Piece.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/nicola/Documents/Progetto/Scacchiera-elettronica/src/Piece.cpp -o CMakeFiles/libs.dir/src/Piece.cpp.s
 
 CMakeFiles/libs.dir/src/Rules.cpp.o: CMakeFiles/libs.dir/flags.make
 CMakeFiles/libs.dir/src/Rules.cpp.o: ../src/Rules.cpp
 CMakeFiles/libs.dir/src/Rules.cpp.o: CMakeFiles/libs.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/nicola/Documents/Scacchiera-elettronica/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/libs.dir/src/Rules.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/libs.dir/src/Rules.cpp.o -MF CMakeFiles/libs.dir/src/Rules.cpp.o.d -o CMakeFiles/libs.dir/src/Rules.cpp.o -c /home/nicola/Documents/Scacchiera-elettronica/src/Rules.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/nicola/Documents/Progetto/Scacchiera-elettronica/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/libs.dir/src/Rules.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/libs.dir/src/Rules.cpp.o -MF CMakeFiles/libs.dir/src/Rules.cpp.o.d -o CMakeFiles/libs.dir/src/Rules.cpp.o -c /home/nicola/Documents/Progetto/Scacchiera-elettronica/src/Rules.cpp
 
 CMakeFiles/libs.dir/src/Rules.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/libs.dir/src/Rules.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/nicola/Documents/Scacchiera-elettronica/src/Rules.cpp > CMakeFiles/libs.dir/src/Rules.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/nicola/Documents/Progetto/Scacchiera-elettronica/src/Rules.cpp > CMakeFiles/libs.dir/src/Rules.cpp.i
 
 CMakeFiles/libs.dir/src/Rules.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/libs.dir/src/Rules.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/nicola/Documents/Scacchiera-elettronica/src/Rules.cpp -o CMakeFiles/libs.dir/src/Rules.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/nicola/Documents/Progetto/Scacchiera-elettronica/src/Rules.cpp -o CMakeFiles/libs.dir/src/Rules.cpp.s
 
 # Object files for target libs
 libs_OBJECTS = \
@@ -125,7 +125,7 @@ liblibs.a: CMakeFiles/libs.dir/src/Piece.cpp.o
 liblibs.a: CMakeFiles/libs.dir/src/Rules.cpp.o
 liblibs.a: CMakeFiles/libs.dir/build.make
 liblibs.a: CMakeFiles/libs.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/nicola/Documents/Scacchiera-elettronica/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX static library liblibs.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/nicola/Documents/Progetto/Scacchiera-elettronica/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX static library liblibs.a"
 	$(CMAKE_COMMAND) -P CMakeFiles/libs.dir/cmake_clean_target.cmake
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/libs.dir/link.txt --verbose=$(VERBOSE)
 
@@ -138,6 +138,6 @@ CMakeFiles/libs.dir/clean:
 .PHONY : CMakeFiles/libs.dir/clean
 
 CMakeFiles/libs.dir/depend:
-	cd /home/nicola/Documents/Scacchiera-elettronica/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/nicola/Documents/Scacchiera-elettronica /home/nicola/Documents/Scacchiera-elettronica /home/nicola/Documents/Scacchiera-elettronica/build /home/nicola/Documents/Scacchiera-elettronica/build /home/nicola/Documents/Scacchiera-elettronica/build/CMakeFiles/libs.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/nicola/Documents/Progetto/Scacchiera-elettronica/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/nicola/Documents/Progetto/Scacchiera-elettronica /home/nicola/Documents/Progetto/Scacchiera-elettronica /home/nicola/Documents/Progetto/Scacchiera-elettronica/build /home/nicola/Documents/Progetto/Scacchiera-elettronica/build /home/nicola/Documents/Progetto/Scacchiera-elettronica/build/CMakeFiles/libs.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/libs.dir/depend
 

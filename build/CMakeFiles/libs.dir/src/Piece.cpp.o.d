@@ -1,7 +1,7 @@
-CMakeFiles/libs.dir/src/Chessboard.cpp.o: \
- /home/nicola/Documents/Progetto/Scacchiera-elettronica/src/Chessboard.cpp \
+CMakeFiles/libs.dir/src/Piece.cpp.o: \
+ /home/nicola/Documents/Progetto/Scacchiera-elettronica/src/Piece.cpp \
  /usr/include/stdc-predef.h \
- /home/nicola/Documents/Progetto/Scacchiera-elettronica/include/Chessboard.h \
+ /home/nicola/Documents/Progetto/Scacchiera-elettronica/include/Piece.h \
  /usr/include/c++/11/string \
  /usr/include/c++/11/x86_64-redhat-linux/bits/c++config.h \
  /usr/include/bits/wordsize.h \
@@ -102,13 +102,9 @@ CMakeFiles/libs.dir/src/Chessboard.cpp.o: \
  /usr/include/bits/types/error_t.h /usr/include/c++/11/bits/charconv.h \
  /usr/include/c++/11/bits/functional_hash.h \
  /usr/include/c++/11/bits/hash_bytes.h \
- /usr/include/c++/11/bits/basic_string.tcc /usr/include/c++/11/utility \
- /usr/include/c++/11/bits/stl_relops.h \
- /home/nicola/Documents/Progetto/Scacchiera-elettronica/include/Piece.h \
- /home/nicola/Documents/Progetto/Scacchiera-elettronica/include/Piece.h \
- /usr/include/c++/11/iostream /usr/include/c++/11/ostream \
- /usr/include/c++/11/ios /usr/include/c++/11/exception \
- /usr/include/c++/11/bits/exception_ptr.h \
+ /usr/include/c++/11/bits/basic_string.tcc /usr/include/c++/11/iostream \
+ /usr/include/c++/11/ostream /usr/include/c++/11/ios \
+ /usr/include/c++/11/exception /usr/include/c++/11/bits/exception_ptr.h \
  /usr/include/c++/11/bits/cxxabi_init_exception.h \
  /usr/include/c++/11/typeinfo /usr/include/c++/11/bits/nested_exception.h \
  /usr/include/c++/11/bits/ios_base.h \

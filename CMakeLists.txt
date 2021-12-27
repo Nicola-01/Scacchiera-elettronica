@@ -11,7 +11,6 @@ include/Chessboard.h
 src/Chessboard.cpp
 include/Piece.h
 src/Piece.cpp
-include/Rules.h
 src/Rules.cpp
 )
 

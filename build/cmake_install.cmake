@@ -1,4 +1,4 @@
-# Install script for directory: /home/nicola/Documents/Scacchiera-elettronica
+# Install script for directory: /home/nicola/Documents/Progetto/Scacchiera-elettronica
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -50,5 +50,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/nicola/Documents/Scacchiera-elettronica/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/nicola/Documents/Progetto/Scacchiera-elettronica/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
