@@ -96,7 +96,10 @@ int Chessboard::move(string move, bool white_turne)
 
         return 4; // scacco, mossa annullata
     }
-
+    str[0] = str_y;
+    str[1] = str_x;
+    end[0] = end_y;
+    end[1] = end_x;
     return 0; // mossa valida
 }
 

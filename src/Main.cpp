@@ -49,16 +49,16 @@ int main(int argc, char *argv[])
     {
         if (system("CLS")) system("clear");
         c.move("XX XX", white_turne);
-        cout << "p "<<player<< " turne " << white_turne<<endl;
+        //cout << "p "<<player<< " turne " << white_turne<<endl;
 
-        player_turne(c, white_turne, log_file);
+        //player_turne(c, white_turne, log_file);
 
-        /*if (player == 1 && white_turne)
+        if (player == 1 && white_turne)
             player_turne(c, white_turne, log_file);
         else if (player == 2 && !white_turne)
             player_turne(c, white_turne, log_file);
         else
-            computer_turne(c, white_turne, log_file);*/
+            computer_turne(c, white_turne, log_file);
 
         white_turne = !white_turne;
 
@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
             (white_turne) ? send_green("Il Bianco ha fatto scacco al Nero") : send_green("Il Nero ha fatto scacco al Bianco");
             log_file.close();
         }
-        if (c.is_draw())
+        if (false)//c.is_draw())
         {
             send_green("Partita finita in patta");
             log_file.close();
