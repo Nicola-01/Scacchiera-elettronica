@@ -97,41 +97,47 @@ bool Piece::move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_
     {
         Re r = Board[str_y][str_x];
         control = r.is_valid_move(Board, str_x, str_y, end_x, end_y);
+        break;
+    }
     case 'D':
     {
         Donna d = Board[str_y][str_x];
         control = d.is_valid_move(Board, str_x, str_y, end_x, end_y);
+        break;
     }
     case 'T':
     {
         Torre t = Board[str_y][str_x];
         control = t.is_valid_move(Board, str_x, str_y, end_x, end_y);
+        break;
     }
     case 'A':
     {
         Alfiere a = Board[str_y][str_x];
         control = a.is_valid_move(Board, str_x, str_y, end_x, end_y);
+        break;
     }
     case 'C':
     {
         Cavallo c = Board[str_y][str_x];
         control = c.is_valid_move(Board, str_x, str_y, end_x, end_y);
+        break;
     }
     case 'P':
     {
         Pedone p = Board[str_y][str_x];
         control = p.is_valid_move(Board, str_x, str_y, end_x, end_y);
+        break;
     }
-    };
-        if (control)
-        {
-            ex_position_x = str_x;
-            ex_position_y = str_y;
-            return true;
-        }
-        return false;
-    };
-}
+    }
+    if (control)
+    {
+        ex_position_x = str_x;
+        ex_position_y = str_y;
+        return true;
+    }
+    return false;
+};
 
 //ARROCCO
 
@@ -362,13 +368,25 @@ bool Pedone::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y
         switch (in)
         {
         case 'D':
+        {
             Board[end_y][end_x] = Donna(is_white(), end_y, end_x);
+            break;
+        }
         case 'T':
+        {
             Board[end_y][end_x] = Torre(is_white(), end_y, end_x);
+            break;
+        }
         case 'C':
+        {
             Board[end_y][end_x] = Torre(is_white(), end_y, end_x);
+            break;
+        }
         case 'A':
+        {
             Board[end_y][end_x] = Torre(is_white(), end_y, end_x);
+            break;
+        }
         }
         Board[str_y][str_x] = Nullo(false, str_y, str_x);
         //bisogna distruggere il pedone
