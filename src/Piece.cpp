@@ -442,11 +442,13 @@ bool Pedone::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y
 
 //RANDOM MOVE
 
-string Piece::random_position(Piece (&Board)[8][8], int str_y, int str_x) //ritorna le coordinate sotto forma di stringa
+int *Piece::random_position(Piece (&Board)[8][8], int str_y, int str_x) //ritorna le coordinate sotto forma di stringa
 {
     char in = toupper(type);
     srand(time(NULL));
-    string output;
+    int *output;
+    output[0] = -1;
+    output[1] = -1;
     int end_x;
     int end_y;
     int i = 0;
@@ -458,9 +460,8 @@ string Piece::random_position(Piece (&Board)[8][8], int str_y, int str_x) //rito
         {
             end_x = rand() % (3) + (str_x - 1); //3 possibili numeri a partire da quello a sinistra
             end_y = rand() % (3) + (str_y - 1); //3 possibili numeri a partire da quello a sotto
-            output = end_y + end_x;
             if (i == 20)
-                return "XX"; //se non trova niente ritorna XX
+                return output; //se non trova niente ritorna XX
             i++;
         } while (end_y < 0 || end_x < 0 || !move(Board, str_y, str_x, end_y, end_x));
     };
@@ -471,7 +472,7 @@ string Piece::random_position(Piece (&Board)[8][8], int str_y, int str_x) //rito
             end_x = rand() % 8; //7 possibili numeri a partire da 0
             end_y = rand() % 8; //7 possibili numeri a partire da 0
             if (i == 60)
-                return "XX"; //se non trova niente ritorna XX
+                return output; //se non trova niente ritorna XX
             i++;
         } while (end_y < 0 || end_x < 0 || !move(Board, str_y, str_x, end_y, end_x));
     }
@@ -491,7 +492,7 @@ string Piece::random_position(Piece (&Board)[8][8], int str_y, int str_x) //rito
                 end_x = rand() % 8;
             }
             if (i == 40)
-                return "XX"; //se non trova niente ritorna XX
+                return output; //se non trova niente ritorna XX
             i++;
         } while (end_y < 0 || end_x < 0 || !move(Board, str_y, str_x, end_y, end_x));
     }
@@ -535,7 +536,7 @@ string Piece::random_position(Piece (&Board)[8][8], int str_y, int str_x) //rito
                 }
             }
             if (i == 20)
-                return "XX"; //se non trova niente ritorna XX
+                return output; //se non trova niente ritorna XX
             i++;
         } while (end_y < 0 || end_x < 0 || !move(Board, str_y, str_x, end_y, end_x));
     }
@@ -559,7 +560,7 @@ string Piece::random_position(Piece (&Board)[8][8], int str_y, int str_x) //rito
                 end_x = str_x - i;
             }
             if (i == 40)
-                return "XX"; //se non trova niente ritorna XX
+                return output; //se non trova niente ritorna XX
             i++;
         } while (end_y < 0 || end_x < 0 || !move(Board, str_y, str_x, end_y, end_x));
     }
@@ -579,12 +580,13 @@ string Piece::random_position(Piece (&Board)[8][8], int str_y, int str_x) //rito
                 end_y = (str_y + 1);
             }
             if (i == 20)
-                return "XX"; //se non trova niente ritorna XX
+                return output; //se non trova niente ritorna XX
             i++;
         } while (end_x < 0 || !move(Board, str_y, str_x, end_y, end_x));
     }
     }
-    output = to_string(end_y) + to_string(end_x);
+    output[0] = end_y;
+    output[1] = end_x;
     return output;
 };
 
