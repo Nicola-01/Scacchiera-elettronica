@@ -441,7 +441,7 @@ bool Pedone::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y
 };
 
 //RANDOM MOVE
-
+//risolvere promozione pedone
 int *Piece::random_position(Piece (&Board)[8][8], int str_y, int str_x) //ritorna le coordinate sotto forma di stringa
 {
     char in = toupper(type);
@@ -569,6 +569,7 @@ int *Piece::random_position(Piece (&Board)[8][8], int str_y, int str_x) //ritorn
         Pedone p = (Pedone)Board[str_y][str_x];
         do
         {
+
             if (!p.is_moved()) //si può muovere di due
             {
                 end_x = rand() % (3) + (str_x - 1); //3 possibili numeri a partire da quello a sinistra
@@ -578,6 +579,36 @@ int *Piece::random_position(Piece (&Board)[8][8], int str_y, int str_x) //ritorn
             {
                 end_x = rand() % (3) + (str_x - 1); //3 possibili numeri a partire da quello a sinistra
                 end_y = (str_y + 1);
+            }
+            if (p.check_promotion(end_y))
+            {
+                int random = rand() % 4; //4 possibili numeri a partire da 0
+                switch (random)
+                {
+                case '0': //donna
+                {
+                    Board[end_y][end_x] = Donna(is_white(), end_y, end_x);
+                    break;
+                }
+                case '1':   //torre
+                {
+                    Board[end_y][end_x] = Torre(is_white(), end_y, end_x);
+                    break;
+                }
+                case '2':   //cavallo
+                {
+                    Board[end_y][end_x] = Torre(is_white(), end_y, end_x);
+                    break;
+                }
+                case '3':   //alfiere
+                {
+                    Board[end_y][end_x] = Torre(is_white(), end_y, end_x);
+                    break;
+                }
+                }
+                Board[str_y][str_x] = Nullo(false, str_y, str_x);
+                //bisogna distruggere il pedone
+                throw PromotionException();
             }
             if (i == 20)
                 return output; //se non trova niente ritorna XX

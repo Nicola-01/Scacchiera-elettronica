@@ -12,9 +12,9 @@ public:
     Piece();
 
     bool move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x);
-    int* random_position(Piece (&Board)[8][8], int str_y, int str_x); //ritorna le coordinate sotto forma di stringa
+    int *random_position(Piece (&Board)[8][8], int str_y, int str_x); //ritorna le coordinate sotto forma di stringa
 
-    bool check_arrocco_re(Piece (&Board)[8][8], int end_y, int end_x); 
+    bool check_arrocco_re(Piece (&Board)[8][8], int end_y, int end_x);
     bool check_arrocco_torre(Piece (&Board)[8][8], int end_y, int end_x);
     bool is_white() { return white; }; // = true se e' un pezzo bianco
     char print() { return type; };
@@ -24,7 +24,9 @@ public:
     virtual bool is_moved() { return moved; }
     // void undo_move();
     virtual bool is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x) { return false; };
-
+    class PromotionException
+    {
+    };
 protected:
     char type;
     int ex_position_x;
@@ -91,13 +93,9 @@ public:
     Pedone(Piece x){};
     bool is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x) override;
     bool is_moved() { return moved; };
-    class PromotionException
-    {
-    };
-
+    bool check_promotion(int y) { return y == 0 || y == 7; }; //se arrivato alla fine e' true
 private:
     bool moved = false;
-    bool check_promotion(int y) { return y == 0 || y == 7; }; //se arrivato alla fine e' true
 };
 
 class Nullo : public Piece
