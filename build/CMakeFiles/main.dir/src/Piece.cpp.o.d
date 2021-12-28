@@ -1,4 +1,4 @@
-CMakeFiles/libs.dir/src/Piece.cpp.o: \
+CMakeFiles/main.dir/src/Piece.cpp.o: \
  /home/nicola/Documents/Progetto/Scacchiera-elettronica/src/Piece.cpp \
  /usr/include/stdc-predef.h \
  /home/nicola/Documents/Progetto/Scacchiera-elettronica/include/Piece.h \
