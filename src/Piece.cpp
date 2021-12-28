@@ -462,7 +462,7 @@ string Piece::random_position(Piece (&Board)[8][8], int str_y, int str_x) //rito
             if (i == 20)
                 return "XX"; //se non trova niente ritorna XX
             i++;
-        } while ((end_y < 0 || end_x < 0) && !move(Board, str_y, str_x, end_y, end_x));
+        } while (end_y < 0 || end_x < 0 || !move(Board, str_y, str_x, end_y, end_x));
     };
     case 'D': //poco efficiente
     {
@@ -473,7 +473,7 @@ string Piece::random_position(Piece (&Board)[8][8], int str_y, int str_x) //rito
             if (i == 60)
                 return "XX"; //se non trova niente ritorna XX
             i++;
-        } while ((end_y < 0 || end_x < 0) && !move(Board, str_y, str_x, end_y, end_x));
+        } while (end_y < 0 || end_x < 0 || !move(Board, str_y, str_x, end_y, end_x));
     }
     case 'T':
     {
@@ -493,7 +493,7 @@ string Piece::random_position(Piece (&Board)[8][8], int str_y, int str_x) //rito
             if (i == 40)
                 return "XX"; //se non trova niente ritorna XX
             i++;
-        } while ((end_y < 0 || end_x < 0) && !move(Board, str_y, str_x, end_y, end_x));
+        } while (end_y < 0 || end_x < 0 || !move(Board, str_y, str_x, end_y, end_x));
     }
     case 'C': //o cosi' o con uno switch -> riga 414
     {
@@ -537,7 +537,7 @@ string Piece::random_position(Piece (&Board)[8][8], int str_y, int str_x) //rito
             if (i == 20)
                 return "XX"; //se non trova niente ritorna XX
             i++;
-        } while ((end_y < 0 || end_x < 0) && !move(Board, str_y, str_x, end_y, end_x));
+        } while (end_y < 0 || end_x < 0 || !move(Board, str_y, str_x, end_y, end_x));
     }
     case 'A':
     {
@@ -561,7 +561,7 @@ string Piece::random_position(Piece (&Board)[8][8], int str_y, int str_x) //rito
             if (i == 40)
                 return "XX"; //se non trova niente ritorna XX
             i++;
-        } while ((end_y < 0 || end_x < 0) && !move(Board, str_y, str_x, end_y, end_x));
+        } while (end_y < 0 || end_x < 0 || !move(Board, str_y, str_x, end_y, end_x));
     }
     case 'P':
     {
@@ -581,11 +581,10 @@ string Piece::random_position(Piece (&Board)[8][8], int str_y, int str_x) //rito
             if (i == 20)
                 return "XX"; //se non trova niente ritorna XX
             i++;
-        } while (end_x < 0 && !move(Board, str_y, str_x, end_y, end_x));
+        } while (end_x < 0 || !move(Board, str_y, str_x, end_y, end_x));
     }
     }
-    output = to_string(end_y*10 + end_x);
-    cout << "end_y + end_x: " << end_y << " " << end_x << "=" << output << endl;
+    output = to_string(end_y) + to_string(end_x);
     return output;
 };
 
