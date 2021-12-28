@@ -379,28 +379,32 @@ bool Pedone::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y
     int delta_y = std::abs(str_y - end_y);
     if (is_end_same_color(Board, str_y, str_x, end_y, end_x)) //destinazione diverso colore;
         return false;
+    if (delta_y > 2) //non si può muovere piu' di 2 caselle
+        return false;
+    if (delta_x > 1) //non si può muovere in diagonale
+        return false;
+    if (delta_x == delta_y)
+    {
+        if ((Board[str_y][end_x].get_ex_position_y() == 6 || Board[str_y][end_x].get_ex_position_y() == 1) && toupper(Board[str_y][end_x].print()) == 'P') //en passant
+        {
+            Board[str_y][end_x] = Nullo(false, str_y, str_x); //en passant in teoria giusto
+            return true;
+        }
+    }
     //cout << "DP";
     // if ((Board[str_y][end_x].get_ex_position_y() == 6 || Board[str_y][end_x].get_ex_position_y() == 1) && toupper(Board[str_y][end_x].print()) == 'P') //en passant
     // {
     //     Board[str_y][end_x] = Nullo(false, str_y, str_x); //en passant in teoria giusto
     //     return true;
     // }
-    if (delta_y > 2) //non si può muovere piu' di 2 caselle
-        return false;
-    if (delta_y == delta_x && delta_y == 1 && Board[end_y][end_x].print() != ' ')
-        return true;
-    if (delta_x > 0) //non si può muovere in diagonale
-        return false;
-    if (delta_y == 2 && !moved)
+
+    if (!(delta_y == 2 && !moved))
     {
-        moved = true;
-        return true;
+        return false;
     }
 
-    moved = true;
     if (check_promotion(end_y))
     {
-        cout << "Inserisci il carattere del pezzo che vuoi";
         string input;
         char in;
         while (input.length() != 1 || (in != 'D' && in != 'T' && in != 'A' && in != 'C')) //funziona
@@ -437,18 +441,17 @@ bool Pedone::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y
         //bisogna distruggere il pedone
         throw PromotionException();
     }
+    moved = true;
     return true;
 };
 
 //RANDOM MOVE
 //risolvere promozione pedone
-int* Piece::random_position(Piece (&Board)[8][8], int str_y, int str_x) //ritorna le coordinate sotto forma di stringa
+pair<int, int> Piece::random_position(Piece (&Board)[8][8], int str_y, int str_x) //ritorna le coordinate sotto forma di stringa
 {
     char in = toupper(type);
     srand(time(NULL));
-    int output[2];
-    output[0] = -1;
-    output[1] = -1;
+    pair<int, int> output {-1, -1};
     int end_x;
     int end_y;
     int i = 0;
@@ -590,17 +593,17 @@ int* Piece::random_position(Piece (&Board)[8][8], int str_y, int str_x) //ritorn
                     Board[end_y][end_x] = Donna(is_white(), end_y, end_x);
                     break;
                 }
-                case '1':   //torre
+                case '1': //torre
                 {
                     Board[end_y][end_x] = Torre(is_white(), end_y, end_x);
                     break;
                 }
-                case '2':   //cavallo
+                case '2': //cavallo
                 {
                     Board[end_y][end_x] = Torre(is_white(), end_y, end_x);
                     break;
                 }
-                case '3':   //alfiere
+                case '3': //alfiere
                 {
                     Board[end_y][end_x] = Torre(is_white(), end_y, end_x);
                     break;
@@ -616,9 +619,9 @@ int* Piece::random_position(Piece (&Board)[8][8], int str_y, int str_x) //ritorn
         } while (end_x < 0 || !move(Board, str_y, str_x, end_y, end_x));
     }
     }
-    output[0] = end_y;
-    output[1] = end_x;
-    return output;  //non so se ci sia un memory leak
+    output.first = end_y;
+    output.second = end_x;
+    return output; //non so se ci sia un memory leak
 };
 
 #endif
@@ -670,6 +673,74 @@ switch(random){
 
 }
 
+//IS_VALID_MOVE PEDONE FUNZIONANTE PARZIALMENTE
 
+bool Pedone::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x) //promozione probabilmente sbagliata
+{
+    //cout << is_white() << " " << Board[end_y][end_x].is_white() << endl;
+    int delta_x = std::abs(str_x - end_x);
+    int delta_y = std::abs(str_y - end_y);
+    if (is_end_same_color(Board, str_y, str_x, end_y, end_x)) //destinazione diverso colore;
+        return false;
+    //cout << "DP";
+    // if ((Board[str_y][end_x].get_ex_position_y() == 6 || Board[str_y][end_x].get_ex_position_y() == 1) && toupper(Board[str_y][end_x].print()) == 'P') //en passant
+    // {
+    //     Board[str_y][end_x] = Nullo(false, str_y, str_x); //en passant in teoria giusto
+    //     return true;
+    // }
+    if (delta_y > 2) //non si può muovere piu' di 2 caselle
+        return false;
+    if (delta_y == delta_x && delta_y == 1 && Board[end_y][end_x].print() != ' ')
+        return true;
+    if (delta_x > 0) //non si può muovere in diagonale
+        return false;
+    if (delta_y == 2 && !moved)
+    {
+        moved = true;
+        return true;
+    }
+
+    moved = true;
+    if (check_promotion(end_y))
+    {
+        cout << "Inserisci il carattere del pezzo che vuoi";
+        string input;
+        char in;
+        while (input.length() != 1 || (in != 'D' && in != 'T' && in != 'A' && in != 'C')) //funziona
+        {
+            cout << "Inserisci il carattere del pezzo che vuoi";
+            cin >> input;
+            in = input[0];
+            in = toupper(in);
+        }
+        switch (in)
+        {
+        case 'D':
+        {
+            Board[end_y][end_x] = Donna(is_white(), end_y, end_x);
+            break;
+        }
+        case 'T':
+        {
+            Board[end_y][end_x] = Torre(is_white(), end_y, end_x);
+            break;
+        }
+        case 'C':
+        {
+            Board[end_y][end_x] = Torre(is_white(), end_y, end_x);
+            break;
+        }
+        case 'A':
+        {
+            Board[end_y][end_x] = Torre(is_white(), end_y, end_x);
+            break;
+        }
+        }
+        Board[str_y][str_x] = Nullo(false, str_y, str_x);
+        //bisogna distruggere il pedone
+        throw PromotionException();
+    }
+    return true;
+};
 
 */
