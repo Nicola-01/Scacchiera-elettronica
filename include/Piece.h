@@ -13,7 +13,8 @@ public:
 
     bool move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x);
     pair<int, int> random_position(Piece (&Board)[8][8], int str_y, int str_x); //ritorna le coordinate sotto forma di stringa
-    bool check_boundary(int end_y, int end_x){
+    bool check_boundary(int end_y, int end_x)
+    {
         return end_y < 0 || end_x < 0 || end_y > 7 || end_x > 7;
     };
     bool check_arrocco_re(Piece (&Board)[8][8], int end_y, int end_x);
@@ -29,6 +30,7 @@ public:
     class PromotionException
     {
     };
+
 protected:
     char type;
     int ex_position_x;
@@ -92,7 +94,10 @@ class Pedone : public Piece
 {
 public:
     Pedone(bool color, int y, int x);
-    Pedone(Piece x){};
+    Pedone(Piece x)
+    {
+        moved = moved;
+    };
     bool is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x) override;
     bool is_moved() { return moved; };
     bool check_promotion(int y) { return y == 0 || y == 7; }; //se arrivato alla fine e' true
