@@ -89,12 +89,11 @@ bool Piece::is_end_same_color(Piece (&Board)[8][8], int str_y, int str_x, int en
 
 bool Piece::move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x)
 {
-    cout << "move " << is_white() << " " << Board[end_y][end_x].is_white() << endl;
     char in = toupper(Board[str_y][str_x].type);
     bool control = false; //control == vero is_valid_move ritorna == vero
-    cout << "-- Typo " << in << endl;
+    cout << "-- Tipo Pezzo: " << in << endl;
     ;
-    cout << str_y << " " << str_x << "   " << end_y << " " << end_x << endl;
+    cout << "Spostamento [y][x] (str), (end) [" << str_y << "][" << str_x << "] [" << end_y << "][" << end_x << "]\n";
     switch (in)
     {
     case 'R':
@@ -220,6 +219,7 @@ bool Re::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, in
 
 bool Donna::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x)
 {
+    return true;
     int delta_x = std::abs(str_x - end_x);
     int delta_y = std::abs(str_y - end_y);
     if (is_end_same_color(Board, str_y, str_x, end_y, end_x))
@@ -295,7 +295,6 @@ bool Donna::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y,
 
 bool Torre::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x)
 {
-    cout << "Torre " << str_y << " " << str_x << "   " << end_y << " " << end_x << endl;
     int delta_x = std::abs(str_x - end_x);
     int delta_y = std::abs(str_y - end_y);
     if (str_x != end_x && str_y != end_y)
@@ -322,7 +321,7 @@ bool Torre::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y,
     }
     for (int i = 1; i < delta_y; i++) //delta_y = 2
     {
-        cout << "ciclo for " << i << " " << delta_y << endl;
+        //cout << "ciclo for " << i << " " << delta_y << endl;
         if (end_y > str_y)
         {
             if (Board[str_y + i][end_x].print() != ' ')
@@ -343,7 +342,7 @@ bool Cavallo::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_
 {
     int delta_x = std::abs(str_x - end_x);
     int delta_y = std::abs(str_y - end_y);
-    cout << delta_x << " " << delta_y << endl;
+    //cout << delta_x << " " << delta_y << endl;
     if (is_end_same_color(Board, str_y, str_x, end_y, end_x))
         return false; //destinazione diverso colore;
     return (delta_x == 2 && delta_y == 1) || (delta_x == 1 && delta_y == 2);
@@ -474,7 +473,7 @@ string Piece::random_position(Piece (&Board)[8][8], int str_y, int str_x) //rito
             if (i == 60)
                 return "XX"; //se non trova niente ritorna XX
             i++;
-        } while (!move(Board, str_y, str_x, end_y, end_x));
+        } while ((end_y < 0 || end_x < 0) && !move(Board, str_y, str_x, end_y, end_x));
     }
     case 'T':
     {
@@ -494,7 +493,7 @@ string Piece::random_position(Piece (&Board)[8][8], int str_y, int str_x) //rito
             if (i == 40)
                 return "XX"; //se non trova niente ritorna XX
             i++;
-        } while (!move(Board, str_y, str_x, end_y, end_x));
+        } while ((end_y < 0 || end_x < 0) && !move(Board, str_y, str_x, end_y, end_x));
     }
     case 'C': //o cosi' o con uno switch -> riga 414
     {
@@ -538,7 +537,7 @@ string Piece::random_position(Piece (&Board)[8][8], int str_y, int str_x) //rito
             if (i == 20)
                 return "XX"; //se non trova niente ritorna XX
             i++;
-        } while (!move(Board, str_y, str_x, end_y, end_x));
+        } while ((end_y < 0 || end_x < 0) && !move(Board, str_y, str_x, end_y, end_x));
     }
     case 'A':
     {
@@ -585,7 +584,8 @@ string Piece::random_position(Piece (&Board)[8][8], int str_y, int str_x) //rito
         } while (end_x < 0 && !move(Board, str_y, str_x, end_y, end_x));
     }
     }
-    output = end_y + end_x;
+    output = to_string(end_y*10 + end_x);
+    cout << "end_y + end_x: " << end_y << " " << end_x << "=" << output << endl;
     return output;
 };
 

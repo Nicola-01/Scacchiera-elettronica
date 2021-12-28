@@ -49,18 +49,20 @@ int main(int argc, char *argv[])
     {
         //if (system("CLS")) system("clear");
         c.move("XX XX", white_turne);
-        cout << "Colore(1 bianco, 2 nero): "<<player<< " turne " << white_turne<<endl;
+        cout << "Colore giocatore (1 bianco, 2 nero): " << player << "\nturno bianco (1=true): " << white_turne << endl;
 
-        player_turne(c, white_turne, log_file);
+        //player_turne(c, white_turne, log_file);
 
-        /*
-        if (player == 1 && white_turne)
+        if (player == 1 && white_turne || player == 2 && !white_turne)
+        {
+            send_green("--- Tocca a te");
             player_turne(c, white_turne, log_file);
-        else if (player == 2 && !white_turne)
-            player_turne(c, white_turne, log_file);
+        }
         else
+        {
+            send_error("--- Tocca al computer");
             computer_turne(c, white_turne, log_file);
-        */
+        }
 
         white_turne = !white_turne;
 
@@ -77,7 +79,7 @@ int main(int argc, char *argv[])
             (white_turne) ? send_green("Il Bianco ha fatto scacco al Nero") : send_green("Il Nero ha fatto scacco al Bianco");
             log_file.close();
         }
-        if (false)//c.is_draw())
+        if (false) //c.is_draw())
         {
             send_green("Partita finita in patta");
             log_file.close();
@@ -137,8 +139,9 @@ void computer_turne(Chessboard &c, bool white_turne, ofstream &log_file)
             y = rand() % 8;
             x = rand() % 8;
         } while (!c.is_right_piece(y, x, white_turne));
-
-    } while ((line = c.random_move(y, x)) == "NV NV"); //Not Valid
+        line = c.random_move(y, x);
+        cout << "-- Prova dello spostamento" << line << endl;
+    } while (line == "NV NV"); //Not Valid
     c.move(line, white_turne);
     cout << line;
     log_file << line + "\n";
@@ -153,7 +156,7 @@ void send_error(string s)
 void send_green(string s)
 {
     cout << s << endl;
-    cout << "\033[;32m" << s << "\033[0m" << endl; 
+    cout << "\033[;32m" << s << "\033[0m" << endl;
 }
 /* 
     // area di funzioni in test
