@@ -463,7 +463,7 @@ pair<int, int> Piece::random_position(Piece (&Board)[8][8], int str_y, int str_x
         {
             end_x = rand() % (3) + (str_x - 1); //3 possibili numeri a partire da quello a sinistra
             end_y = rand() % (3) + (str_y - 1); //3 possibili numeri a partire da quello a sotto
-            if (i == 20)
+            if (i >= 20)
                 return output; //se non trova niente ritorna XX
             i++;
         } while (end_y < 0 || end_x < 0 || !move(Board, str_y, str_x, end_y, end_x));
@@ -474,7 +474,7 @@ pair<int, int> Piece::random_position(Piece (&Board)[8][8], int str_y, int str_x
         {
             end_x = rand() % 8; //7 possibili numeri a partire da 0
             end_y = rand() % 8; //7 possibili numeri a partire da 0
-            if (i == 60)
+            if (i >= 60)
                 return output; //se non trova niente ritorna XX
             i++;
         } while (end_y < 0 || end_x < 0 || !move(Board, str_y, str_x, end_y, end_x));
@@ -494,7 +494,7 @@ pair<int, int> Piece::random_position(Piece (&Board)[8][8], int str_y, int str_x
                 end_y = str_y; //si muove in orizzontale
                 end_x = rand() % 8;
             }
-            if (i == 40)
+            if (i >= 40)
                 return output; //se non trova niente ritorna XX
             i++;
         } while (end_y < 0 || end_x < 0 || !move(Board, str_y, str_x, end_y, end_x));
@@ -538,7 +538,7 @@ pair<int, int> Piece::random_position(Piece (&Board)[8][8], int str_y, int str_x
                     end_x = str_x - 1;
                 }
             }
-            if (i == 20)
+            if (i >= 20)
                 return output; //se non trova niente ritorna XX
             i++;
         } while (end_y < 0 || end_x < 0 || !move(Board, str_y, str_x, end_y, end_x));
@@ -562,7 +562,7 @@ pair<int, int> Piece::random_position(Piece (&Board)[8][8], int str_y, int str_x
             {
                 end_x = str_x - i;
             }
-            if (i == 40)
+            if (i >= 40)
                 return output; //se non trova niente ritorna XX
             i++;
         } while (end_y < 0 || end_x < 0 || !move(Board, str_y, str_x, end_y, end_x));
@@ -613,7 +613,7 @@ pair<int, int> Piece::random_position(Piece (&Board)[8][8], int str_y, int str_x
                 //bisogna distruggere il pedone
                 throw PromotionException();
             }
-            if (i == 20)
+            if (i >= 20)
                 return output; //se non trova niente ritorna XX
             i++;
         } while (end_x < 0 || !move(Board, str_y, str_x, end_y, end_x));
@@ -621,9 +621,8 @@ pair<int, int> Piece::random_position(Piece (&Board)[8][8], int str_y, int str_x
     }
     output.first = end_y;
     output.second = end_x;
-    return output; //non so se ci sia un memory leak
+    return output; 
 };
-
 #endif
 
 /*
