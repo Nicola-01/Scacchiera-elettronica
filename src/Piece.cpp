@@ -618,7 +618,7 @@ int* Piece::random_position(Piece (&Board)[8][8], int str_y, int str_x) //ritorn
     }
     output[0] = end_y;
     output[1] = end_x;
-    return output;
+    return output;  //non so se ci sia un memory leak
 };
 
 #endif
