@@ -19,7 +19,7 @@ public:
     bool is_white() { return white; }; // = true se e' un pezzo bianco
     char print() { return type; };
 
-    bool is_end_same_color(Piece (&Board)[8][8], int end_y, int end_x);
+    bool is_end_same_color(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x);
     int get_ex_position_y() { return ex_position_y; };
     virtual bool is_moved() { return moved; }
     // void undo_move();
@@ -88,7 +88,7 @@ class Pedone : public Piece
 {
 public:
     Pedone(bool color, int y, int x);
-    Pedone(Piece){};
+    Pedone(Piece x){};
     bool is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x) override;
     bool is_moved() { return moved; };
     class PromotionException

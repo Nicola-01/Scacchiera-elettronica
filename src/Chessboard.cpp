@@ -14,10 +14,10 @@ Chessboard::Chessboard()
     for (int x = 0; x < 8; x++)
     {
         board[0][x] = inizializer_piece(pos[x], 0, x);
-        board[1][x] = inizializer_piece('P', 1, x);
+        board[1][x] = inizializer_piece('P', 1, x); // P
         for (int y = 2; y <= 5; y++)
             board[y][x] = inizializer_piece(' ', y, x);
-        board[6][x] = inizializer_piece('p', 6, x);
+        board[6][x] = inizializer_piece('p', 6, x); // p
         board[7][x] = inizializer_piece(tolower(pos[x]), 7, x);
     }
 }
@@ -53,6 +53,8 @@ int Chessboard::move(string move, bool white_turne)
         str_y = abs(move[1] - '0' - 8),
         end_x = (move[3] - 'A'),
         end_y = abs(move[4] - '0' - 8);
+    
+    //cout << str_y << " " << str_x << "   " << end_y << " "  << end_x << endl;
 
     if (board[str_y][str_x].print() == ' ')
         return 2; // nessun pezzo nella posizione indicata  // throw InvalidMoveException();
@@ -60,7 +62,7 @@ int Chessboard::move(string move, bool white_turne)
     if (!is_right_piece(str_y, str_x, white_turne))
         return 3; // Muove pezzo avverstaio
 
-    if (!board[str_y][str_x].move(board, str_x, str_y, end_x, end_y))
+    if (!board[str_y][str_x].move(board, str_y, str_x, end_y, end_x))
         return 4; // Mossa non possibil
 
     board[end_y][end_x] = board[str_y][str_x];

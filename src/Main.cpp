@@ -47,18 +47,20 @@ int main(int argc, char *argv[])
     bool white_turne = true;
     while (n < moves_max)
     {
-        if (system("CLS")) system("clear");
+        //if (system("CLS")) system("clear");
         c.move("XX XX", white_turne);
-        //cout << "p "<<player<< " turne " << white_turne<<endl;
+        cout << "Colore(1 bianco, 2 nero): "<<player<< " turne " << white_turne<<endl;
 
-        //player_turne(c, white_turne, log_file);
+        player_turne(c, white_turne, log_file);
 
+        /*
         if (player == 1 && white_turne)
             player_turne(c, white_turne, log_file);
         else if (player == 2 && !white_turne)
             player_turne(c, white_turne, log_file);
         else
             computer_turne(c, white_turne, log_file);
+        */
 
         white_turne = !white_turne;
 
@@ -87,7 +89,7 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-string result_type(int t)
+string result_type(int t) // string line --- passa la mossa
 {
     switch (t)
     {
@@ -116,7 +118,6 @@ void player_turne(Chessboard &c, bool white_turne, ofstream &log_file)
     getline(cin, line);
     while ((output_type = c.move(line, white_turne)) != 0)
     {
-        if (system("CLS")) system("clear");
         c.move("XX XX", white_turne);
 
         send_error(result_type(output_type));
@@ -139,6 +140,7 @@ void computer_turne(Chessboard &c, bool white_turne, ofstream &log_file)
 
     } while ((line = c.random_move(y, x)) == "NV NV"); //Not Valid
     c.move(line, white_turne);
+    cout << line;
     log_file << line + "\n";
 }
 
