@@ -52,7 +52,6 @@ int main(int argc, char *argv[])
         cout << "Colore giocatore (1 bianco, 2 nero): " << player << "\nturno bianco (1=true): " << white_turne << endl;
 
         //player_turne(c, white_turne, log_file);
-
         if (player == 1 && white_turne || player == 2 && !white_turne)
         {
             send_green("--- Tocca a te");
@@ -141,6 +140,7 @@ void computer_turne(Chessboard &c, bool white_turne, ofstream &log_file)
             x = rand() % 8;
         } while (!c.is_right_piece(y, x, white_turne));
         line = c.random_move(y, x);
+        cin.get();
         cout << "-- Prova dello spostamento: " << line << endl;
     } while (line == "NV NV"); //Not Valid
     c.move(line, white_turne);

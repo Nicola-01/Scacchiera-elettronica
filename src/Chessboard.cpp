@@ -9,7 +9,6 @@
 
 using namespace std;
 
-class PromotionException {};
 
 Chessboard::Chessboard()
 {
@@ -66,10 +65,12 @@ int Chessboard::move(string move, bool white_turne)
         return 3; // Muove pezzo avverstaio
     try
     {
+        cout << "da qui " << end_y;
+        cin.get();
         if (!board[str_y][str_x].move(board, str_y, str_x, end_y, end_x))
             return 4; // Mossa non possibil
     }
-    catch (const PromotionException &e)
+    catch (PromotionException &e)
     {
         promotion = true;
     }
@@ -133,7 +134,18 @@ bool Chessboard::is_right_piece(int y, int x, bool white_turne)
 
 string Chessboard::random_move(int y, int x)
 {
-    pair<int, int> a = board[y][x].random_position(board, y, x); // restituisce le cordinate di arrivo
+    pair<int, int> a{-1,-1};
+    bool promotion = false;
+    try
+    {
+        a = board[y][x].random_position(board, y, x); // restituisce le cordinate di arrivo
+    }
+    catch (PromotionException &e)
+    {
+        promotion = true;
+    }
+    
+    
     cout << " --------------------- random " << y << " " << x << " " << a.first << " " << a.second << endl;
     if (a.first >= 0)
         return (char)('A' + x) + to_string(abs(y - 8)) + " " + (char)('A' + a.second) + to_string((abs(a.first - 8)));
