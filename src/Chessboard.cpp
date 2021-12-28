@@ -9,6 +9,8 @@
 
 using namespace std;
 
+class PromotionException {};
+
 Chessboard::Chessboard()
 {
     for (int x = 0; x < 8; x++)

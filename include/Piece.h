@@ -27,9 +27,7 @@ public:
     virtual bool is_moved() { return moved; }
     // void undo_move();
     virtual bool is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x) { return false; };
-    class PromotionException
-    {
-    };
+    class PromotionException {};
 
 protected:
     char type;
