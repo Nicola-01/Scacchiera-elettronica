@@ -466,7 +466,7 @@ pair<int, int> Piece::random_position(Piece (&Board)[8][8], int str_y, int str_x
             if (i >= 20)
                 return output; //se non trova niente ritorna XX
             i++;
-        } while (end_y < 0 || end_x < 0 || !move(Board, str_y, str_x, end_y, end_x));
+        } while (check_boundary(end_y, end_x) || !move(Board, str_y, str_x, end_y, end_x));
         break;
     };
     case 'D': //poco efficiente
@@ -478,7 +478,7 @@ pair<int, int> Piece::random_position(Piece (&Board)[8][8], int str_y, int str_x
             if (i >= 60)
                 return output; //se non trova niente ritorna XX
             i++;
-        } while (end_y < 0 || end_x < 0 || !move(Board, str_y, str_x, end_y, end_x));
+        } while (check_boundary(end_y, end_x) || !move(Board, str_y, str_x, end_y, end_x));
         break;
     }
     case 'T':
@@ -499,7 +499,7 @@ pair<int, int> Piece::random_position(Piece (&Board)[8][8], int str_y, int str_x
             if (i >= 40)
                 return output; //se non trova niente ritorna XX
             i++;
-        } while (end_y < 0 || end_x < 0 || !move(Board, str_y, str_x, end_y, end_x));
+        } while (check_boundary(end_y, end_x) || !move(Board, str_y, str_x, end_y, end_x));
         break;
     }
     case 'C': //o cosi' o con uno switch -> riga 414
@@ -544,7 +544,7 @@ pair<int, int> Piece::random_position(Piece (&Board)[8][8], int str_y, int str_x
             if (i >= 20)
                 return output; //se non trova niente ritorna XX
             i++;
-        } while (end_y < 0 || end_x < 0 || !move(Board, str_y, str_x, end_y, end_x));
+        } while (check_boundary(end_y, end_x) || !move(Board, str_y, str_x, end_y, end_x));
         break;
     }
     case 'A':
@@ -569,7 +569,7 @@ pair<int, int> Piece::random_position(Piece (&Board)[8][8], int str_y, int str_x
             if (i >= 40)
                 return output; //se non trova niente ritorna XX
             i++;
-        } while (end_y < 0 || end_x < 0 || !move(Board, str_y, str_x, end_y, end_x));
+        } while (check_boundary(end_y, end_x) || !move(Board, str_y, str_x, end_y, end_x));
         break;
     }
     case 'P':
@@ -621,7 +621,7 @@ pair<int, int> Piece::random_position(Piece (&Board)[8][8], int str_y, int str_x
             if (i >= 20)
                 return output; //se non trova niente ritorna XX
             i++;
-        } while (end_x < 0 || !move(Board, str_y, str_x, end_y, end_x));
+        } while (check_boundary(end_y, end_x) || !move(Board, str_y, str_x, end_y, end_x));
         break;
     }
     }
