@@ -442,11 +442,11 @@ bool Pedone::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y
 
 //RANDOM MOVE
 //risolvere promozione pedone
-int *Piece::random_position(Piece (&Board)[8][8], int str_y, int str_x) //ritorna le coordinate sotto forma di stringa
+int* Piece::random_position(Piece (&Board)[8][8], int str_y, int str_x) //ritorna le coordinate sotto forma di stringa
 {
     char in = toupper(type);
     srand(time(NULL));
-    int *output;
+    int output[2];
     output[0] = -1;
     output[1] = -1;
     int end_x;
