@@ -4,6 +4,7 @@
     file: Rules.cpp
 */
 #include "Chessboard.h"
+#include "Piece.h"
 
 #include <utility>
 #include <memory>
@@ -33,7 +34,7 @@ int Chessboard::is_check(bool in_black, int st_y, int st_x, int end_y, int end_x
         k_x = king_black[1];
         k_y = king_black[0];
     }
-
+    bool king_moved = (toupper(moved.print())=='R');
     if(mate)//La mossa e' d'attacco
     {
         bool found = false;
@@ -74,28 +75,40 @@ int Chessboard::is_check(bool in_black, int st_y, int st_x, int end_y, int end_x
                 return 2;
             return 1;
         }
+        return 0;
     }
-    else if(k_x == end_x && k_y == end_y) //se e' stato mosso un re
+    if(king_moved) //se e' stato mosso un re
     {
         for(int dir_x = -1; dir_x <= 1; dir_x++)
         {
             for(int dir_y = -1; dir_y <= 1; dir_y++)
             {
-                threat_pos = direction_threat(k_y, k_x, in_black, dir_y, dir_x);
-                if(threat_pos.first >= 0 && threat_pos.second >= 0)
-                    return 1;
+                if((dir_x!=0)||(dir_y!=0))
+                {
+                    threat_pos = direction_threat(k_y, k_x, in_black, dir_y, dir_x);
+                    if(threat_pos.first >= 0 && threat_pos.second >= 0)
+                        return 1;
+                }
             }
         }
+        return 0;
     }
-    else //verifica che la mossa sia valida
+    if(!mate && !king_moved) //verifica che la mossa sia valida
     {
         //controllo se il pezzo scoperto da moved minaccia
         if(is_valid_traj(st_y, st_x, k_y, k_x))
         {
-            std::pair<int, int> threat_pos = direction_threat(k_y, k_x, in_black ,((st_y-k_y)/std::abs(st_y-k_y)), ((st_x-k_x)/std::abs(st_x-k_x)));
+            int d_y = st_y - k_y;
+            int d_x = st_x - k_x;
+            if(d_y!=0)
+                d_y = d_y / (std::abs(d_y));
+            if(d_x!=0)
+                d_x = d_x / (std::abs(d_x));
+            std::pair<int, int> threat_pos = direction_threat(k_y, k_x, in_black ,d_y, d_x);
             if(threat_pos.first > 0)
                 return 1;
         }
+        return 0;
     }
     return 0;
 }
@@ -118,6 +131,7 @@ bool Chessboard::is_checkmate_d(int k_y, int k_x)
     }
     return true;
 }
+
 //Se un pezzo attacca o questo puo' muoversi o un pezzo alleato 
 //Puo' mettersi nella traiettoria
 bool Chessboard::is_checkmate_s(int k_y, int k_x, std::pair<int,int> t_pos)
@@ -149,6 +163,7 @@ bool Chessboard::is_checkmate_s(int k_y, int k_x, std::pair<int,int> t_pos)
     }
     return true;
 }
+
 bool Chessboard::is_checkmate(bool in_black, int st_y, int st_x, int end_y, int end_x)
 {
     int flag = is_check(in_black, st_y, st_x, end_y, end_x);
@@ -161,6 +176,7 @@ bool Chessboard::is_checkmate(bool in_black, int st_y, int st_x, int end_y, int 
     }
     return false;
 }
+
 //Ritorna la posizione (y,x) della minaccia nella direzione indicata, (-1,-1) altrimenti
 std::pair<int, int> Chessboard::direction_threat(int king_y, int king_x, bool black_king, int dir_y, int dir_x)
 {
@@ -168,8 +184,11 @@ std::pair<int, int> Chessboard::direction_threat(int king_y, int king_x, bool bl
     int i_y = king_y + dir_y;
     while(i_x >= 0 && i_x < 8 && i_y >= 0 && i_y < 8)
     {
-        if(board[i_y][i_x].is_valid_move(board, i_y, i_x, king_x, king_y))
+        if((board[i_y][i_x].is_white())== black_king)
+        {
+            if(board[i_y][i_x].is_valid_move(board, i_y, i_x, king_y, king_x))
             return make_pair(i_y, i_x);
+        }
         i_x = i_x + dir_x;
         i_y = i_y + dir_y;
     }
