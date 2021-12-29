@@ -33,7 +33,7 @@ void Chessboard::print()
             cout << board[y][x].print() << " ";
         cout << "\n";
     }
-    cout << "\n\n    A B C D E F G H\n\n";
+    cout << "\n    A B C D E F G H\n\n";
 }
 
 int Chessboard::move(string move, bool white_turne)
@@ -65,8 +65,8 @@ int Chessboard::move(string move, bool white_turne)
         return 3; // Muove pezzo avverstaio
     try
     {
-        cout << "da qui " << end_y;
-        cin.get();
+        //cout << "da qui " << end_y;
+        //cin.get();
         if (!board[str_y][str_x].move(board, str_y, str_x, end_y, end_x))
             return 4; // Mossa non possibil
     }
