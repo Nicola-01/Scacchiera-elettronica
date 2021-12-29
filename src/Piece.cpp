@@ -173,6 +173,7 @@ bool Piece::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y,
         break;
     }
     }
+    return false;
 }
 
 bool Piece::move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x)
@@ -474,26 +475,26 @@ bool Pedone::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y
         {
         case 'D':
         {
-            Board[end_y][end_x] = Donna(is_white(), end_y, end_x);
+            Board[str_y][str_x] = Donna(is_white(), end_y, end_x);
             break;
         }
         case 'T':
         {
-            Board[end_y][end_x] = Torre(is_white(), end_y, end_x);
+            Board[str_y][str_x] = Torre(is_white(), end_y, end_x);
             break;
         }
         case 'C':
         {
-            Board[end_y][end_x] = Cavallo(is_white(), end_y, end_x);
+            Board[str_y][str_x] = Cavallo(is_white(), end_y, end_x);
             break;
         }
         case 'A':
         {
-            Board[end_y][end_x] = Alfiere(is_white(), end_y, end_x);
+            Board[str_y][str_x] = Alfiere(is_white(), end_y, end_x);
             break;
         }
         }
-        Board[str_y][str_x] = Nullo(false, str_y, str_x);
+        //Board[str_y][str_x] = Nullo(false, str_y, str_x);
         //bisogna distruggere il pedone
         throw PromotionException();
     }
@@ -687,6 +688,7 @@ pair<int, int> Piece::random_position(Piece (&Board)[8][8], int str_y, int str_x
     output.second = end_x;
     return output;
 };
+
 #endif
 
 /*
