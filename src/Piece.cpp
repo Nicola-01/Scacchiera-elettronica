@@ -7,7 +7,6 @@
 #include <iostream>
 #include <time.h>
 #include <stdlib.h>
-using namespace std;
 
 //COSTRUTTORI
 
@@ -196,18 +195,17 @@ bool Piece::check_arrocco_re(Piece (&Board)[8][8], int end_y, int end_x)
         Torre t = Torre(Board[end_y][end_x - 1].is_white(), Board[end_y][end_x - 1].get_ex_position_y(), Board[end_y][end_x - 1].get_ex_position_y());
         if (!t.is_moved() && Board[end_y][end_x].print() != ' ' && Board[end_y][end_x + 1].print() != ' ' && Board[end_y][end_x - 1].print() != ' ')
         {
-            Board[end_y][end_x - 2] = Nullo();  //(false, end_y, end_x - 1);
+            Board[end_y][end_x - 2] = Nullo(); //(false, end_y, end_x - 1);
             Board[end_y][end_x + 1] = Torre(is_white(), end_y, end_x + 1);
             throw ArroccoException(); //return true;
         }
-        
     }
     else //end_x > 4
     {
         Torre t = Torre(Board[end_y][end_x + 1].is_white(), Board[end_y][end_x + 1].get_ex_position_y(), Board[end_y][end_x + 1].get_ex_position_y());
         if (!t.is_moved() && Board[end_y][end_x].print() != ' ' && Board[end_y][end_x - 1].print() != ' ')
         {
-            Board[end_y][end_x + 1] = Nullo();     //(false, end_y, end_x - 1);
+            Board[end_y][end_x + 1] = Nullo(); //(false, end_y, end_x - 1);
             Board[end_y][end_x - 1] = Torre(is_white(), end_y, end_x + 1);
             throw ArroccoException(); //return true;
         }
@@ -241,9 +239,9 @@ bool Donna::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y,
     int delta_x = std::abs(str_x - end_x);
     int delta_y = std::abs(str_y - end_y);
     if (is_end_same_color(Board, str_y, str_x, end_y, end_x))
-        return false;   //destinazione diverso colore;
+        return false; //destinazione diverso colore;
     if (str_x != end_x && str_y != end_y)
-        return false;              
+        return false;
     bool control_condition = true; //true se si può fare la mossa
     if (delta_x == delta_y)        //controllo come se fosse un alfiere
     {
@@ -397,28 +395,26 @@ bool Pedone::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y
         return false;
     if (is_white()) //tornare indietro, si puo' fare sicuramente meglio
     {
-        if(end_y > str_y)  
+        if (end_y > str_y)
             return false;
     }
-    else{
-        if(end_y < str_y)
+    else
+    {
+        if (end_y < str_y)
             return false;
     }
-    
+
     if (delta_x == delta_y)
     {
         if (Board[end_y][end_x].print() == ' ')
         {
             return false;
         }
-        if ((Board[str_y][end_x].get_ex_position_y() == 6 || Board[str_y][end_x].get_ex_position_y() == 1) 
-        && toupper(Board[str_y][end_x].print()) == 'P' && Board[str_y][end_x].is_moved() 
-        && (global_count - 1) == ((Pedone)Board[str_y][end_x]).get_number_move() ) //en passant
+        if ((Board[str_y][end_x].get_ex_position_y() == 6 || Board[str_y][end_x].get_ex_position_y() == 1) && toupper(Board[str_y][end_x].print()) == 'P' && Board[str_y][end_x].is_moved() && (n_moves - 1) == ((Pedone)Board[str_y][end_x]).get_number_move()) //en passant
         {
-            Board[str_y][end_x] = Nullo();  //(false, str_y, str_x); //en passant in teoria giusto
+            Board[str_y][end_x] = Nullo(); //(false, str_y, str_x); //en passant in teoria giusto
             return true;
         }
-        
     }
     if (delta_x == 0 && Board[end_y][end_x].print() != ' ') //non può mangiare in avanti
     {
@@ -431,16 +427,16 @@ bool Pedone::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y
     }
     if (delta_y == 2)
     {
-        set_number_move(0);
+        set_number_move(n_moves);
     }
     if (check_promotion(end_y))
     {
-        string input;
+        std::string input;
         char in;
         while (input.length() != 1 || (in != 'D' && in != 'T' && in != 'A' && in != 'C')) //funziona
         {
-            cout << "Inserisci il carattere del pezzo che vuoi (D, T, C, A)" << endl;
-            getline(cin, input);
+            std::cout << "Inserisci il carattere del pezzo che vuoi (D, T, C, A)" << std::endl;
+            std::getline(std::cin, input);
             in = input[0];
             in = toupper(in);
         }
@@ -475,190 +471,239 @@ bool Pedone::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y
     return true;
 };
 
+
+std::pair<int, int> Re::random_xy(Piece (&Board)[8][8], int str_y, int str_x)
+{
+    int end_y, end_x, i;
+    std::pair<int, int> output{-1, -1};
+    do
+    {
+        end_x = rand() % (3) + (str_x - 1); //3 possibili numeri a partire da quello a sinistra
+        end_y = rand() % (3) + (str_y - 1); //3 possibili numeri a partire da quello a sotto
+        if (i >= 20)
+            break;
+        i++;
+    } while (check_boundary(end_y, end_x) || !move(Board, str_y, str_x, end_y, end_x));
+    output.first = end_y;
+    output.second = end_x;
+    return output; //se non trova niente ritorna XX
+};
+
+std::pair<int, int> Torre::random_xy(Piece (&Board)[8][8], int str_y, int str_x)
+{
+    int end_y, end_x, i;
+    std::pair<int, int> output{-1, -1};
+    do
+    {
+        int random = rand() % 2;
+        if (random)
+        {
+            end_x = str_x; //se random == 1 si muove in verticale
+            end_y = rand() % 8;
+        }
+        else
+        {
+            end_y = str_y; //si muove in orizzontale
+            end_x = rand() % 8;
+        }
+        if (i >= 40)
+            break; //se non trova niente ritorna XX
+        i++;
+    } while (check_boundary(end_y, end_x) || !move(Board, str_y, str_x, end_y, end_x));
+    output.first = end_y;
+    output.second = end_x;
+    return output;
+};
+
+std::pair<int, int> Cavallo::random_xy(Piece (&Board)[8][8], int str_y, int str_x)
+{
+    int end_y, end_x, i;
+    std::pair<int, int> output{-1, -1};
+    do
+    {
+        int random_1 = rand() % 2;
+        int random_2 = rand() % 2;
+        int random_3 = rand() % 2;
+        if (random_1) //se random_1 == 1 delta_y = 1
+        {
+            if (random_2) //se random_2 == 1 end_y > str_y
+                end_y = str_y + 1;
+            else
+            {
+                end_y = str_y - 1;
+            }
+            if (random_3) //se random_3 == 1 end_x > str_x
+            {
+                end_x = str_x + 2;
+            }
+            else
+            {
+                end_x = str_x - 2;
+            }
+        }
+        else
+        {
+            if (random_2) //se random_2 == 1 end_y > str_y
+                end_y = str_y + 2;
+            else
+            {
+                end_y = str_y - 2;
+            }
+            if (random_3) //se random_3 == 1 end_x > str_x
+                end_x = str_x + 1;
+            else
+            {
+                end_x = str_x - 1;
+            }
+        }
+        if (i >= 20)
+            break; //se non trova niente ritorna XX
+        i++;
+    } while (check_boundary(end_y, end_x) || !move(Board, str_y, str_x, end_y, end_x));
+    output.first = end_y;
+    output.second = end_x;
+    return output;
+};
+
+std::pair<int, int> Alfiere::random_xy(Piece (&Board)[8][8], int str_y, int str_x)
+{
+    // srand(time(NULL));
+    int end_y, end_x, i;
+    std::pair<int, int> output{-1, -1};
+    do
+    {
+        int cont = 0;
+        i = 1 + rand() % 7; //7 possibili numeri a partire da 0
+        int up_down = rand() % 2;
+        int right_left = rand() % 2;
+        if (up_down) //se up_down == 1 si muove verso l'alto
+            end_y = str_y - i;
+        else
+        {
+            end_y = str_y + i;
+        }
+        if (right_left) // rigth_left == 1 si muove verso destra
+            end_x = str_x + i;
+        else
+        {
+            end_x = str_x - i;
+        }
+        if (cont >= 40)
+            break; //se non trova niente ritorna XX
+        cont++;
+    } while (check_boundary(end_y, end_x) || !move(Board, str_y, str_x, end_y, end_x));
+    output.first = end_y;
+    output.second = end_x;
+    return output;
+};
+
+std::pair<int, int> Pedone::random_xy(Piece (&Board)[8][8], int str_y, int str_x)
+{
+    int end_y, end_x, i;
+    std::pair<int, int> output{-1, -1};
+    Pedone p = Pedone(Board[str_y][str_x].is_white(), Board[str_y][str_x].get_ex_position_y(), Board[str_y][str_x].get_ex_position_x(), Board[str_y][str_x].is_moved());
+    do
+    {
+
+        if (!p.is_moved()) //si può muovere di due
+        {
+            end_x = rand() % (3) + (str_x - 1); //3 possibili numeri a partire da quello a sinistra
+            end_y = rand() % (2) + (str_y + 1); //2 possibili numeri a partire da quello str_y + 1
+        }
+        else
+        {
+            end_x = rand() % (3) + (str_x - 1); //3 possibili numeri a partire da quello a sinistra
+            end_y = (str_y + 1);
+        }
+        if (p.check_promotion(end_y))
+        {
+            int random = rand() % 4; //4 possibili numeri a partire da 0
+            switch (random)
+            {
+            case '0': //donna
+            {
+                Board[end_y][end_x] = Donna(is_white(), end_y, end_x);
+                break;
+            }
+            case '1': //torre
+            {
+                Board[end_y][end_x] = Torre(is_white(), end_y, end_x);
+                break;
+            }
+            case '2': //cavallo
+            {
+                Board[end_y][end_x] = Cavallo(is_white(), end_y, end_x);
+                break;
+            }
+            case '3': //alfiere
+            {
+                Board[end_y][end_x] = Alfiere(is_white(), end_y, end_x);
+                break;
+            }
+            }
+            Board[str_y][str_x] = Nullo(); //(false, str_y, str_x);
+            //bisogna distruggere il pedone
+            throw PromotionException();
+        }
+        if (i >= 20)
+            return output; //se non trova niente ritorna XX
+        i++;
+    } while (check_boundary(end_y, end_x) || !move(Board, str_y, str_x, end_y, end_x));
+    output.first = end_y;
+    output.second = end_x;
+    return output;
+};
+
 //RANDOM MOVE
-//risolvere promozione pedone
-pair<int, int> Piece::random_position(Piece (&Board)[8][8], int str_y, int str_x) //ritorna le coordinate sotto forma di stringa
+std::pair<int, int> Piece::random_position(Piece (&Board)[8][8], int str_y, int str_x) //ritorna le coordinate sotto forma di stringa
 {
     char in = toupper(type);
     srand(time(NULL));
-    pair<int, int> output{-1, -1};
-    int end_x;
-    int end_y;
-    int i = 0;
+    std::pair<int, int> output{-1, -1};
+    Piece tmp = Piece(false, 0, 0);
     switch (in)
     {
     case 'R': //funziona
     {
-        do
-        {
-            end_x = rand() % (3) + (str_x - 1); //3 possibili numeri a partire da quello a sinistra
-            end_y = rand() % (3) + (str_y - 1); //3 possibili numeri a partire da quello a sotto
-            if (i >= 20)
-                return output; //se non trova niente ritorna XX
-            i++;
-        } while (check_boundary(end_y, end_x) || !move(Board, str_y, str_x, end_y, end_x));
+        output = ((Re)tmp).random_xy(Board, str_y, str_x);
         break;
     };
     case 'D': //poco efficiente
     {
-        do
-        {
-            end_x = rand() % 8; //7 possibili numeri a partire da 0
-            end_y = rand() % 8; //7 possibili numeri a partire da 0
-            if (i >= 60)
-                return output; //se non trova niente ritorna XX
-            i++;
-        } while (check_boundary(end_y, end_x) || !move(Board, str_y, str_x, end_y, end_x));
+        do{
+            int torre_alfiere = rand() % 2;
+            if(torre_alfiere)
+            {
+                output = ((Torre)tmp).random_xy(Board, str_y, str_x);
+            }
+            else{
+                output = ((Alfiere)tmp).random_xy(Board, str_y, str_x);
+            }
+        }
+        while(output.first == -1);
         break;
     }
     case 'T':
     {
-        do
-        {
-            int random = rand() % 2;
-            if (random)
-            {
-                end_x = str_x; //se random == 1 si muove in verticale
-                end_y = rand() % 8;
-            }
-            else
-            {
-                end_y = str_y; //si muove in orizzontale
-                end_x = rand() % 8;
-            }
-            if (i >= 40)
-                return output; //se non trova niente ritorna XX
-            i++;
-        } while (check_boundary(end_y, end_x) || !move(Board, str_y, str_x, end_y, end_x));
+        output = ((Torre)tmp).random_xy(Board, str_y, str_x);
         break;
     }
     case 'C': //o cosi' o con uno switch -> riga 414
     {
-        do
-        {
-            int random_1 = rand() % 2;
-            int random_2 = rand() % 2;
-            int random_3 = rand() % 2;
-            if (random_1) //se random_1 == 1 delta_y = 1
-            {
-                if (random_2) //se random_2 == 1 end_y > str_y
-                    end_y = str_y + 1;
-                else
-                {
-                    end_y = str_y - 1;
-                }
-                if (random_3) //se random_3 == 1 end_x > str_x
-                {
-                    end_x = str_x + 2;
-                }
-                else
-                {
-                    end_x = str_x - 2;
-                }
-            }
-            else
-            {
-                if (random_2) //se random_2 == 1 end_y > str_y
-                    end_y = str_y + 2;
-                else
-                {
-                    end_y = str_y - 2;
-                }
-                if (random_3) //se random_3 == 1 end_x > str_x
-                    end_x = str_x + 1;
-                else
-                {
-                    end_x = str_x - 1;
-                }
-            }
-            if (i >= 20)
-                return output; //se non trova niente ritorna XX
-            i++;
-        } while (check_boundary(end_y, end_x) || !move(Board, str_y, str_x, end_y, end_x));
+        output = ((Cavallo)tmp).random_xy(Board, str_y, str_x);
         break;
     }
     case 'A':
     {
-
-        do
-        {
-            int cont = 0;
-            int i = 1 + rand() % 7; //7 possibili numeri a partire da 0
-            int up_down = rand() % 2;
-            int right_left = rand() % 2;
-            if (up_down) //se up_down == 1 si muove verso l'alto
-                end_y = str_y - i;
-            else
-            {
-                end_y = str_y + i;
-            }
-            if (right_left) // rigth_left == 1 si muove verso destra
-                end_x = str_x + i;
-            else
-            {
-                end_x = str_x - i;
-            }
-            if (cont >= 40)
-                return output; //se non trova niente ritorna XX
-            cont++;
-        } while (check_boundary(end_y, end_x) || !move(Board, str_y, str_x, end_y, end_x));
+        output = ((Alfiere)tmp).random_xy(Board, str_y, str_x);
         break;
     }
     case 'P':
     {
-        Pedone p = Pedone(Board[str_y][str_x].is_white(), Board[str_y][str_x].get_ex_position_y(), Board[str_y][str_x].get_ex_position_x(), Board[str_y][str_x].is_moved());
-        do
-        {
-
-            if (!p.is_moved()) //si può muovere di due
-            {
-                end_x = rand() % (3) + (str_x - 1); //3 possibili numeri a partire da quello a sinistra
-                end_y = rand() % (2) + (str_y + 1); //2 possibili numeri a partire da quello str_y + 1
-            }
-            else
-            {
-                end_x = rand() % (3) + (str_x - 1); //3 possibili numeri a partire da quello a sinistra
-                end_y = (str_y + 1);
-            }
-            if (p.check_promotion(end_y))
-            {
-                int random = rand() % 4; //4 possibili numeri a partire da 0
-                switch (random)
-                {
-                case '0': //donna
-                {
-                    Board[end_y][end_x] = Donna(is_white(), end_y, end_x);
-                    break;
-                }
-                case '1': //torre
-                {
-                    Board[end_y][end_x] = Torre(is_white(), end_y, end_x);
-                    break;
-                }
-                case '2': //cavallo
-                {
-                    Board[end_y][end_x] = Cavallo(is_white(), end_y, end_x);
-                    break;
-                }
-                case '3': //alfiere
-                {
-                    Board[end_y][end_x] = Alfiere(is_white(), end_y, end_x);
-                    break;
-                }
-                }
-                Board[str_y][str_x] = Nullo();      //(false, str_y, str_x);
-                //bisogna distruggere il pedone
-                throw PromotionException();
-            }
-            if (i >= 20)
-                return output; //se non trova niente ritorna XX
-            i++;
-        } while (check_boundary(end_y, end_x) || !move(Board, str_y, str_x, end_y, end_x));
+        output = ((Pedone)tmp).random_xy(Board, str_y, str_x);
         break;
     }
     }
-    output.first = end_y;
-    output.second = end_x;
     return output;
 };
 
