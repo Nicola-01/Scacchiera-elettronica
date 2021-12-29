@@ -5,6 +5,13 @@
 #include <string>
 using namespace std;
 
+//MANCANO I DISTRUTTORI
+//CONTROLLO DEL DELLA REGOLA 4 DELL'ARROCCO
+//EN PASSANT FUNZIONA SOLO LA MOSSA SUCCESSIVA
+
+int global_count;
+
+
 class Piece
 {
 public:
@@ -16,7 +23,6 @@ public:
     pair<int, int> random_position(Piece (&Board)[8][8], int str_y, int str_x); //ritorna le coordinate sotto forma di stringa
     bool check_boundary(int end_y, int end_x) { return end_y < 0 || end_x < 0 || end_y > 7 || end_x > 7; };
     bool check_arrocco_re(Piece (&Board)[8][8], int end_y, int end_x);
-    bool check_arrocco_torre(Piece (&Board)[8][8], int end_y, int end_x);
     bool is_white() { return white; }; // = true se e' un pezzo bianco
     char print() { return type; };
     void set_move(bool m) { moved = m; };
@@ -96,8 +102,11 @@ public:
     bool is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x) override;
     bool is_moved() { return moved; };
     bool check_promotion(int y) { return y == 0 || y == 7; }; //se arrivato alla fine e' true
+    int set_number_move(int n) { number_move = n; };    //numero mossa
+    int get_number_move() { return number_move; };
 private:
     bool moved = false;
+    int number_move;
 };
 
 class Nullo : public Piece
