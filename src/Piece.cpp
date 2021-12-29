@@ -430,12 +430,17 @@ bool Pedone::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y
             Board[str_y][end_x] = Nullo(false, str_y, str_x); //en passant in teoria giusto
             return true;
         }
+        if (Board[end_y][end_x].print() == ' ')
+        {
+            return false;
+        }
     }
-    //!(delta_y == 2 && !moved)
-    if (delta_y == 2 && (Board[str_y][str_x].get_ex_position_y() == 6 || Board[str_y][str_x].get_ex_position_y() == 1))
+    //delta_y == 2 && (Board[str_y][str_x].get_ex_position_y() == 6 || Board[str_y][str_x].get_ex_position_y() == 1)
+    if (delta_y == 2 && moved)
     {
         return false;
     }
+
 
     if (check_promotion(end_y))
     {
@@ -462,12 +467,12 @@ bool Pedone::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y
         }
         case 'C':
         {
-            Board[end_y][end_x] = Torre(is_white(), end_y, end_x);
+            Board[end_y][end_x] = Cavallo(is_white(), end_y, end_x);
             break;
         }
         case 'A':
         {
-            Board[end_y][end_x] = Torre(is_white(), end_y, end_x);
+            Board[end_y][end_x] = Alfiere(is_white(), end_y, end_x);
             break;
         }
         }
