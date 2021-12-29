@@ -8,7 +8,8 @@
 
 #include <utility>
 #include <memory>
-#include <cstdlib>
+#include <vector>
+#include <algorithm>
 
 //HELPER FUNCTIONS
 bool is_valid_traj(int p_x, int p_y, int k_x, int k_y);
@@ -193,6 +194,59 @@ std::pair<int, int> Chessboard::direction_threat(int king_y, int king_x, bool bl
         i_y = i_y + dir_y;
     }
     return std::pair<int,int>(-1,-1);
+}
+
+bool Chessboard::is_draw()
+{
+    //Patta per mancanza di pezzi
+    std::vector<char> p_l;
+    for(int x = 0; x < 8; x++)
+    {
+        for(int y = 0; y < 8; y++)
+        {
+            if(board[y][x].print() != ' ')
+                p_l.push_back(board[y][x].print());
+        }
+    }
+    //Si suppone che ci debbano essere per forza due re
+    //a) Re contro Re
+    if(p_l.size() < 3)
+        return true;
+    if(p_l.size() == 3)
+    {
+        //b)due re e (un alfiere o un cavallo)
+        for(char c : p_l)
+            if(toupper(c) == 'A' || toupper(c) == 'C')
+                return true;
+    }
+    if(p_l.size() == 4)
+    {
+        //c) due re e alfieri avversari sulle stesse caselle
+        if((std::find(p_l.begin(),p_l.end(), 'a') != p_l.end())&&(std::find(p_l.begin(),p_l.end(), 'A')!= p_l.end()))
+        {
+            bool first = false;
+            bool odd;
+            for(int x = 0; x < 8; x++)
+            {
+                for(int y = 0; y < 8; y++)
+                {
+                    if(toupper(board[y][x].print()) == 'A')
+                    {
+                        if(!first)
+                        {
+                            odd = (x+y)%2;
+                            first = true;
+                        }
+                        if(first && (((x+y)%2)==odd))
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return false;
 }
 
 //*/
