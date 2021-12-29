@@ -52,7 +52,6 @@ int main(int argc, char *argv[])
         cout << "Colore giocatore (1 bianco, 2 nero): " << player << "\nturno bianco (1=true): " << white_turne << endl;
 
         //player_turne(c, white_turne, log_file);
-
         if (player == 1 && white_turne || player == 2 && !white_turne)
         {
             send_green("--- Tocca a te");
@@ -66,23 +65,24 @@ int main(int argc, char *argv[])
 
         white_turne = !white_turne;
 
-        if (c.is_check(!white_turne))
+        if (int check = c.is_check(!white_turne) > 0)
         {
-            if (c.is_checkmate(!white_turne))
+            if (check == 2) // è scacco matto
             {
                 (white_turne) ? send_green("Ha vinto il bianco") : send_green("Ha vinto il Nero");
                 log_file.close();
                 return 0;
             }
-            // else
+            // else è scacco
 
             (white_turne) ? send_green("Il Bianco ha fatto scacco al Nero") : send_green("Il Nero ha fatto scacco al Bianco");
-            log_file.close();
+            // log_file.close();
         }
         if (false) //c.is_draw())
         {
             send_green("Partita finita in patta");
             log_file.close();
+            return 0;
         }
 
         n++;
@@ -140,7 +140,8 @@ void computer_turne(Chessboard &c, bool white_turne, ofstream &log_file)
             x = rand() % 8;
         } while (!c.is_right_piece(y, x, white_turne));
         line = c.random_move(y, x);
-        cout << "-- Prova dello spostamento" << line << endl;
+        cin.get();
+        cout << "-- Prova dello spostamento: " << line << endl;
     } while (line == "NV NV"); //Not Valid
     c.move(line, white_turne);
     cout << line;

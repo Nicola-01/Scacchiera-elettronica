@@ -39,7 +39,7 @@ private:
 public:
     Chessboard();
     int move(std::string move, bool white_turne);
-    bool is_right_piece(int y, int x, bool white_turne);
+    bool is_right_piece(int y, int x,  bool white_turne);
     string random_move(int y, int x);
 
     bool is_checkmate(bool in_black, int st_y, int st_x, int end_y, int end_x);
