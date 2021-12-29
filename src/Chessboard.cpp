@@ -15,7 +15,7 @@ Chessboard::Chessboard()
     for (int x = 0; x < 8; x++)
     {
         board[0][x] = inizializer_piece(pos[x], 0, x);
-        board[1][x] = inizializer_piece('P', 1, x); // P
+        board[1][x] = inizializer_piece('p', 1, x); // P
         for (int y = 2; y <= 5; y++)
             board[y][x] = inizializer_piece(' ', y, x);
         board[6][x] = inizializer_piece('p', 6, x); // p
@@ -63,6 +63,7 @@ int Chessboard::move(string move, bool white_turne)
 
     if (!is_right_piece(str_y, str_x, white_turne))
         return 3; // Muove pezzo avverstaio
+
     try
     {
         //cout << "da qui " << end_y;
@@ -72,11 +73,16 @@ int Chessboard::move(string move, bool white_turne)
     }
     catch (PromotionException &e)
     {
-        promotion = true;
+        promotion = true; // se c'è stata una promozione ma dopo mi faccio un auto scacco allora quel pezzo deve tornare un pedone
+    }
+    catch (...) //(ArroccoException &e)
+    {
+        arrocco = true;
     }
 
-    board[end_y][end_x] = board[str_y][str_x];
-    board[str_y][str_x] = Nullo(false, str_y, str_y);
+        Piece gonna_die = board[end_y][end_x];
+        board[end_y][end_x] = board[str_y][str_x];
+        board[str_y][str_x] = Nullo(false, str_y, str_y);
 
     if (board[end_y][end_x].print() == 'R') // Re nero
     {
@@ -93,12 +99,17 @@ int Chessboard::move(string move, bool white_turne)
     {
 
         board[str_y][str_x] = board[end_y][end_x];
-        board[str_y][str_x] = Nullo(false, str_y, str_y);
+        board[end_y][end_x] = gonna_die;
 
         if (promotion)
             board[str_y][str_x] = Pedone(white_turne, str_y, str_x);
-
-        if (board[str_y][str_x].print() == 'R') // Re nero
+        else if (arrocco) // se è stato fatto un auto scacco perchè si ha fatto un arrocco allora il re viene spostato "in automatico" ma la torre no 
+        {
+            int x_torre = (end_x<str_y) ? 3 : 5; // arrocco lungo : arrocco corto
+            board[str_y][x_torre] = board[str_y][x_torre];
+            board[str_y][x_torre] = Nullo(false, -1, -1);
+        }
+        else if (board[str_y][str_x].print() == 'R') // Re nero
         {
             king_black[0] = str_y;
             king_black[1] = str_x;
