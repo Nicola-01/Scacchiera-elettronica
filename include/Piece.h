@@ -25,7 +25,7 @@ public:
     int get_ex_position_x() { return ex_position_x; };
     virtual bool is_moved() { return moved; }
     // void undo_move();
-    virtual bool is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x) { return false; };
+    virtual bool is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x);
 
 protected:
     char type;

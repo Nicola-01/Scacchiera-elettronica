@@ -125,11 +125,11 @@ bool Piece::is_end_same_color(Piece (&Board)[8][8], int str_y, int str_x, int en
     return (Board[str_y][str_x].is_white() == Board[end_y][end_x].is_white());
 };
 
-bool Piece::move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x)
+bool Piece::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x)
 {
     char in = toupper(Board[str_y][str_x].type);
     bool control = false; //control == vero is_valid_move ritorna == vero
-                          // cout << "-- Tipo Pezzo: " << in << endl;
+    // cout << "-- Tipo Pezzo: " << in << endl;
     //cout << "Spostamento [y][x] (str), (end) [" << str_y << "][" << str_x << "] [" << end_y << "][" << end_x << "]\n";
     switch (in)
     {
@@ -173,7 +173,11 @@ bool Piece::move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_
         break;
     }
     }
-    if (control)
+}
+
+bool Piece::move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x)
+{
+    if (is_valid_move(Board, str_y, str_x, end_y, end_x))
     {
         ex_position_x = str_x;
         ex_position_y = str_y;
@@ -414,7 +418,6 @@ bool Alfiere::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_
 
 bool Pedone::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x) //promozione probabilmente sbagliata
 {
-    //cout << is_white() << " " << Board[end_y][end_x].is_white() << endl;
     int delta_x = std::abs(str_x - end_x);
     int delta_y = std::abs(str_y - end_y);
     if (is_end_same_color(Board, str_y, str_x, end_y, end_x)) //destinazione diverso colore;
@@ -432,6 +435,7 @@ bool Pedone::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y
         if(end_y < str_y)
             return false;
     }
+    
     if (delta_x == delta_y)
     {
         if (Board[end_y][end_x].print() == ' ')
@@ -445,7 +449,7 @@ bool Pedone::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y
         }
         
     }
-    if (end_x == 0 && Board[end_y][end_x].print() != ' ') //non può mangiare in avanti
+    if (delta_x == 0 && Board[end_y][end_x].print() != ' ') //non può mangiare in avanti
     {
         return false;
     }
