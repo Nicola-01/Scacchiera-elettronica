@@ -129,45 +129,45 @@ bool Piece::move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_
 {
     char in = toupper(Board[str_y][str_x].type);
     bool control = false; //control == vero is_valid_move ritorna == vero
-   // cout << "-- Tipo Pezzo: " << in << endl;
+                          // cout << "-- Tipo Pezzo: " << in << endl;
     //cout << "Spostamento [y][x] (str), (end) [" << str_y << "][" << str_x << "] [" << end_y << "][" << end_x << "]\n";
     switch (in)
     {
     case 'R':
     {
-        Re r = Re(Board[str_y][str_x].is_white(), Board[str_y][str_x].get_ex_position_y(), Board[str_y][str_x].get_ex_position_y());
+        Re r = Re(Board[str_y][str_x].is_white(), Board[str_y][str_x].get_ex_position_y(), Board[str_y][str_x].get_ex_position_x(), Board[str_y][str_x].is_moved());
         control = r.is_valid_move(Board, str_y, str_x, end_y, end_x);
         set_move(r.is_moved());
         break;
     }
     case 'D':
     {
-        Donna d = Donna(Board[str_y][str_x].is_white(), Board[str_y][str_x].get_ex_position_y(), Board[str_y][str_x].get_ex_position_y());
+        Donna d = Donna(Board[str_y][str_x].is_white(), Board[str_y][str_x].get_ex_position_y(), Board[str_y][str_x].get_ex_position_x());
         control = d.is_valid_move(Board, str_y, str_x, end_y, end_x);
         break;
     }
     case 'T':
     {
-        Torre t = Torre(Board[str_y][str_x].is_white(), Board[str_y][str_x].get_ex_position_y(), Board[str_y][str_x].get_ex_position_y());
+        Torre t = Torre(Board[str_y][str_x].is_white(), Board[str_y][str_x].get_ex_position_y(), Board[str_y][str_x].get_ex_position_x(), Board[str_y][str_x].is_moved());
         control = t.is_valid_move(Board, str_y, str_x, end_y, end_x);
         set_move(t.is_moved());
         break;
     }
     case 'A':
     {
-        Alfiere a = Alfiere(Board[str_y][str_x].is_white(), Board[str_y][str_x].get_ex_position_y(), Board[str_y][str_x].get_ex_position_y());
+        Alfiere a = Alfiere(Board[str_y][str_x].is_white(), Board[str_y][str_x].get_ex_position_y(), Board[str_y][str_x].get_ex_position_x());
         control = a.is_valid_move(Board, str_y, str_x, end_y, end_x);
         break;
     }
     case 'C':
     {
-        Cavallo c = Cavallo(Board[str_y][str_x].is_white(), Board[str_y][str_x].get_ex_position_y(), Board[str_y][str_x].get_ex_position_y());
+        Cavallo c = Cavallo(Board[str_y][str_x].is_white(), Board[str_y][str_x].get_ex_position_y(), Board[str_y][str_x].get_ex_position_x());
         control = c.is_valid_move(Board, str_y, str_x, end_y, end_x);
         break;
     }
     case 'P':
     {
-        Pedone p = Pedone(Board[str_y][str_x].is_white(), Board[str_y][str_x].get_ex_position_y(), Board[str_y][str_x].get_ex_position_y());
+        Pedone p = Pedone(Board[str_y][str_x].is_white(), Board[str_y][str_x].get_ex_position_y(), Board[str_y][str_x].get_ex_position_x(), Board[str_y][str_x].is_moved());
         control = p.is_valid_move(Board, str_y, str_x, end_y, end_x);
         set_move(p.is_moved());
         break;
@@ -485,7 +485,7 @@ pair<int, int> Piece::random_position(Piece (&Board)[8][8], int str_y, int str_x
 {
     char in = toupper(type);
     srand(time(NULL));
-    pair<int, int> output {-1, -1};
+    pair<int, int> output{-1, -1};
     int end_x;
     int end_y;
     int i = 0;
@@ -583,8 +583,10 @@ pair<int, int> Piece::random_position(Piece (&Board)[8][8], int str_y, int str_x
     }
     case 'A':
     {
+
         do
         {
+            int cont = 0;
             int i = 1 + rand() % 7; //7 possibili numeri a partire da 0
             int up_down = rand() % 2;
             int right_left = rand() % 2;
@@ -600,15 +602,15 @@ pair<int, int> Piece::random_position(Piece (&Board)[8][8], int str_y, int str_x
             {
                 end_x = str_x - i;
             }
-            if (i >= 40)
+            if (cont >= 40)
                 return output; //se non trova niente ritorna XX
-            i++;
+            cont++;
         } while (check_boundary(end_y, end_x) || !move(Board, str_y, str_x, end_y, end_x));
         break;
     }
     case 'P':
     {
-        Pedone p = (Pedone)Board[str_y][str_x];
+        Pedone p = Pedone(Board[str_y][str_x].is_white(), Board[str_y][str_x].get_ex_position_y(), Board[str_y][str_x].get_ex_position_x(), Board[str_y][str_x].is_moved());
         do
         {
 
@@ -639,12 +641,12 @@ pair<int, int> Piece::random_position(Piece (&Board)[8][8], int str_y, int str_x
                 }
                 case '2': //cavallo
                 {
-                    Board[end_y][end_x] = Torre(is_white(), end_y, end_x);
+                    Board[end_y][end_x] = Cavallo(is_white(), end_y, end_x);
                     break;
                 }
                 case '3': //alfiere
                 {
-                    Board[end_y][end_x] = Torre(is_white(), end_y, end_x);
+                    Board[end_y][end_x] = Alfiere(is_white(), end_y, end_x);
                     break;
                 }
                 }
@@ -661,7 +663,7 @@ pair<int, int> Piece::random_position(Piece (&Board)[8][8], int str_y, int str_x
     }
     output.first = end_y;
     output.second = end_x;
-    return output; 
+    return output;
 };
 #endif
 

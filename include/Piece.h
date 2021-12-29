@@ -14,25 +14,18 @@ public:
 
     bool move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x);
     pair<int, int> random_position(Piece (&Board)[8][8], int str_y, int str_x); //ritorna le coordinate sotto forma di stringa
-    bool check_boundary(int end_y, int end_x)
-    {
-        return end_y < 0 || end_x < 0 || end_y > 7 || end_x > 7;
-    };
+    bool check_boundary(int end_y, int end_x) { return end_y < 0 || end_x < 0 || end_y > 7 || end_x > 7; };
     bool check_arrocco_re(Piece (&Board)[8][8], int end_y, int end_x);
     bool check_arrocco_torre(Piece (&Board)[8][8], int end_y, int end_x);
     bool is_white() { return white; }; // = true se e' un pezzo bianco
     char print() { return type; };
-    void set_move(bool m)
-    {
-        moved = m;
-    };
+    void set_move(bool m) { moved = m; };
     bool is_end_same_color(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x);
     int get_ex_position_y() { return ex_position_y; };
     int get_ex_position_x() { return ex_position_x; };
     virtual bool is_moved() { return moved; }
     // void undo_move();
     virtual bool is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x) { return false; };
-    class PromotionException {};
 
 protected:
     char type;
@@ -114,5 +107,9 @@ public:
     Nullo(Piece){};
     bool is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x) override { return false; };
 };
+
+//Eccezioni
+class PromotionException {};
+
 
 #endif
