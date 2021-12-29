@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
     //Rules rul;
     n_moves = 0;
     bool white_turne = true;
-    while (n < moves_max)
+    while (n_moves < moves_max)
     {
         //if (system("CLS")) system("clear");
         c.move("XX XX", white_turne);
@@ -86,7 +86,7 @@ int main(int argc, char *argv[])
             return 0;
         }
 
-        n++;
+        n_moves++;
     }
     log_file.close();
     return 0;
