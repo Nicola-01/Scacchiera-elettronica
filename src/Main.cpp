@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
 
     Chessboard c{};
     //Rules rul;
-    int n = 0;
+    n_moves = 0;
     bool white_turne = true;
     while (n < moves_max)
     {

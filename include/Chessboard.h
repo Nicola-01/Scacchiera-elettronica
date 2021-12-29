@@ -8,6 +8,8 @@
 #include "Piece.h"
 #include "Piece.h"
 
+extern int n_moves;
+
 class InvalidMoveException
 {
 };

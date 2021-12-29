@@ -9,7 +9,6 @@
 
 using namespace std;
 
-
 Chessboard::Chessboard()
 {
     for (int x = 0; x < 8; x++)
