@@ -103,13 +103,13 @@ private:
 class Nullo : public Piece
 {
 public:
-    Nullo(bool color, int y, int x);
+    Nullo();
     Nullo(Piece){};
     bool is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x) override { return false; };
 };
 
 //Eccezioni
 class PromotionException {};
-
+class ArroccoException {};
 
 #endif

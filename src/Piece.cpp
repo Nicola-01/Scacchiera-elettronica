@@ -198,7 +198,7 @@ bool Piece::check_arrocco_re(Piece (&Board)[8][8], int end_y, int end_x)
         {
             Board[end_y][end_x - 2] = Nullo();  //(false, end_y, end_x - 1);
             Board[end_y][end_x + 1] = Torre(is_white(), end_y, end_x + 1);
-            return true;
+            throw ArroccoException(); //return true;
         }
         return false;
     }
@@ -209,7 +209,7 @@ bool Piece::check_arrocco_re(Piece (&Board)[8][8], int end_y, int end_x)
         {
             Board[end_y][end_x + 1] = Nullo();     //(false, end_y, end_x - 1);
             Board[end_y][end_x - 1] = Torre(is_white(), end_y, end_x + 1);
-            return true;
+            throw ArroccoException(); //return true;
         }
         return false;
     }
@@ -224,7 +224,7 @@ bool Piece::check_arrocco_torre(Piece (&Board)[8][8], int end_y, int end_x)
         {
             Board[end_y][end_x - 1] = Re(is_white(), end_y, end_x + 1);
             Board[end_y][end_x + 1] = Nullo();  //(false, end_y, end_x - 1);
-            return true;
+            throw ArroccoException();   //return true;
         }
         return false;
     }
@@ -235,7 +235,7 @@ bool Piece::check_arrocco_torre(Piece (&Board)[8][8], int end_y, int end_x)
         {
             Board[end_y][end_x - 1] = Nullo();  //(false, end_y, end_x + 1);
             Board[end_y][end_x + 1] = Re(is_white(), end_y, end_x - 1);
-            return true;
+            throw ArroccoException();   //return true;
         }
         return false;
     }
@@ -264,13 +264,12 @@ bool Re::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, in
 
 bool Donna::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x)
 {
-    return true;
     int delta_x = std::abs(str_x - end_x);
     int delta_y = std::abs(str_y - end_y);
     if (is_end_same_color(Board, str_y, str_x, end_y, end_x))
-        return false;
+        return false;   //destinazione diverso colore;
     if (str_x != end_x && str_y != end_y)
-        return false;              //destinazione diverso colore;
+        return false;              
     bool control_condition = true; //true se si può fare la mossa
     if (delta_x == delta_y)        //controllo come se fosse un alfiere
     {
