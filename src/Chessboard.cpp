@@ -82,7 +82,7 @@ int Chessboard::move(string move, bool white_turne)
 
         Piece gonna_die = board[end_y][end_x];
         board[end_y][end_x] = board[str_y][str_x];
-        board[str_y][str_x] = Nullo(false, str_y, str_y);
+        board[str_y][str_x] = Nullo();
 
     if (board[end_y][end_x].print() == 'R') // Re nero
     {
@@ -107,7 +107,7 @@ int Chessboard::move(string move, bool white_turne)
         {
             int x_torre = (end_x<str_y) ? 3 : 5; // arrocco lungo : arrocco corto
             board[str_y][x_torre] = board[str_y][x_torre];
-            board[str_y][x_torre] = Nullo(false, -1, -1);
+            board[str_y][x_torre] = Nullo();
         }
         else if (board[str_y][str_x].print() == 'R') // Re nero
         {
@@ -181,6 +181,6 @@ Piece Chessboard::inizializer_piece(char p, int y, int x)
     case 'P':
         return Pedone(p == 'p', y, x);
     default:
-        return Nullo(false, y, x);
+        return Nullo();
     }
 }
