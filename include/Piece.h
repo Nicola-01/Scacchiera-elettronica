@@ -8,7 +8,7 @@
 //MANCANO I DISTRUTTORI
 //CONTROLLO DELLA REGOLA 4 DELL'ARROCCO
 
-int n_moves;
+extern int n_moves;
 
 class Piece
 {
