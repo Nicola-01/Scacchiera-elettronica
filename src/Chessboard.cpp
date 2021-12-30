@@ -14,7 +14,7 @@ Chessboard::Chessboard()
     for (int x = 0; x < 8; x++)
     {
         board[0][x] = inizializer_piece(pos[x], 0, x);
-        board[1][x] = inizializer_piece('p', 1, x); // P
+        board[1][x] = inizializer_piece('P', 1, x); // P
         for (int y = 2; y <= 5; y++)
             board[y][x] = inizializer_piece(' ', y, x);
         board[6][x] = inizializer_piece('p', 6, x); // p
@@ -74,7 +74,7 @@ int Chessboard::move(string move, bool white_turne)
     {
         promotion = true; // se c'è stata una promozione ma dopo mi faccio un auto scacco allora quel pezzo deve tornare un pedone
     }
-    catch (...) //(ArroccoException &e)
+    catch (ArroccoException &e)
     {
         arrocco = true;
     }

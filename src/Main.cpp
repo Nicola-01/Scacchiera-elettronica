@@ -86,7 +86,6 @@ int main(int argc, char *argv[])
         }
 
         n_moves++;
-        cout << n_moves;
     }
     log_file.close();
     return 0;
