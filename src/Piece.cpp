@@ -238,7 +238,7 @@ bool Donna::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y,
 {
     Piece p = Piece();
     bool control_condition = ((Torre)p).is_valid_move(Board, str_y, str_x, end_y, end_x) ||
-     ((Alfiere)p).is_valid_move(Board, str_y, str_x, end_y, end_x);     
+                             ((Alfiere)p).is_valid_move(Board, str_y, str_x, end_y, end_x);
     return control_condition;
 };
 
@@ -410,7 +410,7 @@ std::pair<int, int> Piece::random_position(Piece (&Board)[8][8], int str_y, int 
     char in = toupper(type);
     srand(time(NULL));
     std::pair<int, int> output;
-    Piece tmp = Piece(false, 0, 0);     //serve solo per invocare il metodo giusto
+    Piece tmp = Piece(false, 0, 0); //serve solo per invocare il metodo giusto
     switch (in)
     {
     case 'R': //funziona
@@ -420,17 +420,18 @@ std::pair<int, int> Piece::random_position(Piece (&Board)[8][8], int str_y, int 
     };
     case 'D': //poco efficiente
     {
-        do{
+        do
+        {
             int torre_alfiere = rand() % 2;
-            if(torre_alfiere)
+            if (torre_alfiere)
             {
                 output = ((Torre)tmp).random_xy(Board, str_y, str_x);
             }
-            else{
+            else
+            {
                 output = ((Alfiere)tmp).random_xy(Board, str_y, str_x);
             }
-        }
-        while(output.first == -1);
+        } while (output.first == -1);
         break;
     }
     case 'T':
@@ -458,11 +459,12 @@ std::pair<int, int> Piece::random_position(Piece (&Board)[8][8], int str_y, int 
 };
 
 //RANDOM PER OGNI PEZZO
-//valutare se funziona il random generator
 
 std::pair<int, int> Re::random_xy(Piece (&Board)[8][8], int str_y, int str_x)
 {
-    int end_y, end_x, i;
+    srand(time(NULL));
+    int end_y, end_x;
+    int i = 0;
     std::pair<int, int> output{-1, -1};
     do
     {
@@ -474,12 +476,14 @@ std::pair<int, int> Re::random_xy(Piece (&Board)[8][8], int str_y, int str_x)
     } while (check_boundary(end_y, end_x) || !move(Board, str_y, str_x, end_y, end_x));
     output.first = end_y;
     output.second = end_x;
-    return output; //se non trova niente ritorna XX
+    return output; //se non trova niente ritorna -1-1
 };
 
 std::pair<int, int> Torre::random_xy(Piece (&Board)[8][8], int str_y, int str_x)
 {
-    int end_y, end_x, i;
+    srand(time(NULL));
+    int end_y, end_x;
+    int i = 0;
     std::pair<int, int> output{-1, -1};
     do
     {
@@ -495,7 +499,7 @@ std::pair<int, int> Torre::random_xy(Piece (&Board)[8][8], int str_y, int str_x)
             end_x = rand() % 8;
         }
         if (i >= 40)
-            break; //se non trova niente ritorna XX
+            break; //se non trova niente ritorna -1-1
         i++;
     } while (check_boundary(end_y, end_x) || !move(Board, str_y, str_x, end_y, end_x));
     output.first = end_y;
@@ -505,7 +509,9 @@ std::pair<int, int> Torre::random_xy(Piece (&Board)[8][8], int str_y, int str_x)
 
 std::pair<int, int> Cavallo::random_xy(Piece (&Board)[8][8], int str_y, int str_x)
 {
-    int end_y, end_x, i;
+    srand(time(NULL));
+    int end_y, end_x;
+    int i = 0;
     std::pair<int, int> output{-1, -1};
     do
     {
@@ -545,7 +551,7 @@ std::pair<int, int> Cavallo::random_xy(Piece (&Board)[8][8], int str_y, int str_
             }
         }
         if (i >= 20)
-            break; //se non trova niente ritorna XX
+            break; //se non trova niente ritorna -1-1
         i++;
     } while (check_boundary(end_y, end_x) || !move(Board, str_y, str_x, end_y, end_x));
     output.first = end_y;
@@ -555,7 +561,7 @@ std::pair<int, int> Cavallo::random_xy(Piece (&Board)[8][8], int str_y, int str_
 
 std::pair<int, int> Alfiere::random_xy(Piece (&Board)[8][8], int str_y, int str_x)
 {
-    // srand(time(NULL));
+    srand(time(NULL));
     int end_y, end_x, i;
     std::pair<int, int> output{-1, -1};
     do
@@ -577,7 +583,7 @@ std::pair<int, int> Alfiere::random_xy(Piece (&Board)[8][8], int str_y, int str_
             end_x = str_x - i;
         }
         if (cont >= 40)
-            break; //se non trova niente ritorna XX
+            break; //se non trova niente ritorna -1-1
         cont++;
     } while (check_boundary(end_y, end_x) || !move(Board, str_y, str_x, end_y, end_x));
     output.first = end_y;
@@ -587,12 +593,13 @@ std::pair<int, int> Alfiere::random_xy(Piece (&Board)[8][8], int str_y, int str_
 
 std::pair<int, int> Pedone::random_xy(Piece (&Board)[8][8], int str_y, int str_x)
 {
-    int end_y, end_x, i;
+    srand(time(NULL));
+    int end_y, end_x;
+    int i = 0;
     std::pair<int, int> output{-1, -1};
     Pedone p = Pedone(Board[str_y][str_x].is_white(), Board[str_y][str_x].get_ex_position_y(), Board[str_y][str_x].get_ex_position_x(), Board[str_y][str_x].is_moved());
     do
     {
-
         if (!p.is_moved()) //si può muovere di due
         {
             end_x = rand() % (3) + (str_x - 1); //3 possibili numeri a partire da quello a sinistra
@@ -603,7 +610,7 @@ std::pair<int, int> Pedone::random_xy(Piece (&Board)[8][8], int str_y, int str_x
             end_x = rand() % (3) + (str_x - 1); //3 possibili numeri a partire da quello a sinistra
             end_y = (str_y + 1);
         }
-        if (p.check_promotion(end_y))
+        if (p.check_promotion(end_y) && check_boundary(end_y, end_x) && !is_end_same_color(Board, str_y, str_x, end_y, end_x))
         {
             int random = rand() % 4; //4 possibili numeri a partire da 0
             switch (random)
@@ -634,7 +641,7 @@ std::pair<int, int> Pedone::random_xy(Piece (&Board)[8][8], int str_y, int str_x
             throw PromotionException();
         }
         if (i >= 20)
-            return output; //se non trova niente ritorna XX
+            return output; //se non trova niente ritorna -1-1
         i++;
     } while (check_boundary(end_y, end_x) || !move(Board, str_y, str_x, end_y, end_x));
     output.first = end_y;
