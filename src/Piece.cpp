@@ -236,76 +236,9 @@ bool Re::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, in
 
 bool Donna::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x)
 {
-    int delta_x = std::abs(str_x - end_x);
-    int delta_y = std::abs(str_y - end_y);
-    if (is_end_same_color(Board, str_y, str_x, end_y, end_x))
-        return false; //destinazione diverso colore;
-    if (str_x != end_x && str_y != end_y)
-        return false;
-    bool control_condition = true; //true se si può fare la mossa
-    if (delta_x == delta_y)        //controllo come se fosse un alfiere
-    {
-        for (int i = 1; i < delta_x; i++)
-        {
-            if (end_y > str_y)
-            {
-                if (Board[str_y + i][str_x - i].print() != ' ')
-                {
-                    control_condition = false;
-                    break;
-                }
-            }
-            else
-            {
-                if (Board[str_y - i][str_x + i].print() != ' ')
-                {
-                    control_condition = false;
-                    break;
-                }
-            }
-        }
-    }
-    else
-    {
-        for (int i = 1; i < delta_x; i++) //controllo come se fosse una torre
-        {
-            if (end_x > str_x)
-            {
-                if (Board[end_y][str_x + i].print() != ' ')
-                {
-                    control_condition = false;
-                    break;
-                }
-            }
-            else
-            {
-                if (Board[end_y][str_x - i].print() != ' ')
-                {
-                    control_condition = false;
-                    break;
-                }
-            }
-        }
-        for (int i = 1; i < delta_y; i++)
-        {
-            if (end_y > str_y)
-            {
-                if (Board[str_y + i][end_x].print() != ' ')
-                {
-                    control_condition = false;
-                    break;
-                }
-            }
-            else
-            {
-                if (Board[str_y - i][end_x].print() != ' ')
-                {
-                    control_condition = false;
-                    break;
-                }
-            }
-        }
-    }
+    Piece p = Piece();
+    bool control_condition = ((Torre)p).is_valid_move(Board, str_y, str_x, end_y, end_x) ||
+     ((Alfiere)p).is_valid_move(Board, str_y, str_x, end_y, end_x);     
     return control_condition;
 };
 
@@ -471,6 +404,61 @@ bool Pedone::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y
     return true;
 };
 
+//RANDOM MOVE
+std::pair<int, int> Piece::random_position(Piece (&Board)[8][8], int str_y, int str_x) //ritorna le coordinate sotto forma di stringa
+{
+    char in = toupper(type);
+    srand(time(NULL));
+    std::pair<int, int> output;
+    Piece tmp = Piece(false, 0, 0);     //serve solo per invocare il metodo giusto
+    switch (in)
+    {
+    case 'R': //funziona
+    {
+        output = ((Re)tmp).random_xy(Board, str_y, str_x);
+        break;
+    };
+    case 'D': //poco efficiente
+    {
+        do{
+            int torre_alfiere = rand() % 2;
+            if(torre_alfiere)
+            {
+                output = ((Torre)tmp).random_xy(Board, str_y, str_x);
+            }
+            else{
+                output = ((Alfiere)tmp).random_xy(Board, str_y, str_x);
+            }
+        }
+        while(output.first == -1);
+        break;
+    }
+    case 'T':
+    {
+        output = ((Torre)tmp).random_xy(Board, str_y, str_x);
+        break;
+    }
+    case 'C': //o cosi' o con uno switch -> riga 414
+    {
+        output = ((Cavallo)tmp).random_xy(Board, str_y, str_x);
+        break;
+    }
+    case 'A':
+    {
+        output = ((Alfiere)tmp).random_xy(Board, str_y, str_x);
+        break;
+    }
+    case 'P':
+    {
+        output = ((Pedone)tmp).random_xy(Board, str_y, str_x);
+        break;
+    }
+    }
+    return output;
+};
+
+//RANDOM PER OGNI PEZZO
+//valutare se funziona il random generator
 
 std::pair<int, int> Re::random_xy(Piece (&Board)[8][8], int str_y, int str_x)
 {
@@ -651,59 +639,6 @@ std::pair<int, int> Pedone::random_xy(Piece (&Board)[8][8], int str_y, int str_x
     } while (check_boundary(end_y, end_x) || !move(Board, str_y, str_x, end_y, end_x));
     output.first = end_y;
     output.second = end_x;
-    return output;
-};
-
-//RANDOM MOVE
-std::pair<int, int> Piece::random_position(Piece (&Board)[8][8], int str_y, int str_x) //ritorna le coordinate sotto forma di stringa
-{
-    char in = toupper(type);
-    srand(time(NULL));
-    std::pair<int, int> output{-1, -1};
-    Piece tmp = Piece(false, 0, 0);
-    switch (in)
-    {
-    case 'R': //funziona
-    {
-        output = ((Re)tmp).random_xy(Board, str_y, str_x);
-        break;
-    };
-    case 'D': //poco efficiente
-    {
-        do{
-            int torre_alfiere = rand() % 2;
-            if(torre_alfiere)
-            {
-                output = ((Torre)tmp).random_xy(Board, str_y, str_x);
-            }
-            else{
-                output = ((Alfiere)tmp).random_xy(Board, str_y, str_x);
-            }
-        }
-        while(output.first == -1);
-        break;
-    }
-    case 'T':
-    {
-        output = ((Torre)tmp).random_xy(Board, str_y, str_x);
-        break;
-    }
-    case 'C': //o cosi' o con uno switch -> riga 414
-    {
-        output = ((Cavallo)tmp).random_xy(Board, str_y, str_x);
-        break;
-    }
-    case 'A':
-    {
-        output = ((Alfiere)tmp).random_xy(Board, str_y, str_x);
-        break;
-    }
-    case 'P':
-    {
-        output = ((Pedone)tmp).random_xy(Board, str_y, str_x);
-        break;
-    }
-    }
     return output;
 };
 

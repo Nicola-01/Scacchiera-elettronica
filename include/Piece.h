@@ -50,7 +50,7 @@ public:
 
     bool is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x) override;
     bool is_moved() { return moved; };
-    std::pair<int, int> Re::random_xy(Piece (&Board)[8][8], int str_y, int str_x);
+    std::pair<int, int> random_xy(Piece (&Board)[8][8], int str_y, int str_x);
 private:
     bool moved = false; //dopo la prima mossa diventa true
 };
@@ -71,7 +71,7 @@ public:
     Torre(Piece){};
     bool is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x) override;
     bool is_moved() { return moved; };
-    std::pair<int, int> Torre::random_xy(Piece (&Board)[8][8], int str_y, int str_x);
+    std::pair<int, int> random_xy(Piece (&Board)[8][8], int str_y, int str_x);
 private:
     bool moved = false;
     bool arrocco_torre = false;
@@ -92,7 +92,7 @@ public:
     Cavallo(bool color, int y, int x);
     Cavallo(Piece){};
     bool is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x) override;
-    std::pair<int, int> Cavallo::random_xy(Piece (&Board)[8][8], int str_y, int str_x);
+    std::pair<int, int> random_xy(Piece (&Board)[8][8], int str_y, int str_x);
 };
 
 class Pedone : public Piece
@@ -104,9 +104,9 @@ public:
     bool is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x) override;
     bool is_moved() { return moved; };
     bool check_promotion(int y) { return y == 0 || y == 7; }; //se arrivato alla fine e' true
-    int set_number_move(int n) { number_move = n; };          //numero mossa
+    void set_number_move(int n) { number_move = n; };          //numero mossa
     int get_number_move() { return number_move; };
-    std::pair<int, int> Pedone::random_xy(Piece (&Board)[8][8], int str_y, int str_x);
+    std::pair<int, int> random_xy(Piece (&Board)[8][8], int str_y, int str_x);
 private:
     bool moved = false;
     int number_move;
