@@ -7,9 +7,9 @@
 #include <time.h> /* time */
 
 #include "Chessboard.h"
-//#include "Rules.h"
 
 using namespace std;
+int n_moves;
 
 class ArgumentsException
 {
@@ -42,7 +42,6 @@ int main(int argc, char *argv[])
         player = rand() % 2 + 1; // 0, se non è un giocatore ,1 se è bianco, 2 se è nero
 
     Chessboard c{};
-    //Rules rul;
     n_moves = 0;
     bool white_turne = true;
     while (n_moves < moves_max)
@@ -87,6 +86,7 @@ int main(int argc, char *argv[])
         }
 
         n_moves++;
+        cout << n_moves;
     }
     log_file.close();
     return 0;
