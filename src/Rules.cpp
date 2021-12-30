@@ -188,7 +188,7 @@ std::pair<int, int> Chessboard::direction_threat(int king_y, int king_x, bool bl
         if((board[i_y][i_x].is_white())== black_king)
         {
             if(board[i_y][i_x].is_valid_move(board, i_y, i_x, king_y, king_x))
-            return make_pair(i_y, i_x);
+             return std::pair<int,int>(i_y, i_x);
         }
         i_x = i_x + dir_x;
         i_y = i_y + dir_y;
