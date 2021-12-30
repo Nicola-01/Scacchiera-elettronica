@@ -125,6 +125,9 @@ int Chessboard::move(string move, bool white_turne)
     str[1] = str_x;
     end[0] = end_y;
     end[1] = end_x;
+
+    if (gonna_die.print() != ' ')
+        last_capture = n_moves;
     return 0; // mossa valida
 }
 

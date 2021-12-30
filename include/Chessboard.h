@@ -26,6 +26,7 @@ private:
     int king_black[2]{0, 4};
     int str[2];
     int end[2];
+    int last_capture;
 
     //--- methods
     Piece inizializer_piece(char p, int y, int x);

@@ -32,9 +32,11 @@ int main(int argc, char *argv[])
         cout << "Argomenti non validi";
         throw ArgumentsException();
     }
+    std::ofstream outfile;
 
     ofstream log_file;
-    log_file.open("../log.txt");
+    log_file.open("../log.txt"); //svuoto il file se è già stato scritto
+    log_file.close();
 
     int player = 0;
     srand(time(NULL));
@@ -46,6 +48,7 @@ int main(int argc, char *argv[])
     bool white_turne = true;
     while (n_moves < moves_max)
     {
+        outfile.open("../log.txt", ios_base::app); //riapro il file (faccio una sorta di autosave)
         //if (system("CLS")) system("clear");
         c.move("XX XX", white_turne);
         cout << "Colore giocatore (1 bianco, 2 nero): " << player << "\nturno bianco (1=true): " << white_turne << endl;
@@ -71,7 +74,6 @@ int main(int argc, char *argv[])
             if (check == 2) // è scacco matto
             {
                 (white_turne) ? send_green("Ha vinto il bianco") : send_green("Ha vinto il Nero");
-                log_file.close();
                 return 0;
             }
             // else è scacco
@@ -82,13 +84,12 @@ int main(int argc, char *argv[])
         if (false) //c.is_draw())
         {
             send_green("Partita finita in patta");
-            log_file.close();
             return 0;
         }
 
         n_moves++;
+        log_file.close();
     }
-    log_file.close();
     return 0;
 }
 
