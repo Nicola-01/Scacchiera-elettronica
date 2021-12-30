@@ -344,7 +344,7 @@ bool Pedone::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y
             return false;
         }
         if ((Board[str_y][end_x].get_ex_position_y() == 6 || Board[str_y][end_x].get_ex_position_y() == 1) && toupper(Board[str_y][end_x].print()) == 'P'
-         && Board[str_y][end_x].is_moved() && (n_moves - 1) == ((Pedone)Board[str_y][end_x]).get_number_move()) //en passant
+         && Board[str_y][end_x].is_moved() && (n_moves - 1) == Board[str_y][end_x].get_number_move()) //en passant
         {
             Board[str_y][end_x] = Nullo(); //(false, str_y, str_x); //en passant in teoria giusto
             return true;

@@ -28,6 +28,9 @@ public:
     int get_ex_position_y() { return ex_position_y; };
     int get_ex_position_x() { return ex_position_x; };
 
+    void set_number_move(int n) { number_move = n; };          //numero mossa
+    int get_number_move() { return number_move; };
+
     bool check_boundary(int end_y, int end_x) { return end_y > -1 && end_x > -1 && end_y < 8 && end_x < 8; };
     bool check_arrocco_re(Piece (&Board)[8][8], int end_y, int end_x);
     void set_move(bool m) { moved = m; };
@@ -105,8 +108,6 @@ public:
     bool is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x) override;
     bool is_moved() { return moved; };
     bool check_promotion(int y) { return y == 0 || y == 7; }; //se arrivato alla fine e' true
-    void set_number_move(int n) { number_move = n; };          //numero mossa
-    int get_number_move() { return number_move; };
     std::pair<int, int> random_xy(Piece (&Board)[8][8], int str_y, int str_x);
 private:
     bool moved = false;
