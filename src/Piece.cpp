@@ -124,6 +124,17 @@ bool Piece::is_end_same_color(Piece (&Board)[8][8], int str_y, int str_x, int en
     return (Board[str_y][str_x].is_white() == Board[end_y][end_x].is_white());
 };
 
+bool Piece::move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x)
+{
+    if (is_valid_move(Board, str_y, str_x, end_y, end_x))
+    {
+        ex_position_x = str_x;
+        ex_position_y = str_y;
+        return true;
+    }
+    return false;
+};
+
 bool Piece::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x)
 {
     char in = toupper(Board[str_y][str_x].type);
@@ -174,17 +185,6 @@ bool Piece::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y,
     }
     return control;
 }
-
-bool Piece::move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x)
-{
-    if (is_valid_move(Board, str_y, str_x, end_y, end_x))
-    {
-        ex_position_x = str_x;
-        ex_position_y = str_y;
-        return true;
-    }
-    return false;
-};
 
 //ARROCCO
 
@@ -339,11 +339,12 @@ bool Pedone::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y
 
     if (delta_x == delta_y)
     {
-        if (Board[end_y][end_x].print() == ' ')
+        if (Board[end_y][end_x].print() != ' ')
         {
             return false;
         }
-        if ((Board[str_y][end_x].get_ex_position_y() == 6 || Board[str_y][end_x].get_ex_position_y() == 1) && toupper(Board[str_y][end_x].print()) == 'P' && Board[str_y][end_x].is_moved() && (n_moves - 1) == ((Pedone)Board[str_y][end_x]).get_number_move()) //en passant
+        if ((Board[str_y][end_x].get_ex_position_y() == 6 || Board[str_y][end_x].get_ex_position_y() == 1) && toupper(Board[str_y][end_x].print()) == 'P'
+         && Board[str_y][end_x].is_moved() && (n_moves - 1) == ((Pedone)Board[str_y][end_x]).get_number_move()) //en passant
         {
             Board[str_y][end_x] = Nullo(); //(false, str_y, str_x); //en passant in teoria giusto
             return true;
@@ -473,7 +474,7 @@ std::pair<int, int> Re::random_xy(Piece (&Board)[8][8], int str_y, int str_x)
         if (i >= 20)
             break;
         i++;
-    } while (check_boundary(end_y, end_x) && !move(Board, str_y, str_x, end_y, end_x));
+    } while (!(check_boundary(end_y, end_x) && move(Board, str_y, str_x, end_y, end_x)));
     output.first = end_y;
     output.second = end_x;
     return output; //se non trova niente ritorna -1-1
@@ -501,7 +502,7 @@ std::pair<int, int> Torre::random_xy(Piece (&Board)[8][8], int str_y, int str_x)
         if (i >= 40)
             break; //se non trova niente ritorna -1-1
         i++;
-    } while (check_boundary(end_y, end_x) && !move(Board, str_y, str_x, end_y, end_x));
+    } while (!(check_boundary(end_y, end_x) && move(Board, str_y, str_x, end_y, end_x)));
     output.first = end_y;
     output.second = end_x;
     return output;
@@ -553,7 +554,7 @@ std::pair<int, int> Cavallo::random_xy(Piece (&Board)[8][8], int str_y, int str_
         if (i >= 20)
             break; //se non trova niente ritorna -1-1
         i++;
-    } while (check_boundary(end_y, end_x) && !move(Board, str_y, str_x, end_y, end_x));
+    } while (!(check_boundary(end_y, end_x) && move(Board, str_y, str_x, end_y, end_x)));
     output.first = end_y;
     output.second = end_x;
     return output;
@@ -585,7 +586,7 @@ std::pair<int, int> Alfiere::random_xy(Piece (&Board)[8][8], int str_y, int str_
         if (cont >= 40)
             break; //se non trova niente ritorna -1-1
         cont++;
-    } while (check_boundary(end_y, end_x) && !move(Board, str_y, str_x, end_y, end_x));
+    } while (!(check_boundary(end_y, end_x) && move(Board, str_y, str_x, end_y, end_x)));
     output.first = end_y;
     output.second = end_x;
     return output;
@@ -643,7 +644,7 @@ std::pair<int, int> Pedone::random_xy(Piece (&Board)[8][8], int str_y, int str_x
         if (i >= 20)
             return output; //se non trova niente ritorna -1-1
         i++;
-    } while (check_boundary(end_y, end_x) && !move(Board, str_y, str_x, end_y, end_x));
+    } while (!(check_boundary(end_y, end_x) && move(Board, str_y, str_x, end_y, end_x)));
     output.first = end_y;
     output.second = end_x;
     return output;

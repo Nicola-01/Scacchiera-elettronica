@@ -28,7 +28,7 @@ public:
     int get_ex_position_y() { return ex_position_y; };
     int get_ex_position_x() { return ex_position_x; };
 
-    bool check_boundary(int end_y, int end_x) { return end_y < 0 || end_x < 0 || end_y > 7 || end_x > 7; };
+    bool check_boundary(int end_y, int end_x) { return end_y > -1 && end_x > -1 && end_y < 8 && end_x < 8; };
     bool check_arrocco_re(Piece (&Board)[8][8], int end_y, int end_x);
     void set_move(bool m) { moved = m; };
     char print() { return type; };
@@ -39,6 +39,7 @@ protected:
     int ex_position_y;
     bool white;
     bool moved = false;
+    int number_move;
 };
 
 class Re : public Piece
@@ -74,7 +75,7 @@ public:
     std::pair<int, int> random_xy(Piece (&Board)[8][8], int str_y, int str_x);
 private:
     bool moved = false;
-    bool arrocco_torre = false;
+    //bool arrocco_torre = false;
 };
 
 class Alfiere : public Piece
