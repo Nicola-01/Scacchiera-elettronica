@@ -13,11 +13,13 @@
 
 //HELPER FUNCTIONS
 bool is_valid_traj(int p_x, int p_y, int k_x, int k_y);
-
+std::vector<std::pair<std::vector<char>, int>> past_positions(std::vector<char>);
+bool are_equals(std::vector<char> a, std::vector<char> b);
+//Eccezioni
+class three_time_repeated{};
 //if(in_black) -> controllo scacco del re nero tra i pezzi bianchi -> pezzo.is_white() 
 
 ///*
-//SECONDA VERSIONE OTTIMIZZATA
 //Ritorna 1 se il re indicato da in_black e' sotto scacco
 // 2 se e' anche scacco matto
 // 0 se non e' nulla
@@ -196,9 +198,8 @@ std::pair<int, int> Chessboard::direction_threat(int king_y, int king_x, bool bl
     return std::pair<int,int>(-1,-1);
 }
 
-bool Chessboard::is_draw()
+bool Chessboard::is_draw(int end_y, int end_x )
 {
-    //Patta per mancanza di pezzi
     std::vector<char> p_l;
     for(int x = 0; x < 8; x++)
     {
@@ -208,6 +209,7 @@ bool Chessboard::is_draw()
                 p_l.push_back(board[y][x].print());
         }
     }
+    //_____PER MATERIALE INSUFFICIENTE______
     //Si suppone che ci debbano essere per forza due re
     //a) Re contro Re
     if(p_l.size() < 3)
@@ -246,7 +248,67 @@ bool Chessboard::is_draw()
             }
         }
     }
-    return false;
+    static int piece_number = -1;
+    static int move_counter = 0;
+    if(piece_number == -1)
+        piece_number = p_l.size();
+    //________PER RIPETIZIONE DI POSIZIONE________
+    if(piece_number != p_l.size())
+    {
+        past_positions(to_char_vector(), true);//Azzero le posizioni passate 
+        move_counter = 0;//Azzero il contatore di mosse senza catture o mosse di pedone
+        piece_number = p_l.size();
+    }
+    else
+    {
+        try
+        {
+            past_positions(to_char_vector(), false);
+        }
+        catch(const three_time_repeated& e)
+        {
+            return true;
+        }
+        piece_number = p_l.size();
+    }
+    //________REGOLA DELLE 50 MOSSE_________
+    if(toupper(board[end_y][end_x].print()) == 'P')
+    {
+        move_counter = 0;
+    }
+    move_counter++;
+    if(move_counter >= 50)
+        return true;
+    //________PER STALLO________
+    bool in_white = !(board[end_y][end_x].is_white())//Se ha mosso bianco controllo stallo nero
+    for(int y = 0; y < 8; y++)
+    {
+        for(int x = 0; x < 8 && (board[y][x].is_white() == in_white); x++)
+        {
+            for(int p_y = 0; p_y < 8; p_y++)
+            {
+                for(int p_x = 0; p_x < 8; p_x++)
+                {
+                    if(board[y][x].is_valid_move(board, y,x, p_y, p_x))
+                        return false;
+                }
+            }
+        }
+    }
+    return true;
+}
+
+std::vector<char> Chessboard::to_char_vector()//Ritorno la matrice per righe
+{
+    std::vector<char> v;
+    for(int i = 0; i < 8; i++)
+    {
+        for(int j = 0; j < 8; j++)
+        {
+            v.push_back(board[i][j].print());
+        }
+    }
+    return v;
 }
 
 //*/
@@ -272,8 +334,39 @@ bool is_valid_traj(int p_y, int p_x, int k_y, int k_x)
         return true;
     return false;
 }
-
-
-
+//empty per svuotare la "memoria"
+void past_positions(std::vector<char> mat, bool empty)
+{
+    static std::vector<std::pair<std::vector<char>, int>> past_pos;
+    if(empty)
+    {
+        past_pos = {std::pair<std::vector<char>, int> (mat, 0)};
+        return;
+    }
+    for(int i = 0; i < past_pos.size(); i++)
+    {
+        std::vector<char> &m = past_pos[i].first;
+        if(are_equals(mat, m))
+        {
+            if(past_pos[i].second == 2)
+                throw three_time_repeated{};
+            past_pos[i].second ++;
+            return;
+        }
+    }
+    past_pos.push_back(std::pair<std::vector<char>, int>(mat, 0));
+    return;
+}
+bool are_equals(std::vector<char> a, std::vector<char> b)
+{
+    if(a.size() != b.size())
+        return false;
+    for(int i = 0; i < a.size(); i++)
+    {
+        if(a[i] != b[i])
+            return false;
+    }
+    return true;
+}
 
 //*/
