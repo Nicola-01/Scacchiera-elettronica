@@ -50,9 +50,10 @@ int main(int argc, char *argv[])
         c.move("XX XX", white_turne);
         cout << "Colore giocatore (1 bianco, 2 nero): " << player << "\nturno bianco (1=true): " << white_turne << endl;
 
-        player_turne(c, white_turne, log_file);
-        /*
-        if (player == 1 && white_turne || player == 2 && !white_turne)
+        
+        if(inp=="pp")
+            player_turne(c, white_turne, log_file);    
+        else if (player == 1 && white_turne || player == 2 && !white_turne)
         {
             send_green("--- Tocca a te");
             player_turne(c, white_turne, log_file);
@@ -61,7 +62,7 @@ int main(int argc, char *argv[])
         {
             send_error("--- Tocca al computer");
             computer_turne(c, white_turne, log_file);
-        }*/
+        }
 
         white_turne = !white_turne;
 
