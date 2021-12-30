@@ -280,7 +280,7 @@ bool Chessboard::is_draw(int end_y, int end_x )
     if(move_counter >= 50)
         return true;
     //________PER STALLO________
-    bool in_white = !(board[end_y][end_x].is_white())//Se ha mosso bianco controllo stallo nero
+    bool in_white = !(board[end_y][end_x].is_white());//Se ha mosso bianco controllo stallo nero
     for(int y = 0; y < 8; y++)
     {
         for(int x = 0; x < 8 && (board[y][x].is_white() == in_white); x++)
