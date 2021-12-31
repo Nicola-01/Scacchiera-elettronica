@@ -15,7 +15,6 @@
 
 #include <time.h> /* time */
 
-
 using namespace std;
 
 #define on_Linux 0
@@ -45,7 +44,7 @@ public:
     int get_ex_position_y() { return ex_position_y; };
     int get_ex_position_x() { return ex_position_x; };
 
-    void set_number_move(int n) { number_move = n; };          //numero mossa
+    void set_number_move(int n) { number_move = n; }; //numero mossa
     int get_number_move() { return number_move; };
 
     bool check_boundary(int end_y, int end_x) { return end_y > -1 && end_x > -1 && end_y < 8 && end_x < 8; };
@@ -86,7 +85,7 @@ private:
 
 public:
     Chessboard();
-    int move(std::string& move, bool white_turne);
+    int move(std::string &move, bool white_turne);
     bool is_right_piece(int y, int x, bool white_turne) { return (board[y][x].print() != ' ' && board[y][x].is_white() == white_turne); };
     std::string random_move(int y, int x);
     char pices_type(int y, int x) { return board[y][x].print(); }
@@ -94,7 +93,7 @@ public:
     bool is_checkmate(bool in_black, int st_y, int st_x, int end_y, int end_x) { return false; }
     int is_check(bool in_black, int st_y, int st_x, int end_y, int end_x) { return false; }
     bool is_draw(int end_y, int end_x) { return false; }
-    
+
     bool is_checkmate(bool in_black) { return false; }
     int is_check(bool in_black) { return false; }
     bool is_draw() { return false; }
@@ -102,14 +101,10 @@ public:
 
 //Riccardo Miele 2008594
 
-
-
 //MANCANO I DISTRUTTORI
 //CONTROLLO DELLA REGOLA 4 DELL'ARROCCO
 
 extern int n_moves;
-
-
 
 class Re : public Piece
 {
@@ -121,6 +116,7 @@ public:
     bool is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x) override;
     bool is_moved() { return moved; };
     std::pair<int, int> random_xy(Piece (&Board)[8][8], int str_y, int str_x);
+
 private:
     bool moved = false; //dopo la prima mossa diventa true
 };
@@ -142,6 +138,7 @@ public:
     bool is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x) override;
     bool is_moved() { return moved; };
     std::pair<int, int> random_xy(Piece (&Board)[8][8], int str_y, int str_x);
+
 private:
     bool moved = false;
     //bool arrocco_torre = false;
@@ -175,6 +172,7 @@ public:
     bool is_moved() { return moved; };
     bool check_promotion(int y) { return y == 0 || y == 7; }; //se arrivato alla fine e' true
     std::pair<int, int> random_xy(Piece (&Board)[8][8], int str_y, int str_x);
+
 private:
     bool moved = false;
     int number_move;
@@ -209,12 +207,12 @@ Chessboard::Chessboard()
     }
 }
 
-int Chessboard::move(string& move, bool white_turne)
+int Chessboard::move(string &move, bool white_turne)
 {
     bool promotion{false}, arrocco{false};
     for (int i = 0; i < move.size(); i++)
         move[i] = toupper(move[i]);
-    if(move == "CLEAR")
+    if (move == "CLEAR")
         return -2;
 
     if (move == "XX XX")
@@ -224,9 +222,9 @@ int Chessboard::move(string& move, bool white_turne)
         return 1; // formato string non valido   // throw InvalidMoveStringException();
 
     int str_x = (move[0] - 'A'),
-        str_y = abs(move[1] - '0' - 8),
+        str_y = std::abs(move[1] - '0' - 8),
         end_x = (move[3] - 'A'),
-        end_y = abs(move[4] - '0' - 8);
+        end_y = std::abs(move[4] - '0' - 8);
 
     //cout << str_y << " " << str_x << "   " << end_y << " "  << end_x << endl;
 
@@ -252,9 +250,9 @@ int Chessboard::move(string& move, bool white_turne)
         arrocco = true;
     }
 
-        Piece gonna_die = board[end_y][end_x];
-        board[end_y][end_x] = board[str_y][str_x];
-        board[str_y][str_x] = Nullo();
+    Piece gonna_die = board[end_y][end_x];
+    board[end_y][end_x] = board[str_y][str_x];
+    board[str_y][str_x] = Nullo();
 
     if (board[end_y][end_x].print() == 'R') // Re nero
     {
@@ -275,9 +273,9 @@ int Chessboard::move(string& move, bool white_turne)
 
         if (promotion)
             board[str_y][str_x] = Pedone(white_turne, str_y, str_x);
-        else if (arrocco) // se è stato fatto un auto scacco perchè si ha fatto un arrocco allora il re viene spostato "in automatico" ma la torre no 
+        else if (arrocco) // se è stato fatto un auto scacco perchè si ha fatto un arrocco allora il re viene spostato "in automatico" ma la torre no
         {
-            int x_torre = (end_x<str_y) ? 3 : 5; // arrocco lungo : arrocco corto
+            int x_torre = (end_x < str_y) ? 3 : 5; // arrocco lungo : arrocco corto
             board[str_y][x_torre] = board[str_y][x_torre];
             board[str_y][x_torre] = Nullo();
         }
@@ -315,21 +313,24 @@ bool Chessboard::is_valid_string(string move) // Ln Ln    L->Lettera n->Numero
 
 string Chessboard::random_move(int y, int x)
 {
-    pair<int, int> a{-1,-1};
+    pair<int, int> a{-1, -1};
     bool promotion{false}, arrocco{false};
-    try {
+    try
+    {
         a = board[y][x].random_position(board, y, x); // restituisce le cordinate di arrivo
     }
-    catch (PromotionException &e) {
+    catch (PromotionException &e)
+    {
         promotion = true;
     }
-    catch (ArroccoException &e) {
+    catch (ArroccoException &e)
+    {
         arrocco = true;
     }
-    
+
     cout << " --------------------- random " << y << " " << x << " " << a.first << " " << a.second << endl;
     if (a.first >= 0)
-        return (char)('A' + x) + to_string(abs(y - 8)) + " " + (char)('A' + a.second) + to_string((abs(a.first - 8)));
+        return (char)('A' + x) + to_string(std::abs(y - 8)) + " " + (char)('A' + a.second) + to_string((std::abs(a.first - 8)));
     return "NV NV";
     // restituisce un array di 2, se è lo spostamento possibile da la posizione [y][x] altrimenti -1, -1
 }
@@ -355,7 +356,7 @@ Piece Chessboard::inizializer_piece(char p, int y, int x)
     }
 }
 
-ostream& operator<<(ostream& os, Chessboard& cb)
+ostream &operator<<(ostream &os, Chessboard &cb)
 {
     os << "\n\n";
     for (int y = 0; y < 8; y++)
@@ -370,9 +371,6 @@ ostream& operator<<(ostream& os, Chessboard& cb)
 }
 // Nicola Busato 2009663
 
-
-
-
 int n_moves;
 
 class ArgumentsException
@@ -386,84 +384,9 @@ void player_turne(Chessboard &scacchiera, bool white_turne, ofstream &log_file);
 void computer_turne(Chessboard &scacchiera, bool white_turne, ofstream &log_file);
 
 // stampa colorata (Solo su linux)  https://www.tutorialspoint.com/how-to-output-colored-text-to-a-linux-terminal
-void print_red(string s) { cout << ((on_Linux) ? "\033[;31m" + s + "\033[0m" : s) << endl; }
-void print_green(string s) { cout << ((on_Linux) ? "\033[;32m" + s + "\033[0m" : s) << endl; }
+//void print_red(string s) { cout << ((on_Linux) ? "\033[;31m" + s + "\033[0m" : s) << endl; }
+//void print_green(string s) { cout << ((on_Linux) ? "\033[;32m" + s + "\033[0m" : s) << endl; }
 ostream &operator<<(ostream &os, Chessboard &cb);
-
-int main(int argc, char *argv[])
-{
-    if (system("CLS"))
-        system("clear");
-    string game_type = argv[1];
-    for (int i = 0; i < game_type.size(); i++)
-        game_type[i] = tolower(game_type[i]);
-
-    if (argc != 2 || (game_type != "pc" && game_type != "cc" && game_type != "pp"))
-    {
-        cout << "Argomenti non validi, aggiungere: pp (Player vs Player), pc (Player vs Computer) o cc (Computer vs Computer);\n";
-        throw ArgumentsException();
-    }
-
-    ofstream log_file;
-    log_file.open("../log.txt"); //svuoto il file se è già stato scritto
-    //log_file.close();
-
-    srand(time(NULL));
-    int player = (game_type == "pc") ? rand() % 2 + 1 : 0; // 0, se non è un giocatore ,1 se è bianco, 2 se è nero
-    if (player != 0)
-        print_green((player == 1) ? "Giochi con il bianco" : "Giochi con il nero");
-
-    Chessboard scacchiera{};
-    n_moves;
-    bool white_turne{true};
-    while (n_moves < moves_max)
-    {
-        //outfile.open("../log.txt", ios_base::app); //riapro il file (faccio una sorta di autosave)
-        //if (system("CLS")) system("clear");
-        cout << scacchiera; //.move("XX XX", white_turne);
-
-        if (game_type == "pp")
-        { // forse provvisorio
-            print_green(((white_turne) ? "-= Tocca al bianco =-" : "-= Tocca al nero =-"));
-            player_turne(scacchiera, white_turne, log_file);
-        }
-        else if (player == 1 && white_turne || player == 2 && !white_turne)
-        {
-            print_green("--- Tocca a te");
-            player_turne(scacchiera, white_turne, log_file);
-        }
-        else
-        {
-            print_red("--- Tocca al computer");
-            computer_turne(scacchiera, white_turne, log_file);
-        }
-
-        white_turne = !white_turne;
-
-        if (int check = scacchiera.is_check(!white_turne) > 0)
-        {
-            if (check == 2)
-            { // è scacco matto
-                (white_turne) ? print_green("Ha vinto il bianco") : print_green("Ha vinto il Nero");
-                break;
-            }
-            // else è scacco
-            (white_turne) ? print_green("Il Bianco ha fatto scacco al Nero") : print_green("Il Nero ha fatto scacco al Bianco");
-            // log_file.close();
-        }
-        else if (false) //scacchiera.is_draw())
-        {
-            print_green("Partita finita in patta");
-            break; // non mi piace molto, valuto
-            // log_file.close();
-            // return 0;
-        }
-
-        n_moves++;
-    }
-    log_file.close();
-    return 0;
-}
 
 string result_type(int t, string move_line)
 {
@@ -488,7 +411,7 @@ void player_turne(Chessboard &scacchiera, bool white_turne, ofstream &log_file)
 {
     int output_type;
     string line;
-    print_green("Inserire la mossa: ");
+    cout << "Inserire la mossa: "; //print_green();
     getline(cin, line);
     while ((output_type = scacchiera.move(line, white_turne)) != 0)
     {
@@ -497,13 +420,13 @@ void player_turne(Chessboard &scacchiera, bool white_turne, ofstream &log_file)
             if (system("CLS"))
                 system("clear");
             cout << scacchiera;
-            print_green("Inserire la mossa: ");
+            cout << "Inserire la mossa: "; //print_green();
         }
         else
             cout << scacchiera;
         if (output_type == -1)
             cout << scacchiera;
-        print_red(result_type(output_type, line));
+        cout << result_type(output_type, line); //print_red();
         getline(cin, line);
     }
     log_file << line + "\n";
@@ -877,7 +800,7 @@ bool Pedone::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y
         return false;
     }
     //delta_y == 2 && (Board[str_y][str_x].get_ex_position_y() == 6 || Board[str_y][str_x].get_ex_position_y() == 1)
-    if (delta_y == 2 && moved)
+    if (delta_y == 2 && moved && delta_x != 0)
     {
         return false;
     }
@@ -944,8 +867,15 @@ std::pair<int, int> Piece::random_position(Piece (&Board)[8][8], int str_y, int 
     };
     case 'D': //poco efficiente
     {
+        int i = 0;
         do
         {
+            if (i >= 40)
+            {
+                output.first = -1;
+                output.second = -1;
+                break;
+            }
             int torre_alfiere = rand() % 2;
             if (torre_alfiere)
             {
@@ -955,6 +885,7 @@ std::pair<int, int> Piece::random_position(Piece (&Board)[8][8], int str_y, int 
             {
                 output = ((Alfiere)tmp).random_xy(Board, str_y, str_x);
             }
+            i++;
         } while (output.first == -1);
         break;
     }
@@ -1204,6 +1135,81 @@ std::pair<int, int> Pedone::random_xy(Piece (&Board)[8][8], int str_y, int str_x
     return output;
 };
 
+int main(int argc, char *argv[])
+{
+
+    if (system("CLS"))
+        system("clear");
+    string game_type = "pc"; //argv[1];
+    for (int i = 0; i < game_type.size(); i++)
+        game_type[i] = tolower(game_type[i]);
+
+    // if (argc != 2 || (game_type != "pc" && game_type != "cc" && game_type != "pp"))
+    // {
+    //     cout << "Argomenti non validi, aggiungere: pp (Player vs Player), pc (Player vs Computer) o cc (Computer vs Computer);\n";
+    //     throw ArgumentsException();
+    // }
+
+    ofstream log_file;
+    log_file.open("../log.txt"); //svuoto il file se è già stato scritto
+    //log_file.close();
+
+    srand(time(NULL));
+    int player = (game_type == "pc") ? rand() % 2 + 1 : 0; // 0, se non è un giocatore ,1 se è bianco, 2 se è nero
+    if (player != 0)
+        cout << "giochi con "; //print_green((player == 1) ? "Giochi con il bianco" : "Giochi con il nero");
+
+    Chessboard scacchiera{};
+    n_moves;
+    bool white_turne{true};
+    while (n_moves < moves_max)
+    {
+        //outfile.open("../log.txt", ios_base::app); //riapro il file (faccio una sorta di autosave)
+        //if (system("CLS")) system("clear");
+        cout << scacchiera; //.move("XX XX", white_turne);
+
+        if (game_type == "pp")
+        {                       // forse provvisorio
+            cout << "tocca a "; //print_green(((white_turne) ? "-= Tocca al bianco =-" : "-= Tocca al nero =-"));
+            player_turne(scacchiera, white_turne, log_file);
+        }
+        else if (player == 1 && white_turne || player == 2 && !white_turne)
+        {
+            cout << "Tocca a te"; //print_green("--- Tocca a te");
+            player_turne(scacchiera, white_turne, log_file);
+        }
+        else
+        {
+            cout << "tocca al computer"; //print_red("--- Tocca al computer");
+            computer_turne(scacchiera, white_turne, log_file);
+        }
+
+        white_turne = !white_turne;
+
+        if (int check = scacchiera.is_check(!white_turne) > 0)
+        {
+            if (check == 2)
+            { // è scacco matto
+                (white_turne) ? (cout << "Ha vinto il bianco") : (cout << "Ha vinto il Nero");
+                break;
+            }
+            // else è scacco
+            // (white_turne) ? print_green("Il Bianco ha fatto scacco al Nero") : print_green("Il Nero ha fatto scacco al Bianco");
+            // log_file.close();
+        }
+        else if (false) //scacchiera.is_draw())
+        {
+            //print_green("Partita finita in patta");
+            break; // non mi piace molto, valuto
+            // log_file.close();
+            // return 0;
+        }
+
+        n_moves++;
+    }
+    log_file.close();
+    return 0;
+}
 
 /*
 //RANDOM MOVE CAVALLO
@@ -1322,7 +1328,8 @@ bool Pedone::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y
     return true;
 };
 
-*//*
+*/
+/*
     AUTORE: Martino Scagnet 2000134
 
     file: Rules.cpp

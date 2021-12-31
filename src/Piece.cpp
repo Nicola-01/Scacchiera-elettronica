@@ -180,6 +180,7 @@ bool Piece::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y,
         Pedone p = Pedone(Board[str_y][str_x].is_white(), Board[str_y][str_x].get_ex_position_y(), Board[str_y][str_x].get_ex_position_x(), Board[str_y][str_x].is_moved());
         control = p.is_valid_move(Board, str_y, str_x, end_y, end_x);
         set_move(p.is_moved());
+        set_number_move(p.get_number_move());
         break;
     }
     }
@@ -337,17 +338,21 @@ bool Pedone::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y
             return false;
     }
 
-    if (delta_x == delta_y)
+    if (delta_x == delta_y && Board[end_y][end_x].print() == ' ')
     {
-        if (Board[end_y][end_x].print() != ' ')
-        {
-            return false;
-        }
-        std::cout << "en passant, n_moves: " << n_moves << " , pednone " << str_y << "; " << end_x << " ; number_move: " << Board[str_y][end_x].get_number_move() << std::endl;
+
         if ((Board[str_y][end_x].get_ex_position_y() == 6 || Board[str_y][end_x].get_ex_position_y() == 1) && toupper(Board[str_y][end_x].print()) == 'P' && Board[str_y][end_x].is_moved() && (n_moves - 1) == Board[str_y][end_x].get_number_move()) //en passant
         {
-            Board[str_y][end_x] = Nullo(); //(false, str_y, str_x); //en passant in teoria giusto
-            return true;
+            std::cout << "fin qui funziona";
+            // if ((n_moves - 1) == Board[str_y][end_x].get_number_move())
+            {
+                Board[str_y][end_x] = Nullo(); //(false, str_y, str_x); //en passant in teoria giusto
+                return true;
+            }
+        }
+        else
+        {
+            return false;
         }
     }
     if (delta_x == 0 && Board[end_y][end_x].print() != ' ') //non può mangiare in avanti
@@ -355,7 +360,7 @@ bool Pedone::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y
         return false;
     }
     //delta_y == 2 && (Board[str_y][str_x].get_ex_position_y() == 6 || Board[str_y][str_x].get_ex_position_y() == 1)
-    if (delta_y == 2 && moved)
+    if (delta_y == 2 && moved && delta_x != 0)
     {
         return false;
     }
@@ -422,8 +427,15 @@ std::pair<int, int> Piece::random_position(Piece (&Board)[8][8], int str_y, int 
     };
     case 'D': //poco efficiente
     {
+        int i = 0;
         do
         {
+            if (i >= 40)
+            {
+                output.first = -1;  //non so se serva
+                output.second = -1;
+                break;
+            }
             int torre_alfiere = rand() % 2;
             if (torre_alfiere)
             {
@@ -433,6 +445,7 @@ std::pair<int, int> Piece::random_position(Piece (&Board)[8][8], int str_y, int 
             {
                 output = ((Alfiere)tmp).random_xy(Board, str_y, str_x);
             }
+            i++;
         } while (output.first == -1);
         break;
     }
@@ -637,8 +650,6 @@ std::pair<int, int> Pedone::random_xy(Piece (&Board)[8][8], int str_y, int str_x
         {
             end_y = str_y + d_y;
         }
-        end_y = rand() % (2) + (str_y + 1); //2 possibili numeri a partire da quello str_y + 1
-        end_y = (str_y + 1);
         if (p.check_promotion(end_y) && check_boundary(end_y, end_x) && !is_end_same_color(Board, str_y, str_x, end_y, end_x))
         {
             int random = rand() % 4; //4 possibili numeri a partire da 0
