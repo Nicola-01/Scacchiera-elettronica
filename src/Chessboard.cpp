@@ -22,30 +22,16 @@ Chessboard::Chessboard()
     }
 }
 
-void Chessboard::print()
-{
-    cout << "\n\n";
-    for (int y = 0; y < 8; y++)
-    {
-        cout << 8 - y << "   ";
-        for (int x = 0; x < 8; x++)
-            cout << board[y][x].print() << " ";
-        cout << "\n";
-    }
-    cout << "\n    A B C D E F G H\n\n";
-}
-
-int Chessboard::move(string move, bool white_turne)
+int Chessboard::move(string& move, bool white_turne)
 {
     bool promotion{false}, arrocco{false};
     for (int i = 0; i < move.size(); i++)
         move[i] = toupper(move[i]);
+    if(move == "CLEAR")
+        return -2;
 
     if (move == "XX XX")
-    {
-        print();
         return -1;
-    }
 
     if (!is_valid_string(move))
         return 1; // formato string non valido   // throw InvalidMoveStringException();
@@ -140,24 +126,19 @@ bool Chessboard::is_valid_string(string move) // Ln Ln    L->Lettera n->Numero
            0 < move[4] - '0' && move[4] - '0' <= 8;
 }
 
-bool Chessboard::is_right_piece(int y, int x, bool white_turne)
-{
-    return (board[y][x].print() != ' ' && board[y][x].is_white() == white_turne);
-}
-
 string Chessboard::random_move(int y, int x)
 {
     pair<int, int> a{-1,-1};
-    bool promotion = false;
-    try
-    {
+    bool promotion{false}, arrocco{false};
+    try {
         a = board[y][x].random_position(board, y, x); // restituisce le cordinate di arrivo
     }
-    catch (PromotionException &e)
-    {
+    catch (PromotionException &e) {
         promotion = true;
     }
-    
+    catch (ArroccoException &e) {
+        arrocco = true;
+    }
     
     cout << " --------------------- random " << y << " " << x << " " << a.first << " " << a.second << endl;
     if (a.first >= 0)
@@ -185,4 +166,18 @@ Piece Chessboard::inizializer_piece(char p, int y, int x)
     default:
         return Nullo();
     }
+}
+
+ostream& operator<<(ostream& os, Chessboard& cb)
+{
+    os << "\n\n";
+    for (int y = 0; y < 8; y++)
+    {
+        os << 8 - y << "   ";
+        for (int x = 0; x < 8; x++)
+            os << cb.pices_type(y, x) << " ";
+        os << "\n";
+    }
+    os << "\n    A B C D E F G H\n\n";
+    return os;
 }
