@@ -406,6 +406,7 @@ bool Pedone::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y
 };
 
 //RANDOM MOVE
+
 std::pair<int, int> Piece::random_position(Piece (&Board)[8][8], int str_y, int str_x) //ritorna le coordinate sotto forma di stringa
 {
     char in = toupper(type);
@@ -577,9 +578,9 @@ std::pair<int, int> Alfiere::random_xy(Piece (&Board)[8][8], int str_y, int str_
     srand(time(NULL));
     int end_y, end_x, i;
     std::pair<int, int> output{-1, -1};
+    int cont = 0;
     do
     {
-        int cont = 0;
         i = 1 + rand() % 7; //7 possibili numeri a partire da 0
         int up_down = rand() % 2;
         int right_left = rand() % 2;
