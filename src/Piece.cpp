@@ -326,7 +326,7 @@ bool Pedone::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y
         return false;
     if (delta_x > 1) //non si può muovere in diagonale
         return false;
-    if (is_white()) //tornare indietro, si puo' fare sicuramente meglio
+    if (Board[str_y][str_x].print() == 'p') //tornare indietro, si puo' fare sicuramente meglio
     {
         if (end_y > str_y)
             return false;
@@ -344,8 +344,7 @@ bool Pedone::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y
             return false;
         }
         std::cout << "en passant, n_moves: " << n_moves << " , pednone " << str_y << "; " << end_x << " ; number_move: " << Board[str_y][end_x].get_number_move() << std::endl;
-        if ((Board[str_y][end_x].get_ex_position_y() == 6 || Board[str_y][end_x].get_ex_position_y() == 1) && toupper(Board[str_y][end_x].print()) == 'P'
-         && Board[str_y][end_x].is_moved() && (n_moves - 1) == Board[str_y][end_x].get_number_move()) //en passant
+        if ((Board[str_y][end_x].get_ex_position_y() == 6 || Board[str_y][end_x].get_ex_position_y() == 1) && toupper(Board[str_y][end_x].print()) == 'P' && Board[str_y][end_x].is_moved() && (n_moves - 1) == Board[str_y][end_x].get_number_move()) //en passant
         {
             Board[str_y][end_x] = Nullo(); //(false, str_y, str_x); //en passant in teoria giusto
             return true;
@@ -602,16 +601,26 @@ std::pair<int, int> Pedone::random_xy(Piece (&Board)[8][8], int str_y, int str_x
     Pedone p = Pedone(Board[str_y][str_x].is_white(), Board[str_y][str_x].get_ex_position_y(), Board[str_y][str_x].get_ex_position_x(), Board[str_y][str_x].is_moved());
     do
     {
+        int d_y;
+        end_x = rand() % (3) + (str_x - 1); //3 possibili numeri a partire da quello a sinistra
         if (!p.is_moved()) //si può muovere di due
         {
-            end_x = rand() % (3) + (str_x - 1); //3 possibili numeri a partire da quello a sinistra
-            end_y = rand() % (2) + (str_y + 1); //2 possibili numeri a partire da quello str_y + 1
+            d_y = 1 + rand() % 2;
         }
         else
         {
-            end_x = rand() % (3) + (str_x - 1); //3 possibili numeri a partire da quello a sinistra
-            end_y = (str_y + 1);
+            
+            d_y = 1;
         }
+        if (p.is_white())
+        {
+            end_y = str_y + d_y;
+        }
+        else{
+            end_y = str_y - d_y;
+        }
+        end_y = rand() % (2) + (str_y + 1); //2 possibili numeri a partire da quello str_y + 1
+        end_y = (str_y + 1);
         if (p.check_promotion(end_y) && check_boundary(end_y, end_x) && !is_end_same_color(Board, str_y, str_x, end_y, end_x))
         {
             int random = rand() % 4; //4 possibili numeri a partire da 0
