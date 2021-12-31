@@ -472,7 +472,11 @@ std::pair<int, int> Re::random_xy(Piece (&Board)[8][8], int str_y, int str_x)
         end_x = rand() % (3) + (str_x - 1); //3 possibili numeri a partire da quello a sinistra
         end_y = rand() % (3) + (str_y - 1); //3 possibili numeri a partire da quello a sotto
         if (i >= 20)
+        {
+            end_y = -1;
+            end_x = -1;
             break;
+        }
         i++;
     } while (!(check_boundary(end_y, end_x) && move(Board, str_y, str_x, end_y, end_x)));
     output.first = end_y;
@@ -500,7 +504,11 @@ std::pair<int, int> Torre::random_xy(Piece (&Board)[8][8], int str_y, int str_x)
             end_x = rand() % 8;
         }
         if (i >= 40)
+        {
+            end_y = -1;
+            end_x = -1;
             break; //se non trova niente ritorna -1-1
+        }
         i++;
     } while (!(check_boundary(end_y, end_x) && move(Board, str_y, str_x, end_y, end_x)));
     output.first = end_y;
@@ -552,7 +560,11 @@ std::pair<int, int> Cavallo::random_xy(Piece (&Board)[8][8], int str_y, int str_
             }
         }
         if (i >= 20)
+        {
+            end_y = -1;
+            end_x = -1;
             break; //se non trova niente ritorna -1-1
+        }
         i++;
     } while (!(check_boundary(end_y, end_x) && move(Board, str_y, str_x, end_y, end_x)));
     output.first = end_y;
@@ -584,7 +596,11 @@ std::pair<int, int> Alfiere::random_xy(Piece (&Board)[8][8], int str_y, int str_
             end_x = str_x - i;
         }
         if (cont >= 40)
+        {
+            end_y = -1;
+            end_x = -1;
             break; //se non trova niente ritorna -1-1
+        }
         cont++;
     } while (!(check_boundary(end_y, end_x) && move(Board, str_y, str_x, end_y, end_x)));
     output.first = end_y;
@@ -603,20 +619,21 @@ std::pair<int, int> Pedone::random_xy(Piece (&Board)[8][8], int str_y, int str_x
     {
         int d_y;
         end_x = rand() % (3) + (str_x - 1); //3 possibili numeri a partire da quello a sinistra
-        if (!p.is_moved()) //si può muovere di due
+        if (!p.is_moved())                  //si può muovere di due
         {
             d_y = 1 + rand() % 2;
         }
         else
         {
-            
+
             d_y = 1;
         }
         if (p.is_white())
         {
             end_y = str_y + d_y;
         }
-        else{
+        else
+        {
             end_y = str_y - d_y;
         }
         end_y = rand() % (2) + (str_y + 1); //2 possibili numeri a partire da quello str_y + 1
@@ -652,7 +669,11 @@ std::pair<int, int> Pedone::random_xy(Piece (&Board)[8][8], int str_y, int str_x
             throw PromotionException();
         }
         if (i >= 20)
+        {
+            end_y = -1;
+            end_x = -1;
             return output; //se non trova niente ritorna -1-1
+        }
         i++;
     } while (!(check_boundary(end_y, end_x) && move(Board, str_y, str_x, end_y, end_x)));
     output.first = end_y;
