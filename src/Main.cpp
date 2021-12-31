@@ -8,6 +8,12 @@
 
 #include "Chessboard.h"
 
+#ifdef __unix__
+#define on_Linux 1
+#elif
+#define on_Linux 0
+#endif
+
 using namespace std;
 int n_moves;
 
@@ -17,120 +23,135 @@ class ArgumentsException
 
 constexpr int moves_max = 100;
 
-string result_type(int t);
-void player_turne(Chessboard &c, bool white_turne, ofstream &log_file);
-void computer_turne(Chessboard &c, bool white_turne, ofstream &log_file);
+string result_type(int t, string move_line);
+void player_turne(Chessboard &scacchiera, bool white_turne, ofstream &log_file);
+void computer_turne(Chessboard &scacchiera, bool white_turne, ofstream &log_file);
 
-void send_error(string s);
-void send_green(string s);
+// stampa colorata (Solo su linux)  https://www.tutorialspoint.com/how-to-output-colored-text-to-a-linux-terminal
+void print_red(string s) { cout << ((on_Linux) ? "\033[;31m" + s + "\033[0m" : s) << endl; }
+void print_green(string s) { cout << ((on_Linux) ? "\033[;32m" + s + "\033[0m" : s) << endl; }
+ostream &operator<<(ostream &os, Chessboard &cb);
 
 int main(int argc, char *argv[])
 {
-    string inp = argv[1];
-    if (argc != 2 || (inp != "pc" && inp != "cc"))
+    if (system("CLS"))
+        system("clear");
+    string game_type = argv[1];
+    for (int i = 0; i < game_type.size(); i++)
+        game_type[i] = tolower(game_type[i]);
+
+    if (argc != 2 || (game_type != "pc" && game_type != "cc" && game_type != "pp"))
     {
-        cout << "Argomenti non validi";
+        cout << "Argomenti non validi, aggiungere: pp (Player vs Player), pc (Player vs Computer) o cc (Computer vs Computer);\n";
         throw ArgumentsException();
     }
-    std::ofstream outfile;
 
     ofstream log_file;
     log_file.open("../log.txt"); //svuoto il file se è già stato scritto
-    log_file.close();
+    //log_file.close();
 
-    int player = 0;
     srand(time(NULL));
-    if (inp == "pc")
-        player = rand() % 2 + 1; // 0, se non è un giocatore ,1 se è bianco, 2 se è nero
+    int player = (game_type == "pc") ? rand() % 2 + 1 : 0; // 0, se non è un giocatore ,1 se è bianco, 2 se è nero
+    if (player != 0)
+        print_green((player == 1) ? "Giochi con il bianco" : "Giochi con il nero");
 
-    Chessboard c{};
-    n_moves = 0;
-    bool white_turne = true;
+    Chessboard scacchiera{};
+    n_moves;
+    bool white_turne{true};
     while (n_moves < moves_max)
     {
-        outfile.open("../log.txt", ios_base::app); //riapro il file (faccio una sorta di autosave)
+        //outfile.open("../log.txt", ios_base::app); //riapro il file (faccio una sorta di autosave)
         //if (system("CLS")) system("clear");
-        c.move("XX XX", white_turne);
-        cout << "Colore giocatore (1 bianco, 2 nero): " << player << "\nturno bianco (1=true): " << white_turne << endl;
+        cout << scacchiera; //.move("XX XX", white_turne);
 
-        
-        if(inp=="pp")
-            player_turne(c, white_turne, log_file);    
+        if (game_type == "pp")
+        { // forse provvisorio
+            print_green(((white_turne) ? "-= Tocca al bianco =-" : "-= Tocca al nero =-"));
+            player_turne(scacchiera, white_turne, log_file);
+        }
         else if (player == 1 && white_turne || player == 2 && !white_turne)
         {
-            send_green("--- Tocca a te");
-            player_turne(c, white_turne, log_file);
+            print_green("--- Tocca a te");
+            player_turne(scacchiera, white_turne, log_file);
         }
         else
         {
-            send_error("--- Tocca al computer");
-            computer_turne(c, white_turne, log_file);
+            print_red("--- Tocca al computer");
+            computer_turne(scacchiera, white_turne, log_file);
         }
 
         white_turne = !white_turne;
 
-        if (int check = c.is_check(!white_turne) > 0)
+        if (int check = scacchiera.is_check(!white_turne) > 0)
         {
-            if (check == 2) // è scacco matto
-            {
-                (white_turne) ? send_green("Ha vinto il bianco") : send_green("Ha vinto il Nero");
-                return 0;
+            if (check == 2)
+            { // è scacco matto
+                (white_turne) ? print_green("Ha vinto il bianco") : print_green("Ha vinto il Nero");
+                break;
             }
             // else è scacco
-
-            (white_turne) ? send_green("Il Bianco ha fatto scacco al Nero") : send_green("Il Nero ha fatto scacco al Bianco");
+            (white_turne) ? print_green("Il Bianco ha fatto scacco al Nero") : print_green("Il Nero ha fatto scacco al Bianco");
             // log_file.close();
         }
-        if (false) //c.is_draw())
+        else if (false) //scacchiera.is_draw())
         {
-            send_green("Partita finita in patta");
-            return 0;
+            print_green("Partita finita in patta");
+            break; // non mi piace molto, valuto
+            // log_file.close();
+            // return 0;
         }
 
         n_moves++;
-        log_file.close();
     }
+    log_file.close();
     return 0;
 }
 
-string result_type(int t) // string line --- passa la mossa
+string result_type(int t, string move_line)
 {
     switch (t)
     {
     case 1:
-        return "Formato stringa non valido, inserirne una valida:";
+        return "Formato stringa non valido, inserirne una valida; \"A0 H8\", \"XX XX\", \"clear\"; :";
     case 2:
         return "Non puoi spostare l'aria, inserirne una valida:";
     case 3:
         return "Non puoi muovere il pezzi del avversario, fai una altra mossa:";
     case 4:
-        return "Mossa non e' valida, inserirne una valida:";
+        return "La mossa " + move_line + " non e' valida, inserire una mossa valida:";
     case 5:
-        return "Scacco, mossa non valida, forse è meglio cambiarla:";
-        // case 5:  return "Scacco matto:\n";
-
+        return "Ti stai facendo scacco da solo, forse è meglio cambiarla:";
     default:
         return "";
     }
 }
 
-void player_turne(Chessboard &c, bool white_turne, ofstream &log_file)
+void player_turne(Chessboard &scacchiera, bool white_turne, ofstream &log_file)
 {
     int output_type;
     string line;
-    send_green("Inserire la mossa:");
+    print_green("Inserire la mossa: ");
     getline(cin, line);
-    while ((output_type = c.move(line, white_turne)) != 0)
+    while ((output_type = scacchiera.move(line, white_turne)) != 0)
     {
-        c.move("XX XX", white_turne);
-
-        send_error(result_type(output_type));
+        if (output_type == -2)
+        {
+            if (system("CLS"))
+                system("clear");
+            cout << scacchiera;
+            print_green("Inserire la mossa: ");
+        }
+        else
+            cout << scacchiera;
+        if (output_type == -1)
+            cout << scacchiera;
+        print_red(result_type(output_type, line));
         getline(cin, line);
     }
     log_file << line + "\n";
 }
 
-void computer_turne(Chessboard &c, bool white_turne, ofstream &log_file)
+void computer_turne(Chessboard &scacchiera, bool white_turne, ofstream &log_file)
 {
     string line;
     int y, x;
@@ -140,66 +161,12 @@ void computer_turne(Chessboard &c, bool white_turne, ofstream &log_file)
         {
             y = rand() % 8;
             x = rand() % 8;
-        } while (!c.is_right_piece(y, x, white_turne));
-        line = c.random_move(y, x);
-        cin.get();
+            cout << y << " " << x;
+            cin.get();
+        } while (!scacchiera.is_right_piece(y, x, white_turne));
+        line = scacchiera.random_move(y, x);
         cout << "-- Prova dello spostamento: " << line << endl;
-    } while (line == "NV NV"); //Not Valid
-    c.move(line, white_turne);
+    } while (scacchiera.move(line, white_turne) != 0); //Not Valid
     cout << line;
     log_file << line + "\n";
 }
-
-void send_error(string s)
-{
-    cout << s << endl;
-    cout << "\033[;31m" << s << "\033[0m" << endl;
-}
-
-void send_green(string s)
-{
-    cout << s << endl;
-    cout << "\033[;32m" << s << "\033[0m" << endl;
-}
-/* 
-    // area di funzioni in test
-#ifdef __unix__ /* __unix__ is usually defined by compilers targeting Unix systems */
-// #define OS_Windows 0
-
-// #elif defined(_WIN32) || defined(WIN32) /* _Win32 is usually defined by compilers targeting 32 or   64 bit Windows systems */
-
-// #define OS_Windows 1
-// #include <windows.h>
-// HANDLE color = GetStdHandle(STD_OUTPUT_HANDLE); // -- probabilmente funziona solo per windows
-
-// #endif
-/*
-
-void send_error(string s)
-{
-    if (OS_Windows)
-    {
-        SetConsoleTextAttribute(color, 4);
-        cout << s << endl;
-        SetConsoleTextAttribute(color, 7);
-    }
-    else
-    {
-        cout << "\033[;31m" << s << "\033[0m" << endl; // https://www.tutorialspoint.com/how-to-output-colored-text-to-a-linux-terminal
-    }
-}
-
-void send_green(string s)
-{
-    if (OS_Windows)
-    {
-        SetConsoleTextAttribute(color, 2);
-        cout << s << endl;
-        SetConsoleTextAttribute(color, 7);
-    }
-    else
-    {
-        cout << "\033[;32m" << s << "\033[0m" << endl; // https://www.tutorialspoint.com/how-to-output-colored-text-to-a-linux-terminal
-    }
-}
-*/
