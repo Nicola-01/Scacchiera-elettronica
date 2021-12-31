@@ -31,7 +31,6 @@ private:
     //--- methods
     Piece inizializer_piece(char p, int y, int x);
     bool is_valid_string(std::string move);
-    void print();
 
     std::pair<int, int> direction_threat(int king_y, int king_x, bool black_king, int dir_y, int dir_x);
     bool is_checkmate_d(int k_y, int k_x);
@@ -40,15 +39,18 @@ private:
 
 public:
     Chessboard();
-    int move(std::string move, bool white_turne);
-    bool is_right_piece(int y, int x,  bool white_turne);
+    int move(std::string& move, bool white_turne);
+    bool is_right_piece(int y, int x, bool white_turne) { return (board[y][x].print() != ' ' && board[y][x].is_white() == white_turne); };
     std::string random_move(int y, int x);
+    char pices_type(int y, int x) { return board[y][x].print(); }
 
     bool is_checkmate(bool in_black, int st_y, int st_x, int end_y, int end_x);
     int is_check(bool in_black, int st_y, int st_x, int end_y, int end_x);
-    bool is_checkmate(bool in_black) { return is_checkmate(in_black, str[0], str[1], end[0], end[1]); }
-    int is_check(bool in_black) { return is_checkmate(in_black, str[0], str[1], end[0], end[1]); }
     bool is_draw(int end_y, int end_x);
+    
+    ool is_checkmate(bool in_black) { return is_checkmate(in_black, str[0], str[1], end[0], end[1]); }
+    int is_check(bool in_black) { return is_checkmate(in_black, str[0], str[1], end[0], end[1]); }
+    bool is_draw() { return is_draw(end[0], end[1]); }
 };
 
 #endif
