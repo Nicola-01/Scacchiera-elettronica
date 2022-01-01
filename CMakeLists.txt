@@ -14,13 +14,13 @@ src/Piece.cpp
 src/Rules.cpp
 )
 
-add_executable(main
+add_executable(scacchiera
 src/Main.cpp
 src/Chessboard.cpp
 src/Piece.cpp
 src/Rules.cpp
 )
 
-target_link_libraries(main
+target_link_libraries(scacchiera
 libs
 )
