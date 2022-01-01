@@ -8,11 +8,13 @@
 
 #include "Chessboard.h"
 
+
 #ifdef __unix__
 #define on_Linux 1
-#elif
+#else
 #define on_Linux 0
 #endif
+
 
 using namespace std;
 int n_moves;
@@ -24,13 +26,13 @@ class ArgumentsException
 constexpr int moves_max = 100;
 
 string result_type(int t, string move_line);
-void player_turne(Chessboard &scacchiera, bool white_turne, ofstream &log_file);
+void player_turne(Chessboard& scacchiera, bool white_turne, ofstream& log_file, bool& patta);
 void computer_turne(Chessboard &scacchiera, bool white_turne, ofstream &log_file);
 
 // stampa colorata (Solo su linux)  https://www.tutorialspoint.com/how-to-output-colored-text-to-a-linux-terminal
 void print_red(string s) { cout << ((on_Linux) ? "\033[;31m" + s + "\033[0m" : s) << endl; }
 void print_green(string s) { cout << ((on_Linux) ? "\033[;32m" + s + "\033[0m" : s) << endl; }
-ostream &operator<<(ostream &os, Chessboard &cb);
+ostream& operator<<(ostream& os, Chessboard& cb);
 
 int main(int argc, char *argv[])
 {
@@ -46,9 +48,7 @@ int main(int argc, char *argv[])
         throw ArgumentsException();
     }
 
-    ofstream log_file;
-    log_file.open("../log.txt"); //svuoto il file se è già stato scritto
-    //log_file.close();
+    ofstream log_file ("../log.txt"); //svuoto il file se è già stato scritto
 
     srand(time(NULL));
     int player = (game_type == "pc") ? rand() % 2 + 1 : 0; // 0, se non è un giocatore ,1 se è bianco, 2 se è nero
@@ -56,9 +56,8 @@ int main(int argc, char *argv[])
         print_green((player == 1) ? "Giochi con il bianco" : "Giochi con il nero");
 
     Chessboard scacchiera{};
-    n_moves;
-    bool white_turne{true};
-    while (n_moves < moves_max)
+    bool white_turne{ true }, patta{ false };
+    while (game_type != "cc" || game_type == "cc" && n_moves < moves_max)
     {
         //outfile.open("../log.txt", ios_base::app); //riapro il file (faccio una sorta di autosave)
         //if (system("CLS")) system("clear");
@@ -67,12 +66,12 @@ int main(int argc, char *argv[])
         if (game_type == "pp")
         { // forse provvisorio
             print_green(((white_turne) ? "-= Tocca al bianco =-" : "-= Tocca al nero =-"));
-            player_turne(scacchiera, white_turne, log_file);
+            player_turne(scacchiera, white_turne, log_file, patta);
         }
         else if (player == 1 && white_turne || player == 2 && !white_turne)
         {
             print_green("--- Tocca a te");
-            player_turne(scacchiera, white_turne, log_file);
+            player_turne(scacchiera, white_turne, log_file, patta);
         }
         else
         {
@@ -85,15 +84,15 @@ int main(int argc, char *argv[])
         if (int check = scacchiera.is_check(!white_turne) > 0)
         {
             if (check == 2)
-            { // è scacco matto
-                (white_turne) ? print_green("Ha vinto il bianco") : print_green("Ha vinto il Nero");
+            { // e' scacco matto
+                (white_turne) ? print_green("Il Bianco ha fatto scacco matto al Nero") : print_green("Il Nero ha fatto scacco matto al Bianco);
                 break;
             }
-            // else è scacco
+            // else e' scacco
             (white_turne) ? print_green("Il Bianco ha fatto scacco al Nero") : print_green("Il Nero ha fatto scacco al Bianco");
             // log_file.close();
         }
-        else if (false) //scacchiera.is_draw())
+        else if (patta || false) //scacchiera.is_draw())
         {
             print_green("Partita finita in patta");
             break; // non mi piace molto, valuto
@@ -126,22 +125,27 @@ string result_type(int t, string move_line)
     }
 }
 
-void player_turne(Chessboard &scacchiera, bool white_turne, ofstream &log_file)
+void player_turne(Chessboard &scacchiera, bool white_turne, ofstream &log_file, bool &patta)
 {
     int output_type;
     string line;
     print_green("Inserire la mossa: ");
     getline(cin, line);
-    while ((output_type = scacchiera.move(line, white_turne)) != 0)
+    while ((output_type = scacchiera.move(line, white_turne)) != 0) // il metodo move fa rende line maiuscolo
     {
-        if (output_type == -2)
+        if (line == "XX XX")
         {
             if (system("CLS"))
                 system("clear");
             cout << scacchiera;
             print_green("Inserire la mossa: ");
         }
-        else
+        else if (line == "PATTA")
+        {
+            patta = true;
+            return;
+        }
+        else        // da eliminare per la consegna 
             cout << scacchiera;
         if (output_type == -1)
             cout << scacchiera;
@@ -161,12 +165,10 @@ void computer_turne(Chessboard &scacchiera, bool white_turne, ofstream &log_file
         {
             y = rand() % 8;
             x = rand() % 8;
-            cout << y << " " << x;
-            cin.get();
         } while (!scacchiera.is_right_piece(y, x, white_turne));
         line = scacchiera.random_move(y, x);
-        cout << "-- Prova dello spostamento: " << line << endl;
+        //cout << "-- Prova dello spostamento: " << line << endl;
     } while (scacchiera.move(line, white_turne) != 0); //Not Valid
-    cout << line;
+    //cout << line;
     log_file << line + "\n";
 }

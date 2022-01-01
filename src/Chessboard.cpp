@@ -27,11 +27,6 @@ int Chessboard::move(string& move, bool white_turne)
     bool promotion{false}, arrocco{false};
     for (int i = 0; i < move.size(); i++)
         move[i] = toupper(move[i]);
-    if(move == "CLEAR")
-        return -2;
-
-    if (move == "XX XX")
-        return -1;
 
     if (!is_valid_string(move))
         return 1; // formato string non valido   // throw InvalidMoveStringException();
