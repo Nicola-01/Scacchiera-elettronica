@@ -191,23 +191,23 @@ bool Piece::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y,
 
 bool Piece::check_arrocco_re(Piece (&Board)[8][8], int end_y, int end_x)
 {
-    if (end_x < 4)
+    if (end_x < 4) //end_x == 2
     {
-        Torre t = Torre(Board[end_y][end_x - 1].is_white(), Board[end_y][end_x - 1].get_ex_position_y(), Board[end_y][end_x - 1].get_ex_position_y());
-        if (!t.is_moved() && Board[end_y][end_x].print() != ' ' && Board[end_y][end_x + 1].print() != ' ' && Board[end_y][end_x - 1].print() != ' ')
+        Torre t = Torre(Board[end_y][end_x - 2].is_white(), Board[end_y][end_x - 2].get_ex_position_y(), Board[end_y][end_x - 2].get_ex_position_y(), Board[end_y][end_x - 2].is_moved());
+        if (!t.is_moved() && Board[end_y][end_x].print() == ' ' && Board[end_y][end_x + 1].print() == ' ' && Board[end_y][end_x - 1].print() == ' ')
         {
             Board[end_y][end_x - 2] = Nullo(); //(false, end_y, end_x - 1);
-            Board[end_y][end_x + 1] = Torre(is_white(), end_y, end_x + 1);
+            Board[end_y][end_x + 1] = Torre(is_white(), end_y, end_x + 1, true);
             throw ArroccoException(); //return true;
         }
     }
-    else //end_x > 4
+    else //end_x > 4 //end_x == 6
     {
-        Torre t = Torre(Board[end_y][end_x + 1].is_white(), Board[end_y][end_x + 1].get_ex_position_y(), Board[end_y][end_x + 1].get_ex_position_y());
-        if (!t.is_moved() && Board[end_y][end_x].print() != ' ' && Board[end_y][end_x - 1].print() != ' ')
+        Torre t = Torre(Board[end_y][end_x + 1].is_white(), Board[end_y][end_x + 1].get_ex_position_y(), Board[end_y][end_x + 1].get_ex_position_y(), Board[end_y][end_x + 1].is_moved());
+        if (!t.is_moved() && Board[end_y][end_x].print() == ' ' && Board[end_y][end_x - 1].print() == ' ')
         {
             Board[end_y][end_x + 1] = Nullo(); //(false, end_y, end_x - 1);
-            Board[end_y][end_x - 1] = Torre(is_white(), end_y, end_x + 1);
+            Board[end_y][end_x - 1] = Torre(is_white(), end_y, end_x + 1, true);
             throw ArroccoException(); //return true;
         }
     }
