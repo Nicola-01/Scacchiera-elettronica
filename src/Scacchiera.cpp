@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
         {
             if (check == 2)
             { // e' scacco matto
-                (white_turne) ? print_green("Il Bianco ha fatto scacco matto al Nero") : print_green("Il Nero ha fatto scacco matto al Bianco);
+                (white_turne) ? print_green("Il Bianco ha fatto scacco matto al Nero") : print_green("Il Nero ha fatto scacco matto al Bianco");
                 break;
             }
             // else e' scacco

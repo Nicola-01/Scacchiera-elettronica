@@ -15,7 +15,7 @@ src/Rules.cpp
 )
 
 add_executable(scacchiera
-src/Main.cpp
+src/Scacchiera.cpp
 src/Chessboard.cpp
 src/Piece.cpp
 src/Rules.cpp

@@ -191,23 +191,23 @@ bool Piece::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y,
 
 bool Piece::check_arrocco_re(Piece (&Board)[8][8], int end_y, int end_x)
 {
-    if (end_x < 4)
+    if (end_x < 4) //end_x == 2
     {
-        Torre t = Torre(Board[end_y][end_x - 1].is_white(), Board[end_y][end_x - 1].get_ex_position_y(), Board[end_y][end_x - 1].get_ex_position_y());
-        if (!t.is_moved() && Board[end_y][end_x].print() != ' ' && Board[end_y][end_x + 1].print() != ' ' && Board[end_y][end_x - 1].print() != ' ')
+        Torre t = Torre(Board[end_y][end_x - 2].is_white(), Board[end_y][end_x - 2].get_ex_position_y(), Board[end_y][end_x - 2].get_ex_position_y(), Board[end_y][end_x - 2].is_moved());
+        if (!t.is_moved() && Board[end_y][end_x].print() == ' ' && Board[end_y][end_x + 1].print() == ' ' && Board[end_y][end_x - 1].print() == ' ')
         {
             Board[end_y][end_x - 2] = Nullo(); //(false, end_y, end_x - 1);
-            Board[end_y][end_x + 1] = Torre(is_white(), end_y, end_x + 1);
+            Board[end_y][end_x + 1] = Torre(is_white(), end_y, end_x + 1, true);
             throw ArroccoException(); //return true;
         }
     }
-    else //end_x > 4
+    else //end_x > 4 //end_x == 6
     {
-        Torre t = Torre(Board[end_y][end_x + 1].is_white(), Board[end_y][end_x + 1].get_ex_position_y(), Board[end_y][end_x + 1].get_ex_position_y());
-        if (!t.is_moved() && Board[end_y][end_x].print() != ' ' && Board[end_y][end_x - 1].print() != ' ')
+        Torre t = Torre(Board[end_y][end_x + 1].is_white(), Board[end_y][end_x + 1].get_ex_position_y(), Board[end_y][end_x + 1].get_ex_position_y(), Board[end_y][end_x + 1].is_moved());
+        if (!t.is_moved() && Board[end_y][end_x].print() == ' ' && Board[end_y][end_x - 1].print() == ' ')
         {
             Board[end_y][end_x + 1] = Nullo(); //(false, end_y, end_x - 1);
-            Board[end_y][end_x - 1] = Torre(is_white(), end_y, end_x + 1);
+            Board[end_y][end_x - 1] = Torre(is_white(), end_y, end_x + 1, true);
             throw ArroccoException(); //return true;
         }
     }
@@ -340,7 +340,6 @@ bool Pedone::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y
 
     if (delta_x == delta_y && Board[end_y][end_x].print() == ' ')
     {
-
         if ((Board[str_y][end_x].get_ex_position_y() == 6 || Board[str_y][end_x].get_ex_position_y() == 1) && toupper(Board[str_y][end_x].print()) == 'P' && Board[str_y][end_x].is_moved() && (n_moves - 1) == Board[str_y][end_x].get_number_move()) //en passant
         {
             std::cout << "fin qui funziona";
@@ -360,12 +359,15 @@ bool Pedone::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y
         return false;
     }
     //delta_y == 2 && (Board[str_y][str_x].get_ex_position_y() == 6 || Board[str_y][str_x].get_ex_position_y() == 1)
-    if (delta_y == 2 && moved && delta_x != 0)
-    {
-        return false;
-    }
     if (delta_y == 2)
     {
+        if (moved)
+            return false;
+        else
+        {
+            if (delta_x != 0)
+                return false;
+        }
         set_number_move(n_moves);
     }
     if (check_promotion(end_y))
@@ -432,7 +434,7 @@ std::pair<int, int> Piece::random_position(Piece (&Board)[8][8], int str_y, int 
         {
             if (i >= 40)
             {
-                output.first = -1;  //non so se serva
+                output.first = -1; //non so se serva
                 output.second = -1;
                 break;
             }
@@ -694,6 +696,30 @@ std::pair<int, int> Pedone::random_xy(Piece (&Board)[8][8], int str_y, int str_x
 };
 
 #endif
+
+/*
+is_valid_move pedone
+if (delta_y == 2 && moved)
+    {
+        return false;
+    }
+    if (delta_y == 2 && !moved)
+    {
+        if (delta_x != 0)
+            return false;
+    }
+    if (delta_y == 2)
+    {
+        set_number_move(n_moves);
+    }
+    //&& delta_x == 0
+    //if (delta_y == 2 && delta_x != 0)
+    // {
+    //   return false;
+    //}
+
+
+*/
 
 /*
 //RANDOM MOVE CAVALLO
