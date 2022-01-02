@@ -15,3 +15,5 @@ Note programma
  
  *
  
+-non funziona l'arrocco
+-l'alfiere non si puo' muovere più di una casella all'inizio della partita
