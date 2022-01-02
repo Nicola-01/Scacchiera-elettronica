@@ -135,7 +135,7 @@ string Chessboard::random_move(int y, int x)
         arrocco = true;
     }
     
-    cout << " --------------------- random " << y << " " << x << " " << a.first << " " << a.second << endl;
+    //cout << " --------------------- random " << y << " " << x << " " << a.first << " " << a.second << endl;
     if (a.first >= 0)
         return (char)('A' + x) + to_string(abs(y - 8)) + " " + (char)('A' + a.second) + to_string((abs(a.first - 8)));
     return "NV NV";

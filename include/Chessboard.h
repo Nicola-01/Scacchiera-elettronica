@@ -21,8 +21,7 @@ class Chessboard
 private:
     //--- variables
     Piece board[8][8]; //[y][x]
-    //Rules rul;
-    const std::string pos{"TCADRACT"};
+    const std::string pos{"TCADRACT"}; // è la "sequenza" in cui vengono posizionati i pezzi diversi dal pedone
     int king_white[2]{7, 4}; //y x
     int king_black[2]{0, 4};
     int str[2];
@@ -45,9 +44,9 @@ public:
     std::string random_move(int y, int x);
     char pices_type(int y, int x) { return board[y][x].print(); }
 
-    bool is_checkmate(bool in_black, int st_y, int st_x, int end_y, int end_x);
-    int is_check(bool in_black, int st_y, int st_x, int end_y, int end_x);
-    bool is_draw(int end_y, int end_x);
+    bool is_checkmate(bool in_black, int st_y, int st_x, int end_y, int end_x) { return false; };
+    int is_check(bool in_black, int st_y, int st_x, int end_y, int end_x) { return false; };
+    bool is_draw(int end_y, int end_x) { return false; };
     
     bool is_checkmate(bool in_black) { return is_checkmate(in_black, str[0], str[1], end[0], end[1]); }
     int is_check(bool in_black) { return is_checkmate(in_black, str[0], str[1], end[0], end[1]); }
