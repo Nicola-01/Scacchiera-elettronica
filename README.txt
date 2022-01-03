@@ -18,4 +18,4 @@ Note programma
  
 -non funziona l'arrocco (dovrebbe essere sistemato)
 -l'alfiere non si puo' muovere più di una casella all'inizio della partita
--durante l'arrocco il re non può passare nelle posizioni di scacco
+-durante l'arrocco il re non può passare nelle posizioni di scacco (Fatto ma non testato)
