@@ -1,4 +1,0 @@
-C:/Users/rickw/Desktop/scacchiera/Scacchiera-elettronica/build/CMakeFiles/libs.dir
-C:/Users/rickw/Desktop/scacchiera/Scacchiera-elettronica/build/CMakeFiles/scacchiera.dir
-C:/Users/rickw/Desktop/scacchiera/Scacchiera-elettronica/build/CMakeFiles/ALL_BUILD.dir
-C:/Users/rickw/Desktop/scacchiera/Scacchiera-elettronica/build/CMakeFiles/ZERO_CHECK.dir

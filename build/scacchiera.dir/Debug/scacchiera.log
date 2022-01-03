@@ -1,5 +1,0 @@
-﻿  Scacchiera.cpp
-C:\Users\rickw\Desktop\scacchiera\Scacchiera-elettronica\src\Scacchiera.cpp(53,15): warning C4244: 'argomento': conversione da 'time_t' a 'unsigned int'. Possibile perdita di dati.
-  Rules.cpp
-  Generazione del codice in corso...
-  scacchiera.vcxproj -> C:\Users\rickw\Desktop\scacchiera\Scacchiera-elettronica\build\Debug\scacchiera.exe
