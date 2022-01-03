@@ -1,0 +1,6 @@
+﻿  Chessboard.cpp
+C:\Users\rickw\Desktop\scacchiera\Scacchiera-elettronica\src\Chessboard.cpp(54,32): warning C4101: 'e': variabile locale senza riferimenti
+C:\Users\rickw\Desktop\scacchiera\Scacchiera-elettronica\src\Chessboard.cpp(58,30): warning C4101: 'e': variabile locale senza riferimenti
+C:\Users\rickw\Desktop\scacchiera\Scacchiera-elettronica\src\Chessboard.cpp(131,32): warning C4101: 'e': variabile locale senza riferimenti
+C:\Users\rickw\Desktop\scacchiera\Scacchiera-elettronica\src\Chessboard.cpp(134,30): warning C4101: 'e': variabile locale senza riferimenti
+  libs.vcxproj -> C:\Users\rickw\Desktop\scacchiera\Scacchiera-elettronica\build\Debug\libs.lib

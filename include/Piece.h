@@ -7,7 +7,8 @@
 
 //MANCANO I DISTRUTTORI
 //CONTROLLO DELLA REGOLA 4 DELL'ARROCCO
-
+//probabilmente basta eliminare la variabile moved dalle classi figlie
+//nel costruttore dei figli invoco un metodo setmove
 extern int n_moves;
 
 class Piece
