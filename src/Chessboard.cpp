@@ -20,7 +20,7 @@ Chessboard::Chessboard()
         board[6][x] = inizializer_piece('p', 6, x); // p
         board[7][x] = inizializer_piece(tolower(pos[x]), 7, x);
     }
-    board[1][0] = inizializer_piece('p', 1, 0); // p
+    //board[1][0] = inizializer_piece('p', 1, 0); // p
 }
 
 int Chessboard::move(string& s_move, bool white_turne, bool replay)
@@ -36,7 +36,7 @@ int Chessboard::move(string& s_move, bool white_turne, bool replay)
 
     }
 
-    bool promotion{ false }, arrocco{ false };
+    bool promotion{ false }, arrocco{ false }, arrocco_check{false}; // arrocco_check segna se è stato fatto scacco mentre il re si sposta
 
     for (int i = 0; i < s_move.size(); i++)
         s_move[i] = toupper(s_move[i]);
@@ -85,7 +85,13 @@ int Chessboard::move(string& s_move, bool white_turne, bool replay)
     }
     catch (ArroccoException& e)
     {
-        arrocco = true;
+        arrocco = true; // devo controllare se non va sotto scacco spostandosi 
+        int d_x = (end_x - str_x)/2; // se negativo il re si è spostato a sx altrimenti a dx
+        Piece p = board[str_y][str_x + d_x];
+        board[end_y][str_x + d_x] = board[str_y][str_x]; // sposto il re nella casella intermedia
+        arrocco_check = is_check(!white_turne, str_y, str_x, end_y, str_x + d_x);
+        board[end_y][end_x] = board[end_y][str_x + d_x]; // finisco lo spostamento
+        board[str_y][str_x + d_x] = p; //rimetto la torre al suo posto
     }
 
     Piece gonna_die = board[end_y][end_x];
@@ -103,7 +109,7 @@ int Chessboard::move(string& s_move, bool white_turne, bool replay)
         king_white[1] = end_x;
     }
 
-    if (is_check(!white_turne, str_y, str_x, end_y, end_x) > 0)
+    if (arrocco_check || is_check(!white_turne, str_y, str_x, end_y, end_x) > 0)
     {
 
         board[str_y][str_x] = board[end_y][end_x];
@@ -116,9 +122,10 @@ int Chessboard::move(string& s_move, bool white_turne, bool replay)
         }
         else if (arrocco) // se è stato fatto un auto scacco perchè si ha fatto un arrocco allora il re viene spostato "in automatico" ma la torre no 
         {
-            int x_torre = (end_x < str_y) ? 3 : 5; // arrocco lungo : arrocco corto
-            board[str_y][x_torre] = board[str_y][x_torre];
-            board[str_y][x_torre] = Nullo();
+            int new_x_torre = (end_x < str_y) ? 3 : 5; // arrocco lungo : arrocco corto
+            int old_x_torre = (end_x < str_y) ? 0 : 7; // arrocco lungo : arrocco corto
+            board[str_y][old_x_torre] = board[str_y][new_x_torre];
+            board[str_y][new_x_torre] = Nullo();
         }
         else if (board[str_y][str_x].print() == 'R') // Re nero
         {
@@ -159,14 +166,13 @@ string Chessboard::random_move(int y, int x)
     string prom = "";
     bool promotion{ false }, arrocco{ false };
     try {
-        y = 1;
-        x = 0;
         a = board[y][x].random_position(board, y, x); // restituisce le cordinate di arrivo
         if (a.first < 0)
             return "NV NV";
     }
     catch (PromotionException& e) {
         promotion = true;
+        //a = e.pair;
         string prom = " " + board[a.first][a.first].print();
     }
     catch (ArroccoException& e) {

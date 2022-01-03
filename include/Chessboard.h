@@ -46,13 +46,13 @@ public:
     char pices_type(int y, int x) { return board[y][x].print(); }
 
 
-     bool is_checkmate(bool in_black, int st_y, int st_x, int end_y, int end_x) { return false; };
-     int is_check(bool in_black, int st_y, int st_x, int end_y, int end_x) { return false; };
-     bool is_draw(int end_y, int end_x) { return false; };
+    //bool is_checkmate(bool in_black, int st_y, int st_x, int end_y, int end_x) { return false; };
+    //int is_check(bool in_black, int st_y, int st_x, int end_y, int end_x) { return false; };
+    //bool is_draw(int end_y, int end_x) { return false; };
     
-   /* bool is_checkmate(bool in_black, int st_y, int st_x, int end_y, int end_x);
+    bool is_checkmate(bool in_black, int st_y, int st_x, int end_y, int end_x);
     int is_check(bool in_black, int st_y, int st_x, int end_y, int end_x);
-    bool is_draw(int end_y, int end_x);*/
+    bool is_draw(int end_y, int end_x);
     
     bool is_checkmate(bool in_black) { return is_checkmate(in_black, str[0], str[1], end[0], end[1]); }
     int is_check(bool in_black) { return is_checkmate(in_black, str[0], str[1], end[0], end[1]); }

@@ -21,6 +21,17 @@ src/Piece.cpp
 src/Rules.cpp
 )
 
+add_executable(replay
+src/Replay.cpp
+src/Chessboard.cpp
+src/Piece.cpp
+src/Rules.cpp
+)
+
 target_link_libraries(scacchiera
-libs
+libs 
+)
+
+target_link_libraries(replay
+libs 
 )

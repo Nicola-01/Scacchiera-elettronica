@@ -1,33 +1,33 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="C:\Users\rickw\Desktop\scacchiera\Scacchiera-elettronica\src\Chessboard.cpp">
+    <ClCompile Include="D:\desktop\Scacchiera-elettronica\src\Chessboard.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\rickw\Desktop\scacchiera\Scacchiera-elettronica\src\Piece.cpp">
+    <ClCompile Include="D:\desktop\Scacchiera-elettronica\src\Piece.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\rickw\Desktop\scacchiera\Scacchiera-elettronica\src\Rules.cpp">
+    <ClCompile Include="D:\desktop\Scacchiera-elettronica\src\Rules.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="C:\Users\rickw\Desktop\scacchiera\Scacchiera-elettronica\include\Chessboard.h">
+    <ClInclude Include="D:\desktop\Scacchiera-elettronica\include\Chessboard.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\rickw\Desktop\scacchiera\Scacchiera-elettronica\include\Piece.h">
+    <ClInclude Include="D:\desktop\Scacchiera-elettronica\include\Piece.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="C:\Users\rickw\Desktop\scacchiera\Scacchiera-elettronica\CMakeLists.txt" />
+    <CustomBuild Include="D:\desktop\Scacchiera-elettronica\CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">
-      <UniqueIdentifier>{7A5ED79C-D743-31FB-A6F0-DEA0081CB247}</UniqueIdentifier>
+      <UniqueIdentifier>{A777F298-546D-3578-9D29-9D2AA238300F}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files">
-      <UniqueIdentifier>{CF4080E4-FC74-308C-9B7D-F1FFBEF8A03F}</UniqueIdentifier>
+      <UniqueIdentifier>{91E160A3-4E14-31FA-99C4-618681A0DA66}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
