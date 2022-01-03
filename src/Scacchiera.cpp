@@ -23,7 +23,7 @@ class ArgumentsException
 {
 };
 
-constexpr int moves_max = 100;
+constexpr int moves_max = 200;
 
 string result_type(int t, string move_line);
 void player_turne(Chessboard& scacchiera, bool white_turne, ofstream& log_file, bool& patta);
@@ -36,8 +36,6 @@ ostream& operator<<(ostream& os, Chessboard& cb);
 
 int main(int argc, char *argv[])
 {
-    if (system("CLS"))
-        system("clear");
     string game_type = argv[1];
     for (int i = 0; i < game_type.size(); i++)
         game_type[i] = tolower(game_type[i]);
@@ -50,19 +48,22 @@ int main(int argc, char *argv[])
 
     ofstream log_file ("../log.txt"); //svuoto il file se è già stato scritto
 
+    if (system("CLS"))
+        system("clear");
+    Chessboard scacchiera{};
+    cout << scacchiera;
+    bool white_turne{ true }, patta{ false };
+
     srand(time(NULL));
     int player = (game_type == "pc") ? rand() % 2 + 1 : 0; // 0, se non è un giocatore ,1 se è bianco, 2 se è nero
     if (player != 0)
         print_green((player == 1) ? "Giochi con il bianco" : "Giochi con il nero");
 
-    Chessboard scacchiera{};
-    bool white_turne{ true }, patta{ false };
     while (game_type != "cc" || game_type == "cc" && n_moves < moves_max)
     {
         //outfile.open("../log.txt", ios_base::app); //riapro il file (faccio una sorta di autosave)
         //if (system("CLS")) system("clear");
-        cout << scacchiera; //.move("XX XX", white_turne);
-
+        
         if (game_type == "pp")
         { // forse provvisorio
             print_green(((white_turne) ? "-= Tocca al bianco =-" : "-= Tocca al nero =-"));
@@ -99,9 +100,11 @@ int main(int argc, char *argv[])
             // log_file.close();
             // return 0;
         }
-
+        cout << scacchiera;
         n_moves++;
     }
+    if (game_type == "cc" && n_moves == moves_max)
+        print_red("Partita finita in patta, raggiunto il numero massimo di mosse");
     log_file.close();
     return 0;
 }
@@ -111,7 +114,7 @@ string result_type(int t, string move_line)
     switch (t)
     {
     case 1:
-        return "Formato stringa non valido, inserirne una valida; \"A0 H8\", \"XX XX\", \"clear\"; :";
+        return "Formato stringa non valido, inserirne una valida; \"A0 H8\", \"XX XX\", \"clear\" o \"patta\"; :";
     case 2:
         return "Non puoi spostare l'aria, inserirne una valida:";
     case 3:
@@ -133,6 +136,8 @@ void player_turne(Chessboard &scacchiera, bool white_turne, ofstream &log_file, 
     getline(cin, line);
     while ((output_type = scacchiera.move(line, white_turne)) != 0) // il metodo move fa rende line maiuscolo
     {
+        // da eliminare per la consegna 
+        cout << scacchiera;
         if (line == "XX XX")
         {
             if (system("CLS"))
@@ -145,11 +150,13 @@ void player_turne(Chessboard &scacchiera, bool white_turne, ofstream &log_file, 
             patta = true;
             return;
         }
-        else        // da eliminare per la consegna 
-            cout << scacchiera;
+        else
+            print_red(result_type(output_type, line));
+        
+        /*else*/ 
+   
         if (output_type == -1)
             cout << scacchiera;
-        print_red(result_type(output_type, line));
         getline(cin, line);
     }
     log_file << line + "\n";
@@ -169,6 +176,6 @@ void computer_turne(Chessboard &scacchiera, bool white_turne, ofstream &log_file
         line = scacchiera.random_move(y, x);
         //cout << "-- Prova dello spostamento: " << line << endl;
     } while (scacchiera.move(line, white_turne) != 0); //Not Valid
-    //cout << line;
+    cout << n_moves + 1 << " Mossa computer: " << line << endl;
     log_file << line + "\n";
 }

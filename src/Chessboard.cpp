@@ -20,21 +20,34 @@ Chessboard::Chessboard()
         board[6][x] = inizializer_piece('p', 6, x); // p
         board[7][x] = inizializer_piece(tolower(pos[x]), 7, x);
     }
+    board[1][0] = inizializer_piece('p', 1, 0); // p
 }
 
-int Chessboard::move(string& move, bool white_turne)
+int Chessboard::move(string& s_move, bool white_turne, bool replay)
 {
-    bool promotion{false}, arrocco{false};
-    for (int i = 0; i < move.size(); i++)
-        move[i] = toupper(move[i]);
+    char prom;
+    if (replay && s_move.size() == 7)
+    {
+        prom = s_move[6];
+        s_move.resize(5);
+        if ((white_turne && prom != 'd' && prom != 't' && prom != 'a' && prom != 'c') ||
+            (!white_turne && prom != 'D' && prom != 'T' && prom != 'A' && prom != 'C'))   //se il pezzo è bianco la lettera deve essere minuscola se il pezzo è nero la lettera deve essere maiuscola
+            return -10; // il replay se move restituisce una int != 0 da errore
 
-    if (!is_valid_string(move))
+    }
+
+    bool promotion{ false }, arrocco{ false };
+
+    for (int i = 0; i < s_move.size(); i++)
+        s_move[i] = toupper(s_move[i]);
+
+    if (!is_valid_string(s_move))
         return 1; // formato string non valido   // throw InvalidMoveStringException();
 
-    int str_x = (move[0] - 'A'),
-        str_y = abs(move[1] - '0' - 8),
-        end_x = (move[3] - 'A'),
-        end_y = abs(move[4] - '0' - 8);
+    int str_x = (s_move[0] - 'A'),
+        str_y = abs(s_move[1] - '0' - 8),
+        end_x = (s_move[3] - 'A'),
+        end_y = abs(s_move[4] - '0' - 8);
 
     //cout << str_y << " " << str_x << "   " << end_y << " "  << end_x << endl;
 
@@ -51,18 +64,33 @@ int Chessboard::move(string& move, bool white_turne)
         if (!board[str_y][str_x].move(board, str_y, str_x, end_y, end_x))
             return 4; // Mossa non possibil
     }
-    catch (PromotionException &e)
+    catch (PromotionException& e)
     {
         promotion = true; // se c'è stata una promozione ma dopo mi faccio un auto scacco allora quel pezzo deve tornare un pedone
+        if (!replay)
+        {
+            string line;
+            do
+            {
+                cout << "Inserire il carattere per la promozione (D, T, A, C): ";
+                getline(cin, line);
+
+            } while (!(line.size() == 1 && ((prom = toupper(line[0])) == 'D' || line[0] == 'T' || line[0] == 'A' || line[0] == 'C')));
+        }
+        if (white_turne)
+            prom = tolower(prom);
+        s_move += " "; // move += " " + board[end_y][end_x].print();  // dava problemi su windows
+        s_move += prom;
+        board[str_y][str_x] = inizializer_piece(prom, str_y, str_x);
     }
-    catch (ArroccoException &e)
+    catch (ArroccoException& e)
     {
         arrocco = true;
     }
 
-        Piece gonna_die = board[end_y][end_x];
-        board[end_y][end_x] = board[str_y][str_x];
-        board[str_y][str_x] = Nullo();
+    Piece gonna_die = board[end_y][end_x];
+    board[end_y][end_x] = board[str_y][str_x];
+    board[str_y][str_x] = Nullo();
 
     if (board[end_y][end_x].print() == 'R') // Re nero
     {
@@ -82,10 +110,13 @@ int Chessboard::move(string& move, bool white_turne)
         board[end_y][end_x] = gonna_die;
 
         if (promotion)
+        {
             board[str_y][str_x] = Pedone(white_turne, str_y, str_x);
+            s_move.resize(5);
+        }
         else if (arrocco) // se è stato fatto un auto scacco perchè si ha fatto un arrocco allora il re viene spostato "in automatico" ma la torre no 
         {
-            int x_torre = (end_x<str_y) ? 3 : 5; // arrocco lungo : arrocco corto
+            int x_torre = (end_x < str_y) ? 3 : 5; // arrocco lungo : arrocco corto
             board[str_y][x_torre] = board[str_y][x_torre];
             board[str_y][x_torre] = Nullo();
         }
@@ -109,36 +140,39 @@ int Chessboard::move(string& move, bool white_turne)
 
     if (gonna_die.print() != ' ')
         last_capture = n_moves;
+
     return 0; // mossa valida
 }
 
 bool Chessboard::is_valid_string(string move) // Ln Ln    L->Lettera n->Numero
 {
     return move.size() == 5 && move[2] == ' ' &&
-           65 <= move[0] && move[0] <= 72 &&
-           65 <= move[3] && move[3] <= 72 &&
-           0 < move[1] - '0' && move[1] - '0' <= 8 &&
-           0 < move[4] - '0' && move[4] - '0' <= 8;
+        65 <= move[0] && move[0] <= 72 &&
+        65 <= move[3] && move[3] <= 72 &&
+        0 < move[1] - '0' && move[1] - '0' <= 8 &&
+        0 < move[4] - '0' && move[4] - '0' <= 8;
 }
 
 string Chessboard::random_move(int y, int x)
 {
-    pair<int, int> a{-1,-1};
-    bool promotion{false}, arrocco{false};
+    pair<int, int> a{ -1,-1 };
+    string prom = "";
+    bool promotion{ false }, arrocco{ false };
     try {
+        y = 1;
+        x = 0;
         a = board[y][x].random_position(board, y, x); // restituisce le cordinate di arrivo
+        if (a.first < 0)
+            return "NV NV";
     }
-    catch (PromotionException &e) {
+    catch (PromotionException& e) {
         promotion = true;
+        string prom = " " + board[a.first][a.first].print();
     }
-    catch (ArroccoException &e) {
+    catch (ArroccoException& e) {
         arrocco = true;
     }
-    
-    //cout << " --------------------- random " << y << " " << x << " " << a.first << " " << a.second << endl;
-    if (a.first >= 0)
-        return (char)('A' + x) + to_string(abs(y - 8)) + " " + (char)('A' + a.second) + to_string((abs(a.first - 8)));
-    return "NV NV";
+    return (char)('A' + x) + to_string(abs(y - 8)) + " " + (char)('A' + a.second) + to_string((abs(a.first - 8))) + prom;
     // restituisce un array di 2, se è lo spostamento possibile da la posizione [y][x] altrimenti -1, -1
 }
 
@@ -165,7 +199,7 @@ Piece Chessboard::inizializer_piece(char p, int y, int x)
 
 ostream& operator<<(ostream& os, Chessboard& cb)
 {
-    os << "\n\n";
+    os << "\n";
     for (int y = 0; y < 8; y++)
     {
         os << 8 - y << "   ";
