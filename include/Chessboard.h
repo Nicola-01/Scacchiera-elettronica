@@ -33,8 +33,9 @@ private:
     bool is_valid_string(std::string move);
 
     std::pair<int, int> direction_threat(int king_y, int king_x, bool black_king, int dir_y, int dir_x);
-    bool is_checkmate_d(int k_y, int k_x);
-    bool is_checkmate_s(int k_y, int k_x, std::pair<int,int> t_pos);
+    bool all_directions_threat(int k_y, int k_x, bool black_king);
+    bool is_checkmate_d(int k_y, int k_x, bool in_black);
+    bool is_checkmate_s(int k_y, int k_x, std::pair<int,int> t_pos, bool in_black);
     std::vector<char> to_char_vector();
 
 public:
