@@ -177,6 +177,7 @@ string Chessboard::random_move(int y, int x)
     }
     catch (ArroccoException& e) {
         arrocco = true;
+        a = e.t;
     }
     return (char)('A' + x) + to_string(abs(y - 8)) + " " + (char)('A' + a.second) + to_string((abs(a.first - 8))) + prom;
     // restituisce un array di 2, se è lo spostamento possibile da la posizione [y][x] altrimenti -1, -1
