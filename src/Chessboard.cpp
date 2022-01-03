@@ -159,8 +159,6 @@ string Chessboard::random_move(int y, int x)
     string prom = "";
     bool promotion{ false }, arrocco{ false };
     try {
-        y = 1;
-        x = 0;
         a = board[y][x].random_position(board, y, x); // restituisce le cordinate di arrivo
         if (a.first < 0)
             return "NV NV";
