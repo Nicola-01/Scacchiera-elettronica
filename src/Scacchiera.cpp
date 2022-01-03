@@ -174,7 +174,7 @@ void computer_turne(Chessboard &scacchiera, bool white_turne, ofstream &log_file
             x = rand() % 8;
         } while (!scacchiera.is_right_piece(y, x, white_turne));
         line = scacchiera.random_move(y, x);
-        //cout << "-- Prova dello spostamento: " << line << endl;
+        cout << "-- Prova dello spostamento: " << line << endl;
     } while (scacchiera.move(line, white_turne) != 0); //Not Valid
     cout << n_moves + 1 << " Mossa computer: " << line << endl;
     log_file << line + "\n";

@@ -20,7 +20,7 @@ Chessboard::Chessboard()
         board[6][x] = inizializer_piece('p', 6, x); // p
         board[7][x] = inizializer_piece(tolower(pos[x]), 7, x);
     }
-    board[1][0] = inizializer_piece('p', 1, 0); // p
+    //board[1][0] = inizializer_piece('p', 1, 0); // p
 }
 
 int Chessboard::move(string& s_move, bool white_turne, bool replay)
