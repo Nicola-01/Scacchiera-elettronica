@@ -120,7 +120,8 @@ bool Chessboard::is_checkmate_d(int k_y, int k_x, bool in_black)
         {
             if(k_y + y_off >= 0 && k_y + y_off < 8 && k_x + x_off >=0 && k_x + x_off < 8)
             {
-                if(!all_directions_threat(k_y + y_off, k_x + x_off, in_black))
+                if(board[k_y][k_x].is_valid_move(board, k_y, k_x, k_y + y_off, k_x + x_off) 
+                && !all_directions_threat(k_y + y_off, k_x + x_off, in_black))
                 {
                     std::cout << "\n\n Il re puo muoversi in: (y= " << k_y + y_off<<" , x= "<< k_x + x_off<<"\n\n";
                     return false;
