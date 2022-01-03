@@ -4,6 +4,7 @@
 #define Piece_h
 #include <string>
 
+#include <vector>
 
 //MANCANO I DISTRUTTORI
 //CONTROLLO DELLA REGOLA 4 DELL'ARROCCO
@@ -22,6 +23,8 @@ public:
     std::pair<int, int> random_position(Piece (&Board)[8][8], int str_y, int str_x); //ritorna le coordinate sotto forma di stringa
     virtual bool is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x);
 
+    std::vector< std::pair<int, int> > valid_moves(Piece (&Board)[8][8], int str_y, int str_x);
+
     bool is_white() { return white; }; // = true se e' un pezzo bianco
     //virtual bool is_moved() { return moved; }
     bool is_moved() { return moved; }
@@ -39,6 +42,9 @@ public:
     
     char print() { return type; };
     // void undo_move();
+
+
+
 protected:
     char type;
     int ex_position_x;
