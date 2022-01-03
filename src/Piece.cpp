@@ -41,14 +41,14 @@ Re::Re(bool color, int y, int x) : Piece(color, y, x) //costruttore Re
     moved = false;
 };
 
-Re::Re(bool color, int y, int x, bool m) : Piece(color, y, x, m)
-{
-    if (color)
-        type = 'r';
-    else
-        type = 'R';
-    moved = m;
-};
+// Re::Re(bool color, int y, int x, bool m) : Piece(color, y, x, m)
+// {
+//     if (color)
+//         type = 'r';
+//     else
+//         type = 'R';
+//     moved = m;
+// };
 
 Donna::Donna(bool color, int y, int x) : Piece(color, y, x) //costruttore Donna
 {
@@ -67,14 +67,14 @@ Torre::Torre(bool color, int y, int x) : Piece(color, y, x) //costruttore Torre
     moved = false;
 };
 
-Torre::Torre(bool color, int y, int x, bool m) : Piece(color, y, x, m)
-{
-    if (color)
-        type = 't';
-    else
-        type = 'T';
-    moved = m;
-};
+// Torre::Torre(bool color, int y, int x, bool m) : Piece(color, y, x, m)
+// {
+//     if (color)
+//         type = 't';
+//     else
+//         type = 'T';
+//     moved = m;
+// };
 
 Alfiere::Alfiere(bool color, int y, int x) : Piece(color, y, x) //costruttore Alfiere
 {
@@ -101,14 +101,14 @@ Pedone::Pedone(bool color, int y, int x) : Piece(color, y, x) //costruttore Pedo
     moved = false;
 };
 
-Pedone::Pedone(bool color, int y, int x, bool m) : Piece(color, y, x, m)
-{
-    if (color)
-        type = 'p';
-    else
-        type = 'P';
-    moved = m;
-}
+// Pedone::Pedone(bool color, int y, int x, bool m) : Piece(color, y, x, m)
+// {
+//     if (color)
+//         type = 'p';
+//     else
+//         type = 'P';
+//     moved = m;
+// }
 
 Nullo::Nullo() : Piece() //costruttore (Pezzo) Nullo
 {
@@ -145,7 +145,9 @@ bool Piece::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y,
     {
     case 'R':
     {
-        Re r = Re(Board[str_y][str_x].is_white(), Board[str_y][str_x].get_ex_position_y(), Board[str_y][str_x].get_ex_position_x(), Board[str_y][str_x].is_moved());
+        // Re r = Re(Board[str_y][str_x].is_white(), Board[str_y][str_x].get_ex_position_y(), Board[str_y][str_x].get_ex_position_x(), Board[str_y][str_x].is_moved());
+        Re r = Re(Board[str_y][str_x].is_white(), Board[str_y][str_x].get_ex_position_y(), Board[str_y][str_x].get_ex_position_x());
+        r.set_move( Board[str_y][str_x].is_moved());
         control = r.is_valid_move(Board, str_y, str_x, end_y, end_x);
         set_move(r.is_moved());
         break;
@@ -158,7 +160,9 @@ bool Piece::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y,
     }
     case 'T':
     {
-        Torre t = Torre(Board[str_y][str_x].is_white(), Board[str_y][str_x].get_ex_position_y(), Board[str_y][str_x].get_ex_position_x(), Board[str_y][str_x].is_moved());
+        //Torre t = Torre(Board[str_y][str_x].is_white(), Board[str_y][str_x].get_ex_position_y(), Board[str_y][str_x].get_ex_position_x(), Board[str_y][str_x].is_moved());
+        Torre t = Torre(Board[str_y][str_x].is_white(), Board[str_y][str_x].get_ex_position_y(), Board[str_y][str_x].get_ex_position_x());
+        t.set_move( Board[str_y][str_x].is_moved());
         control = t.is_valid_move(Board, str_y, str_x, end_y, end_x);
         set_move(t.is_moved());
         break;
@@ -177,7 +181,9 @@ bool Piece::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y,
     }
     case 'P':
     {
-        Pedone p = Pedone(Board[str_y][str_x].is_white(), Board[str_y][str_x].get_ex_position_y(), Board[str_y][str_x].get_ex_position_x(), Board[str_y][str_x].is_moved());
+        // Pedone p = Pedone(Board[str_y][str_x].is_white(), Board[str_y][str_x].get_ex_position_y(), Board[str_y][str_x].get_ex_position_x(), Board[str_y][str_x].is_moved());
+        Pedone p = Pedone(Board[str_y][str_x].is_white(), Board[str_y][str_x].get_ex_position_y(), Board[str_y][str_x].get_ex_position_x());
+        p.set_move(Board[str_y][str_x].is_moved());
         control = p.is_valid_move(Board, str_y, str_x, end_y, end_x);
         set_move(p.is_moved());
         set_number_move(p.get_number_move());
@@ -193,21 +199,29 @@ bool Piece::check_arrocco_re(Piece (&Board)[8][8], int end_y, int end_x)
 {
     if (end_x < 4) //end_x == 2
     {
-        Torre t = Torre(Board[end_y][end_x - 2].is_white(), Board[end_y][end_x - 2].get_ex_position_y(), Board[end_y][end_x - 2].get_ex_position_y(), Board[end_y][end_x - 2].is_moved());
+        //Torre t = Torre(Board[end_y][end_x - 2].is_white(), Board[end_y][end_x - 2].get_ex_position_y(), Board[end_y][end_x - 2].get_ex_position_y(), Board[end_y][end_x - 2].is_moved());
+        Torre t = Torre(Board[end_y][end_x - 2].is_white(), Board[end_y][end_x - 2].get_ex_position_y(), Board[end_y][end_x - 2].get_ex_position_y());
+        t.set_move(Board[end_y][end_x - 2].is_moved());
         if (!t.is_moved() && Board[end_y][end_x].print() == ' ' && Board[end_y][end_x + 1].print() == ' ' && Board[end_y][end_x - 1].print() == ' ')
         {
             Board[end_y][end_x - 2] = Nullo(); //(false, end_y, end_x - 1);
-            Board[end_y][end_x + 1] = Torre(is_white(), end_y, end_x + 1, true);
+            //Board[end_y][end_x + 1] = Torre(is_white(), end_y, end_x + 1, true);
+            Board[end_y][end_x + 1] = Torre(is_white(), end_y, end_x + 1);
+            Board[end_y][end_x + 1].set_move(true);
             throw ArroccoException(); //return true;
         }
     }
     else //end_x > 4 //end_x == 6
     {
-        Torre t = Torre(Board[end_y][end_x + 1].is_white(), Board[end_y][end_x + 1].get_ex_position_y(), Board[end_y][end_x + 1].get_ex_position_y(), Board[end_y][end_x + 1].is_moved());
+        // Torre t = Torre(Board[end_y][end_x + 1].is_white(), Board[end_y][end_x + 1].get_ex_position_y(), Board[end_y][end_x + 1].get_ex_position_y(), Board[end_y][end_x + 1].is_moved());
+        Torre t = Torre(Board[end_y][end_x + 1].is_white(), Board[end_y][end_x + 1].get_ex_position_y(), Board[end_y][end_x + 1].get_ex_position_y());
+        t.set_move( Board[end_y][end_x + 1].is_moved());
         if (!t.is_moved() && Board[end_y][end_x].print() == ' ' && Board[end_y][end_x - 1].print() == ' ')
         {
             Board[end_y][end_x + 1] = Nullo(); //(false, end_y, end_x - 1);
-            Board[end_y][end_x - 1] = Torre(is_white(), end_y, end_x + 1, true);
+            //Board[end_y][end_x - 1] = Torre(is_white(), end_y, end_x + 1, true);
+            Board[end_y][end_x - 1] = Torre(is_white(), end_y, end_x + 1);
+            Board[end_y][end_x - 1].set_move(true);
             throw ArroccoException(); //return true;
         }
     }
@@ -630,7 +644,9 @@ std::pair<int, int> Pedone::random_xy(Piece (&Board)[8][8], int str_y, int str_x
     int end_y, end_x;
     int i = 0;
     std::pair<int, int> output{-1, -1};
-    Pedone p = Pedone(Board[str_y][str_x].is_white(), Board[str_y][str_x].get_ex_position_y(), Board[str_y][str_x].get_ex_position_x(), Board[str_y][str_x].is_moved());
+    //Pedone p = Pedone(Board[str_y][str_x].is_white(), Board[str_y][str_x].get_ex_position_y(), Board[str_y][str_x].get_ex_position_x(), Board[str_y][str_x].is_moved());
+    Pedone p = Pedone(Board[str_y][str_x].is_white(), Board[str_y][str_x].get_ex_position_y(), Board[str_y][str_x].get_ex_position_x());
+    p.set_move(Board[str_y][str_x].is_moved());
     do
     {
         int d_y;
@@ -657,22 +673,22 @@ std::pair<int, int> Pedone::random_xy(Piece (&Board)[8][8], int str_y, int str_x
             int random = rand() % 4; //4 possibili numeri a partire da 0
             switch (random)
             {
-            case '0': //donna
+            case 0: //donna
             {
                 Board[end_y][end_x] = Donna(is_white(), end_y, end_x);
                 break;
             }
-            case '1': //torre
+            case 1: //torre
             {
                 Board[end_y][end_x] = Torre(is_white(), end_y, end_x);
                 break;
             }
-            case '2': //cavallo
+            case 2: //cavallo
             {
                 Board[end_y][end_x] = Cavallo(is_white(), end_y, end_x);
                 break;
             }
-            case '3': //alfiere
+            case 3: //alfiere
             {
                 Board[end_y][end_x] = Alfiere(is_white(), end_y, end_x);
                 break;
