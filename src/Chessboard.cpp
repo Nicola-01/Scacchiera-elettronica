@@ -172,7 +172,7 @@ string Chessboard::random_move(int y, int x)
     }
     catch (PromotionException& e) {
         promotion = true;
-        //a = e.pair;
+        a = e.t;
         string prom = " " + board[a.first][a.first].print();
     }
     catch (ArroccoException& e) {
