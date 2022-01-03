@@ -8,6 +8,7 @@
 #include <time.h>
 #include <stdlib.h>
 
+
 //COSTRUTTORI
 
 Piece::Piece() //costruttore di default
@@ -208,7 +209,7 @@ bool Piece::check_arrocco_re(Piece (&Board)[8][8], int end_y, int end_x)
             //Board[end_y][end_x + 1] = Torre(is_white(), end_y, end_x + 1, true);
             Board[end_y][end_x + 1] = Torre(is_white(), end_y, end_x + 1);
             Board[end_y][end_x + 1].set_move(true);
-            throw ArroccoException(); //return true;
+            throw ArroccoException(end_y, end_x); //return true;
         }
     }
     else //end_x > 4 //end_x == 6
@@ -222,7 +223,7 @@ bool Piece::check_arrocco_re(Piece (&Board)[8][8], int end_y, int end_x)
             //Board[end_y][end_x - 1] = Torre(is_white(), end_y, end_x + 1, true);
             Board[end_y][end_x - 1] = Torre(is_white(), end_y, end_x + 1);
             Board[end_y][end_x - 1].set_move(true);
-            throw ArroccoException(); //return true;
+            throw ArroccoException(end_y, end_x); //return true;
         }
     }
     return false;
@@ -236,7 +237,9 @@ bool Re::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, in
     int delta_y = std::abs(str_y - end_y);
     if (is_end_same_color(Board, str_y, str_x, end_y, end_x))
         return false; //destinazione stesso colore;
-    if (delta_x != 1 || delta_y != 1)
+    if (delta_y > 1)
+        return false;
+    if (delta_x > 1)
     {
         if (!is_moved() && check_arrocco_re(Board, end_y, end_x))
         {
@@ -420,7 +423,7 @@ bool Pedone::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y
         }
         //Board[str_y][str_x] = Nullo(false, str_y, str_x);
         //bisogna distruggere il pedone
-        throw PromotionException();
+        throw PromotionException(end_y, end_x);
     }
     moved = true;
     return true;
@@ -696,7 +699,7 @@ std::pair<int, int> Pedone::random_xy(Piece (&Board)[8][8], int str_y, int str_x
             }
             Board[str_y][str_x] = Nullo(); //(false, str_y, str_x);
             //bisogna distruggere il pedone
-            throw PromotionException();
+            throw PromotionException(end_y, end_x);
         }
         if (i >= 20)
         {
