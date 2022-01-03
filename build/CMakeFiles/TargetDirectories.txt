@@ -1,0 +1,5 @@
+D:/desktop/Scacchiera-elettronica/build/CMakeFiles/libs.dir
+D:/desktop/Scacchiera-elettronica/build/CMakeFiles/scacchiera.dir
+D:/desktop/Scacchiera-elettronica/build/CMakeFiles/replay.dir
+D:/desktop/Scacchiera-elettronica/build/CMakeFiles/ALL_BUILD.dir
+D:/desktop/Scacchiera-elettronica/build/CMakeFiles/ZERO_CHECK.dir
