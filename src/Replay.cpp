@@ -60,8 +60,8 @@ int main(int argc, char* argv[])
     string line;
     ifstream in_file(argv[2]);
     ofstream out_file;
-    bool check = false;
-    bool white_turne{ true };
+
+    bool check{ false },white_turne{ true };
     if (in_file.is_open())
     {
         if (replay_type == 'f')
@@ -76,20 +76,20 @@ int main(int argc, char* argv[])
         else
             out_file << scacchiera;
         int num = 0;
-        while (getline(in_file, line))
+        while (!check && getline(in_file, line))
         {
             if (scacchiera.move(line, white_turne, true) != 0)
             {
-                cout << line;
                 print_red("Il replay contiene mosse non valide, usare un replay valido\n");
+                cout << line << endl;
                 throw ReplayException();
             }
             if (replay_type == 'v') {
-                cout << num + 1 << " replay  Mossa: " << line << scacchiera << endl;
+                cout << "Mossa: " << line << scacchiera << endl;
                 this_thread::sleep_for(chrono::milliseconds(10));
             }
             else
-                out_file << "Mossa: " << line << scacchiera;
+                out_file << "Mossa: " << line << scacchiera << endl;
             if (check = (scacchiera.is_check(!white_turne) == 2)) // scacco matto, la partita finisce
             {
                 string s = (white_turne) ? "Il Bianco ha fatto scacco matto al Nero" : "Il Nero ha fatto scacco matto al Bianco";
@@ -97,8 +97,6 @@ int main(int argc, char* argv[])
                     print_green(s);
                 else
                     out_file << s;
-
-                
             }
             white_turne = !white_turne;
             num++;
