@@ -1,13 +1,11 @@
 /*
    AUTORE: Martino Scagnet 2000134
 
-   file: Valid_moves.cpp
+   file: Has_valid_move.cpp
 */
 #include "Piece.h"
 
-#include <vector>
-
-std::vector< std::pair<int, int> > Piece::valid_moves(Piece (&Board)[8][8], int str_y, int str_x)
+bool Piece::has_valid_move(Piece (&Board)[8][8], int str_y, int str_x)
 {
     char in = toupper(Board[str_y][str_x].type);
     switch (in)
@@ -43,12 +41,16 @@ std::vector< std::pair<int, int> > Piece::valid_moves(Piece (&Board)[8][8], int 
             return p.valid_moves(Piece (&Board)[8][8], int str_y, int str_x);
         }
     }
+
     return std::vector<pair<int,int>>;
 }
-
 std::vector< std::pair<int, int> > Re::valid_moves(Piece (&Board)[8][8], int str_y, int str_x)
 {
     std::vector<pair<int,int>> moves;
+    for(int d_y = -1; dir_y <=1; dir_y++)
+    {
+        for(int dir_x = -1; dir_x<=1;)
+    }
     return moves;
 }
 std::vector< std::pair<int, int> > Donna::valid_moves(Piece (&Board)[8][8], int str_y, int str_x)
