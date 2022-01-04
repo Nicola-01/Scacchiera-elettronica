@@ -19,13 +19,9 @@
 using namespace std;
 int n_moves;
 
-class ArgumentsException
-{
-};
+class ArgumentsException{};
 
-class FileNotFoundException
-{
-};
+class FileNotFoundException{};
 
 class ReplayException {};
 
