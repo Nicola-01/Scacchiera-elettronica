@@ -5,17 +5,15 @@
 #include <fstream>
 #include <string>
 
-
 #include <chrono>
 #include <thread>
-
 
 #include "Chessboard.h"
 
 #ifdef __unix__
-#define on_Linux 1
+#define ON_LINUX 1
 #else
-#define on_Linux 0
+#define ON_LINUX 0
 #endif
 
 using namespace std;
@@ -36,8 +34,8 @@ constexpr int moves_max = 100;
 string result_type(int t, string move_line);
 
 // stampa colorata (Solo su linux)  https://www.tutorialspoint.com/how-to-output-colored-text-to-a-linux-terminal
-void print_red(string s) { cout << ((on_Linux) ? "\033[;31m" + s + "\033[0m" : s) << endl; }
-void print_green(string s) { cout << ((on_Linux) ? "\033[;32m" + s + "\033[0m" : s) << endl; }
+void print_red(string s) { cout << ((ON_LINUX) ? "\033[;31m" + s + "\033[0m" : s) << endl; }
+void print_green(string s) { cout << ((ON_LINUX) ? "\033[;32m" + s + "\033[0m" : s) << endl; }
 ostream &operator<<(ostream &os, Chessboard &cb);
 
 int main(int argc, char* argv[])

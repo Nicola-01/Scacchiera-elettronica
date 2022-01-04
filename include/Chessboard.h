@@ -43,7 +43,7 @@ public:
     int move(std::string& s_move, bool white_turne) { return move(s_move, white_turne, false); }
     int move(std::string& s_move, bool white_turne, bool replay);
     bool is_right_piece(int y, int x, bool white_turne) { return (board[y][x].print() != ' ' && board[y][x].is_white() == white_turne); };
-    std::string random_move(int y, int x);
+    std::string random_move(int y, int x, bool white_turne);
     char pices_type(int y, int x) { return board[y][x].print(); }
 
 
@@ -56,7 +56,7 @@ public:
     bool is_draw(int end_y, int end_x);
     
     bool is_checkmate(bool in_black) { return is_checkmate(in_black, str[0], str[1], end[0], end[1]); }
-    int is_check(bool in_black) { return is_checkmate(in_black, str[0], str[1], end[0], end[1]); }
+    int is_check(bool in_black) { return is_check(in_black, str[0], str[1], end[0], end[1]); }
     bool is_draw() { return is_draw(end[0], end[1]); }
 };
 

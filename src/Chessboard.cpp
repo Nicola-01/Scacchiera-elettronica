@@ -79,6 +79,7 @@ int Chessboard::move(string& s_move, bool white_turne, bool replay)
         }
         if (white_turne)
             prom = tolower(prom);
+
         s_move += " "; // move += " " + board[end_y][end_x].print();  // dava problemi su windows
         s_move += prom;
         board[str_y][str_x] = inizializer_piece(prom, str_y, str_x);
@@ -109,7 +110,12 @@ int Chessboard::move(string& s_move, bool white_turne, bool replay)
         king_white[1] = end_x;
     }
 
-    if (arrocco_check || is_check(!white_turne, str_y, str_x, end_y, end_x) > 0)
+    str[0] = str_y;
+    str[1] = str_x;
+    end[0] = end_y;
+    end[1] = end_x;
+
+    if (arrocco_check || is_check(!white_turne) > 0)
     {
 
         board[str_y][str_x] = board[end_y][end_x];
@@ -140,10 +146,6 @@ int Chessboard::move(string& s_move, bool white_turne, bool replay)
 
         return 4; // scacco, mossa annullata
     }
-    str[0] = str_y;
-    str[1] = str_x;
-    end[0] = end_y;
-    end[1] = end_x;
 
     if (gonna_die.print() != ' ')
         last_capture = n_moves;
@@ -160,7 +162,7 @@ bool Chessboard::is_valid_string(string move) // Ln Ln    L->Lettera n->Numero
         0 < move[4] - '0' && move[4] - '0' <= 8;
 }
 
-string Chessboard::random_move(int y, int x)
+string Chessboard::random_move(int y, int x, bool white_turne)
 {
     pair<int, int> a{ -1,-1 };
     string prom = "";
@@ -169,6 +171,25 @@ string Chessboard::random_move(int y, int x)
         a = board[y][x].random_position(board, y, x); // restituisce le cordinate di arrivo
         if (a.first < 0)
             return "NV NV";
+
+
+        //if (board[a.first][a.second].print() == 'R') // Re nero
+        //{
+        //    king_black[0] = a.first;
+        //    king_black[1] = a.second;
+        //}
+        //else if (board[a.first][a.second].print() == 'r')
+        //{
+        //    king_white[0] = a.first;
+        //    king_white[1] = a.second;
+        //}
+        //str[0] = y;
+        //str[1] = x;
+        //end[0] = a.first;
+        //end[1] = a.second;
+        //if (is_check(!white_turne))
+        //    return "NV NV";
+
     }
     catch (PromotionException& e) {
         promotion = true;
