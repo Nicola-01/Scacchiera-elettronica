@@ -52,7 +52,11 @@ int Chessboard::is_check(bool in_black, int st_y, int st_x, int end_y, int end_x
        //controllo se il pezzo scoperto da moved minaccia
        if(is_valid_traj(st_y, st_x, k_y, k_x))
        {
-           std::pair<int, int> second_t_pos = direction_threat(k_y, k_x, in_black ,((st_y-k_y)/std::abs(st_y-k_y)), ((st_x-k_x)/std::abs(st_x-k_x)));
+           int diff_y = st_y-k_y;
+           if(diff_y!=0){ diff_y = diff_y/std::abs(diff_y);}
+           int diff_x = st_x -k_x;
+           if(diff_x!=0){ diff_x= diff_x/std::abs(diff_x);}
+           std::pair<int, int> second_t_pos = direction_threat(k_y, k_x, in_black ,diff_y, diff_x);
            if( second_t_pos.first >= 0)
            {
                if(found)
@@ -184,43 +188,6 @@ bool Chessboard::is_checkmate(bool in_black, int st_y, int st_x, int end_y, int 
    return false;
 }
 
-//Ritorna la posizione (y,x) della minaccia nella direzione indicata, (-1,-1) altrimenti
-std::pair<int, int> Chessboard::direction_threat(int king_y, int king_x, bool black_king, int dir_y, int dir_x)
-{
-   int i_x = king_x + dir_x;
-   int i_y = king_y + dir_y;
-   while(i_x >= 0 && i_x < 8 && i_y >= 0 && i_y < 8)
-   {
-       if((board[i_y][i_x].is_white()) == black_king)
-       {
-           if(board[i_y][i_x].is_valid_move(board, i_y, i_x, king_y, king_x))
-            return std::pair<int,int>(i_y, i_x);
-       }
-       i_x = i_x + dir_x;
-       i_y = i_y + dir_y;
-   }
-   return std::pair<int,int>(-1,-1);
-}
-//Se il pezzo in (k_y, k_x) e minacciato da qualche direzione ritorna true
-bool Chessboard::all_directions_threat(int k_y, int k_x, bool black_king)
-{
-    for(int dir_x = -1; dir_x <= 1; dir_x++)
-    {
-        for(int dir_y = -1; dir_y <= 1; dir_y++)
-        {
-            if((dir_x!=0)||(dir_y!=0))
-            {
-                std::pair<int,int> threat_pos = direction_threat(k_y, k_x, black_king, dir_y, dir_x);
-                if(threat_pos.first >= 0 && threat_pos.second >= 0)
-                {
-                    //std::cout << "\n\nE' SCACCO\n\n";
-                    return true;
-                }
-            }
-        }
-    }
-    return false;
-}
 bool Chessboard::is_draw(int end_y, int end_x )
 {
    std::vector<char> p_l;
@@ -275,7 +242,7 @@ bool Chessboard::is_draw(int end_y, int end_x )
    static int move_counter = 0;
    if(piece_number == -1)
        piece_number = p_l.size();
-   //________PER RIPETIZIONE DI POSIZIONE________
+   //_________PER RIPETIZIONE DI POSIZIONE________
    if(piece_number != p_l.size())
    {
        past_positions(to_char_vector(), true);//Azzero le posizioni passate 
@@ -294,7 +261,7 @@ bool Chessboard::is_draw(int end_y, int end_x )
        }
        piece_number = p_l.size();
    }
-   //________REGOLA DELLE 50 MOSSE_________
+   //_________REGOLA DELLE 50 MOSSE_________
    if(toupper(board[end_y][end_x].print()) == 'P')
    {
        move_counter = 0;
@@ -321,6 +288,43 @@ bool Chessboard::is_draw(int end_y, int end_x )
    return true;
 }
 
+//Ritorna la posizione (y,x) della minaccia nella direzione indicata, (-1,-1) altrimenti
+std::pair<int, int> Chessboard::direction_threat(int king_y, int king_x, bool black_king, int dir_y, int dir_x)
+{
+   int i_x = king_x + dir_x;
+   int i_y = king_y + dir_y;
+   while(i_x >= 0 && i_x < 8 && i_y >= 0 && i_y < 8)
+   {
+       if((board[i_y][i_x].is_white()) == black_king)
+       {
+           if(board[i_y][i_x].is_valid_move(board, i_y, i_x, king_y, king_x))
+            return std::pair<int,int>(i_y, i_x);
+       }
+       i_x = i_x + dir_x;
+       i_y = i_y + dir_y;
+   }
+   return std::pair<int,int>(-1,-1);
+}
+//Se il pezzo in (k_y, k_x) e minacciato da qualche direzione ritorna true
+bool Chessboard::all_directions_threat(int k_y, int k_x, bool black_king)
+{
+    for(int dir_x = -1; dir_x <= 1; dir_x++)
+    {
+        for(int dir_y = -1; dir_y <= 1; dir_y++)
+        {
+            if((dir_x!=0)||(dir_y!=0))
+            {
+                std::pair<int,int> threat_pos = direction_threat(k_y, k_x, black_king, dir_y, dir_x);
+                if(threat_pos.first >= 0 && threat_pos.second >= 0)
+                {
+                    //std::cout << "\n\nE' SCACCO\n\n";
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
 std::vector<char> Chessboard::to_char_vector()//Ritorno la matrice per righe
 {
    std::vector<char> v;
