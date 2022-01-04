@@ -10,9 +10,9 @@
 
 
 #ifdef __unix__
-#define on_Linux 1
+#define ON_LINUX 1
 #else
-#define on_Linux 0
+#define ON_LINUX 0
 #endif
 
 
@@ -30,8 +30,8 @@ void player_turne(Chessboard& scacchiera, bool white_turne, ofstream& log_file, 
 void computer_turne(Chessboard &scacchiera, bool white_turne, ofstream &log_file);
 
 // stampa colorata (Solo su linux)  https://www.tutorialspoint.com/how-to-output-colored-text-to-a-linux-terminal
-void print_red(string s) { cout << ((on_Linux) ? "\033[;31m" + s + "\033[0m" : s) << endl; }
-void print_green(string s) { cout << ((on_Linux) ? "\033[;32m" + s + "\033[0m" : s) << endl; }
+void print_red(string s) { cout << ((ON_LINUX) ? "\033[;31m" + s + "\033[0m" : s) << endl; }
+void print_green(string s) { cout << ((ON_LINUX) ? "\033[;32m" + s + "\033[0m" : s) << endl; }
 ostream& operator<<(ostream& os, Chessboard& cb);
 
 int main(int argc, char *argv[])
@@ -109,6 +109,66 @@ int main(int argc, char *argv[])
     return 0;
 }
 
+void player_turne(Chessboard &scacchiera, bool white_turne, ofstream &log_file, bool &patta)
+{
+    int output_type;
+    string line;
+    print_green("Inserire la mossa: ");
+    getline(cin, line);
+    while ((output_type = scacchiera.move(line, white_turne)) != 0) // il metodo move fa rende line maiuscolo
+    {
+        // da eliminare per la consegna 
+        cout << scacchiera;
+        if (line == "CLEAR")
+        {
+            if (system("CLS"))
+                system("clear");
+            cout << scacchiera;
+            print_green("Inserire la mossa: ");
+        }
+        else if (line == "XX XX")
+        {
+            cout << scacchiera;
+            print_green("Inserire la mossa: ");
+        }
+        else if (line == "PATTA")
+        {
+            patta = true;
+            return;
+        }
+        else
+            print_red(result_type(output_type, line));
+
+        getline(cin, line);
+    }
+    log_file << line + "\n";
+}
+
+void computer_turne(Chessboard &scacchiera, bool white_turne, ofstream &log_file)
+{
+    string line;
+    int y, x, out;
+    do
+    {
+        do
+        {
+            y = rand() % 8;
+            x = rand() % 8;
+            //cout << "--y x " << y << " " << x << endl;
+            if (y == 0 && x == 4 && !white_turne || y == 7 && x == 4 && white_turne)
+                ;
+
+        } while (!scacchiera.is_right_piece(y, x, white_turne));
+        line = scacchiera.random_move(y, x, white_turne);
+        //cout << "-- Prova dello spostamento: " << line << endl;
+    } while (line == "NV NV" || (out = scacchiera.move(line, white_turne)) != 0); //Not Valid
+    // cout << out;
+    // if (out == 4)
+    //     cout << "waa";
+    cout << n_moves + 1 << " Mossa computer: " << line << endl;
+    log_file << line + "\n";
+}
+
 string result_type(int t, string move_line)
 {
     switch (t)
@@ -122,60 +182,10 @@ string result_type(int t, string move_line)
     case 4:
         return "La mossa " + move_line + " non e' valida, inserire una mossa valida:";
     case 5:
-        return "Ti stai facendo scacco da solo, forse è meglio cambiarla:";
+        return "Se fai quella finisci sotto scacco, forse e' meglio cambiarla:";
+    case 6:
+        return "Non puoi arroccare, il re e' sotto scacco o passa in una casella in cui sarebbe sotto scacco";
     default:
         return "";
     }
-}
-
-void player_turne(Chessboard &scacchiera, bool white_turne, ofstream &log_file, bool &patta)
-{
-    int output_type;
-    string line;
-    print_green("Inserire la mossa: ");
-    getline(cin, line);
-    while ((output_type = scacchiera.move(line, white_turne)) != 0) // il metodo move fa rende line maiuscolo
-    {
-        // da eliminare per la consegna 
-        cout << scacchiera;
-        if (line == "XX XX")
-        {
-            if (system("CLS"))
-                system("clear");
-            cout << scacchiera;
-            print_green("Inserire la mossa: ");
-        }
-        else if (line == "PATTA")
-        {
-            patta = true;
-            return;
-        }
-        else
-            print_red(result_type(output_type, line));
-        
-        /*else*/ 
-   
-        if (output_type == -1)
-            cout << scacchiera;
-        getline(cin, line);
-    }
-    log_file << line + "\n";
-}
-
-void computer_turne(Chessboard &scacchiera, bool white_turne, ofstream &log_file)
-{
-    string line;
-    int y, x;
-    do
-    {
-        do
-        {
-            y = rand() % 8;
-            x = rand() % 8;
-        } while (!scacchiera.is_right_piece(y, x, white_turne));
-        line = scacchiera.random_move(y, x);
-        //cout << "-- Prova dello spostamento: " << line << endl;
-    } while (scacchiera.move(line, white_turne) != 0); //Not Valid
-    cout << n_moves + 1 << " Mossa computer: " << line << endl;
-    log_file << line + "\n";
 }

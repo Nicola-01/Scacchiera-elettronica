@@ -86,12 +86,27 @@ int Chessboard::move(string& s_move, bool white_turne, bool replay)
     }
     catch (ArroccoException& e)
     {
+        if (is_check(!white_turne))
+            return 6;
         arrocco = true; // devo controllare se non va sotto scacco spostandosi 
         int d_x = (end_x - str_x)/2; // se negativo il re si è spostato a sx altrimenti a dx
         Piece p = board[str_y][str_x + d_x];
         board[end_y][str_x + d_x] = board[str_y][str_x]; // sposto il re nella casella intermedia
+
+        // modifico la posizione del re per vedere se è scacco
+        if (white_turne)
+        {
+            king_white[0] = end_y;
+            king_white[1] = str_x + d_x;;
+        }
+        else
+        {
+            king_black[0] = end_y;
+            king_black[1] = str_x + d_x;
+        }
+
         arrocco_check = is_check(!white_turne, str_y, str_x, end_y, str_x + d_x);
-        board[end_y][end_x] = board[end_y][str_x + d_x]; // finisco lo spostamento
+        board[str_y][str_x] = board[end_y][str_x + d_x]; // riptistino lo spostamento
         board[str_y][str_x + d_x] = p; //rimetto la torre al suo posto
     }
 
@@ -128,10 +143,11 @@ int Chessboard::move(string& s_move, bool white_turne, bool replay)
         }
         else if (arrocco) // se è stato fatto un auto scacco perchè si ha fatto un arrocco allora il re viene spostato "in automatico" ma la torre no 
         {
-            int new_x_torre = (end_x < str_y) ? 3 : 5; // arrocco lungo : arrocco corto
-            int old_x_torre = (end_x < str_y) ? 0 : 7; // arrocco lungo : arrocco corto
+            int new_x_torre = (end_x < str_x) ? 3 : 5; // arrocco lungo : arrocco corto
+            int old_x_torre = (end_x < str_x) ? 0 : 7; // arrocco lungo : arrocco corto
             board[str_y][old_x_torre] = board[str_y][new_x_torre];
             board[str_y][new_x_torre] = Nullo();
+            return 6;
         }
         else if (board[str_y][str_x].print() == 'R') // Re nero
         {
@@ -144,7 +160,7 @@ int Chessboard::move(string& s_move, bool white_turne, bool replay)
             king_white[1] = str_x;
         }
 
-        return 4; // scacco, mossa annullata
+        return 5; // scacco, mossa annullata
     }
 
     if (gonna_die.print() != ' ')
