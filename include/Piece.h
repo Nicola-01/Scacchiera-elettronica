@@ -22,7 +22,7 @@ public:
     std::pair<int, int> random_position(Piece (&Board)[8][8], int str_y, int str_x); //ritorna le coordinate sotto forma di stringa
     virtual bool is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x);
 
-    std::vector<std::pair<int, int>> valid_moves(Piece (&Board)[8][8], int str_y, int str_x);
+    bool has_valid_move(Piece (&Board)[8][8], int str_y, int str_x);//Definito in "Has_valid_move.cpp"
 
     bool is_white() { return white; }; // = true se e' un pezzo bianco
     bool is_moved() { return moved; }
