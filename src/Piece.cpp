@@ -8,7 +8,6 @@
 #include <time.h>
 #include <stdlib.h>
 
-
 //COSTRUTTORI
 
 Piece::Piece() //costruttore di default
@@ -131,6 +130,49 @@ bool Piece::move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_
     {
         ex_position_x = str_x;
         ex_position_y = str_y;
+        char in = toupper(Board[end_y][end_x].print());
+        if (in == 'P' && ((Pedone)Board[end_y][end_x]).check_promotion(end_y))
+        {
+            std::string input;
+            char in;
+            while (input.length() != 1 || (in != 'D' && in != 'T' && in != 'A' && in != 'C')) //funziona
+            {
+                std::cout << "Inserisci il carattere del pezzo che vuoi (D, T, C, A)" << std::endl;
+                std::getline(std::cin, input);
+                in = input[0];
+                in = toupper(in);
+            }
+            switch (in)
+            {
+            case 'D':
+            {
+                Board[str_y][str_x] = Donna(is_white(), end_y, end_x);
+                break;
+            }
+            case 'T':
+            {
+                Board[str_y][str_x] = Torre(is_white(), end_y, end_x);
+                break;
+            }
+            case 'C':
+            {
+                Board[str_y][str_x] = Cavallo(is_white(), end_y, end_x);
+                break;
+            }
+            case 'A':
+            {
+                Board[str_y][str_x] = Alfiere(is_white(), end_y, end_x);
+                break;
+            }
+            }
+            //Board[str_y][str_x] = Nullo(false, str_y, str_x);
+            //bisogna distruggere il pedone
+            throw PromotionException(end_y, end_x);
+        }
+        if (in == 'R' && std::abs(end_x - str_x) == 2)
+        {
+            throw ArroccoException(end_y, end_x);
+        }
         return true;
     }
     return false;
@@ -148,7 +190,7 @@ bool Piece::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y,
     {
         // Re r = Re(Board[str_y][str_x].is_white(), Board[str_y][str_x].get_ex_position_y(), Board[str_y][str_x].get_ex_position_x(), Board[str_y][str_x].is_moved());
         Re r = Re(Board[str_y][str_x].is_white(), Board[str_y][str_x].get_ex_position_y(), Board[str_y][str_x].get_ex_position_x());
-        r.set_move( Board[str_y][str_x].is_moved());
+        r.set_move(Board[str_y][str_x].is_moved());
         control = r.is_valid_move(Board, str_y, str_x, end_y, end_x);
         set_move(r.is_moved());
         break;
@@ -163,7 +205,7 @@ bool Piece::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y,
     {
         //Torre t = Torre(Board[str_y][str_x].is_white(), Board[str_y][str_x].get_ex_position_y(), Board[str_y][str_x].get_ex_position_x(), Board[str_y][str_x].is_moved());
         Torre t = Torre(Board[str_y][str_x].is_white(), Board[str_y][str_x].get_ex_position_y(), Board[str_y][str_x].get_ex_position_x());
-        t.set_move( Board[str_y][str_x].is_moved());
+        t.set_move(Board[str_y][str_x].is_moved());
         control = t.is_valid_move(Board, str_y, str_x, end_y, end_x);
         set_move(t.is_moved());
         break;
@@ -209,21 +251,21 @@ bool Piece::check_arrocco_re(Piece (&Board)[8][8], int end_y, int end_x)
             //Board[end_y][end_x + 1] = Torre(is_white(), end_y, end_x + 1, true);
             Board[end_y][end_x + 1] = Torre(is_white(), end_y, end_x + 1);
             Board[end_y][end_x + 1].set_move(true);
-            throw ArroccoException(end_y, end_x); //return true;
+            return true;
         }
     }
     else //end_x > 4 //end_x == 6
     {
         // Torre t = Torre(Board[end_y][end_x + 1].is_white(), Board[end_y][end_x + 1].get_ex_position_y(), Board[end_y][end_x + 1].get_ex_position_y(), Board[end_y][end_x + 1].is_moved());
         Torre t = Torre(Board[end_y][end_x + 1].is_white(), Board[end_y][end_x + 1].get_ex_position_y(), Board[end_y][end_x + 1].get_ex_position_y());
-        t.set_move( Board[end_y][end_x + 1].is_moved());
+        t.set_move(Board[end_y][end_x + 1].is_moved());
         if (!t.is_moved() && Board[end_y][end_x].print() == ' ' && Board[end_y][end_x - 1].print() == ' ')
         {
             Board[end_y][end_x + 1] = Nullo(); //(false, end_y, end_x - 1);
             //Board[end_y][end_x - 1] = Torre(is_white(), end_y, end_x + 1, true);
             Board[end_y][end_x - 1] = Torre(is_white(), end_y, end_x + 1);
             Board[end_y][end_x - 1].set_move(true);
-            throw ArroccoException(end_y, end_x); //return true;
+            return true;
         }
     }
     return false;
@@ -386,44 +428,6 @@ bool Pedone::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y
                 return false;
         }
         set_number_move(n_moves);
-    }
-    if (check_promotion(end_y))
-    {
-        std::string input;
-        char in;
-        while (input.length() != 1 || (in != 'D' && in != 'T' && in != 'A' && in != 'C')) //funziona
-        {
-            std::cout << "Inserisci il carattere del pezzo che vuoi (D, T, C, A)" << std::endl;
-            std::getline(std::cin, input);
-            in = input[0];
-            in = toupper(in);
-        }
-        switch (in)
-        {
-        case 'D':
-        {
-            Board[str_y][str_x] = Donna(is_white(), end_y, end_x);
-            break;
-        }
-        case 'T':
-        {
-            Board[str_y][str_x] = Torre(is_white(), end_y, end_x);
-            break;
-        }
-        case 'C':
-        {
-            Board[str_y][str_x] = Cavallo(is_white(), end_y, end_x);
-            break;
-        }
-        case 'A':
-        {
-            Board[str_y][str_x] = Alfiere(is_white(), end_y, end_x);
-            break;
-        }
-        }
-        //Board[str_y][str_x] = Nullo(false, str_y, str_x);
-        //bisogna distruggere il pedone
-        throw PromotionException(end_y, end_x);
     }
     moved = true;
     return true;
