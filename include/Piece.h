@@ -14,19 +14,20 @@ extern int n_moves;
 class Piece
 {
 public:
-    Piece(bool color, int y, int x);
-    Piece(bool color, int y, int x, bool m);
-    Piece();
+    Piece() : white{false}, ex_position_y{-1}, ex_position_x{-1} {};
+    Piece(bool color, int y, int x, bool m) : white{color}, ex_position_y{y}, ex_position_x{-x}, moved{m} {};
+    Piece(bool color, int y, int x) : white{color}, ex_position_y{y}, ex_position_x{-x} {};
 
     bool move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x);
     std::pair<int, int> random_position(Piece (&Board)[8][8], int str_y, int str_x); //ritorna le coordinate sotto forma di stringa
     virtual bool is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x);
 
-    bool has_valid_move(Piece (&Board)[8][8], int str_y, int str_x);//Definito in "Has_valid_move.cpp"
+    bool has_valid_move(Piece (&Board)[8][8], int str_y, int str_x); //Definito in "Has_valid_move.cpp"
 
     bool is_white() { return white; }; // = true se e' un pezzo bianco
     bool is_moved() { return moved; }
     void set_move(bool m) { moved = m; };
+    void set_type(char c) { type = c; };
 
     bool is_end_same_color(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x);
     int get_ex_position_y() { return ex_position_y; };
@@ -40,12 +41,12 @@ public:
 
     char print() { return type; };
 
-protected:
+private:
     char type;
     int ex_position_x;
     int ex_position_y;
     bool white;
-    bool moved = false;
+    bool moved;
     int number_move = 0;
 };
 
@@ -99,7 +100,7 @@ public:
     Pedone(bool color, int y, int x);
     Pedone(Piece){};
     bool is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x) override;
-    bool check_promotion(int y) { return y == 0 || y == 7; };   //se arrivato alla fine e' true
+    bool check_promotion(int y) { return y == 0 || y == 7; }; //se arrivato alla fine e' true
     std::pair<int, int> random_xy(Piece (&Board)[8][8], int str_y, int str_x);
 };
 
