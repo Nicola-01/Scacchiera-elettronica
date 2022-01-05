@@ -160,8 +160,9 @@ bool Re::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, in
         return false; //destinazione stesso colore;
     if (delta_y > 1)
         return false;
-    if (delta_x > 1 && (is_moved() || !check_arrocco_re(Board, end_y, end_x)))
+    if (delta_x > 1 && (Board[str_y][str_x].is_moved() || !check_arrocco_re(Board, end_y, end_x)))
     {
+        std::cout << is_moved() << check_arrocco_re(Board, end_y, end_x);
         return false; //percorso > 1
     }
     return true;
@@ -317,9 +318,9 @@ std::pair<int, int> Piece::random_position(Piece (&Board)[8][8], int str_y, int 
 {
     srand(time(NULL));
     char in = toupper(type);
-    std::pair<int, int> output;
-    if (!has_valid_move(Board, str_y, str_x))
-        return output;
+    std::pair<int, int> output{-1, -1};
+    // if (!has_valid_move(Board, str_y, str_x))
+    //     return output;
     Piece tmp = Piece(); //serve solo per invocare il metodo giusto
     switch (in)
     {
@@ -330,7 +331,7 @@ std::pair<int, int> Piece::random_position(Piece (&Board)[8][8], int str_y, int 
     };
     case 'D': 
     {
-        int cont {0};
+        //int cont {0};
         int torre_alfiere = rand() % 2;
         for (int i=0; i < 2 && output.first == -1; i++){
             if (torre_alfiere)
@@ -403,8 +404,8 @@ std::pair<int, int> Torre::random_xy(Piece (&Board)[8][8], int str_y, int str_x)
     std::pair<int, int> output{-1, -1};
     do
     {
-        int random = rand() % 2;
-        if (random)
+        int up_rigth = rand() % 2;
+        if (up_rigth)
         {
             end_x = str_x; //se random == 1 si muove in verticale
             end_y = rand() % 8;

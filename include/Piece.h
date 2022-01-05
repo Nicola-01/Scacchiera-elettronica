@@ -26,14 +26,11 @@ public:
 
     bool is_white() { return white; }; // = true se e' un pezzo bianco
     bool is_moved() { return moved; }
-    void set_move(bool m) { moved = m; };
-    void set_type(char c) { type = c; };
 
     bool is_end_same_color(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x);
     int get_ex_position_y() { return ex_position_y; };
     int get_ex_position_x() { return ex_position_x; };
 
-    void set_number_move(int n) { number_move = n; }; //numero mossa
     int get_number_move() { return number_move; };
 
     bool check_boundary(int end_y, int end_x) { return end_y > -1 && end_x > -1 && end_y < 8 && end_x < 8; };
@@ -41,6 +38,10 @@ public:
 
     char print() { return type; };
 
+protected:
+    void set_move(bool m) { moved = m; };
+    void set_type(char c) { type = c; };
+    void set_number_move(int n) { number_move = n; }; //numero mossa
 private:
     char type;
     int ex_position_x;
