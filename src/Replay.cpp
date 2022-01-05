@@ -78,6 +78,8 @@ int main(int argc, char* argv[])
         int num = 0;
         while (!check && getline(in_file, line))
         {
+            if (num == 94)
+                cout <<"";
             if (scacchiera.move(line, white_turne, true) != 0)
             {
                 print_red("Il replay contiene mosse non valide, usare un replay valido\n");
@@ -85,7 +87,7 @@ int main(int argc, char* argv[])
                 throw ReplayException();
             }
             if (replay_type == 'v') {
-                cout << "Mossa: " << line << scacchiera << endl;
+                cout << num << "   Mossa: " << line << scacchiera << endl;
                 this_thread::sleep_for(chrono::milliseconds(10));
             }
             else
