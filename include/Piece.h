@@ -15,8 +15,8 @@ class Piece
 {
 public:
     Piece() : white{false}, ex_position_y{-1}, ex_position_x{-1} {};
-    Piece(bool color, int y, int x, bool m) : white{color}, ex_position_y{y}, ex_position_x{-x}, moved{m} {};
-    Piece(bool color, int y, int x) : white{color}, ex_position_y{y}, ex_position_x{-x} {};
+    Piece(bool color, int y, int x, bool m) : white{color}, ex_position_y{y}, ex_position_x{x}, moved{m} {};
+    Piece(bool color, int y, int x) : white{color}, ex_position_y{y}, ex_position_x{x} {};
 
     bool move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x);
     std::pair<int, int> random_position(Piece (&Board)[8][8], int str_y, int str_x); //ritorna le coordinate sotto forma di stringa
@@ -35,6 +35,7 @@ public:
 
     bool check_boundary(int end_y, int end_x) { return end_y > -1 && end_x > -1 && end_y < 8 && end_x < 8; };
     bool check_arrocco_re(Piece (&Board)[8][8], int end_y, int end_x);
+    bool check_promotion(int y) { return y == 0 || y == 7; }; //se arrivato alla fine e' true
 
     char print() { return type; };
 
@@ -101,7 +102,6 @@ public:
     Pedone(bool color, int y, int x);
     Pedone(Piece){};
     bool is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x) override;
-    bool check_promotion(int y) { return y == 0 || y == 7; }; //se arrivato alla fine e' true
     std::pair<int, int> random_xy(Piece (&Board)[8][8], int str_y, int str_x);
 };
 

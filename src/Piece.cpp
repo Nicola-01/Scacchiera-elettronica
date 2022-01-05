@@ -64,8 +64,8 @@ bool Piece::move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_
         ex_position_x = str_x;
         ex_position_y = str_y;
         set_move(true);
-        char in = toupper(Board[end_y][end_x].print());
-        if (in == 'P' && ((Pedone)Board[end_y][end_x]).check_promotion(end_y))
+        char in = toupper(Board[str_y][str_x].print());
+        if (in == 'P' && check_promotion(end_y))
         {
             throw PromotionException(end_y, end_x); //bisogna distruggere il pedone
         }
@@ -121,7 +121,7 @@ bool Piece::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y,
         Pedone p = Pedone(Board[str_y][str_x].is_white(), Board[str_y][str_x].get_ex_position_y(), Board[str_y][str_x].get_ex_position_x());
         p.set_move(Board[str_y][str_x].is_moved());
         control = p.is_valid_move(Board, str_y, str_x, end_y, end_x);
-        set_number_move(Board[str_y][str_x].get_number_move());
+        set_number_move(p.get_number_move());
         break;
     }
     }
@@ -292,6 +292,7 @@ bool Pedone::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y
 
     if (delta_x == delta_y && Board[end_y][end_x].print() == ' ')
     {
+        std::cout << Board[str_y][end_x].get_number_move() << n_moves - 1 << std::endl;
         if ((Board[str_y][end_x].get_ex_position_y() == 6 || Board[str_y][end_x].get_ex_position_y() == 1) && toupper(Board[str_y][end_x].print()) == 'P' && Board[str_y][end_x].is_moved() && (n_moves - 1) == Board[str_y][end_x].get_number_move()) //en passant
         {
             {
