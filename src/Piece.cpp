@@ -316,7 +316,7 @@ bool Pedone::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y
 std::pair<int, int> Piece::random_position(Piece (&Board)[8][8], int str_y, int str_x) //ritorna le coordinate sotto forma di stringa
 {
     srand(time(NULL));
-    char in {toupper(type)};
+    char in = toupper(type);
     std::pair<int, int> output;
     if (!has_valid_move(Board, str_y, str_x))
         return output;
