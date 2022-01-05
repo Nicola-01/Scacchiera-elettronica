@@ -58,6 +58,7 @@ public:
     Re(bool color, int y, int x);
     Re(Piece){};
     bool is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x) override;
+    bool has_valid_move(Piece (&Board)[8][8], int str_y, int str_x);
     std::pair<int, int> random_xy(Piece (&Board)[8][8], int str_y, int str_x);
 };
 
@@ -66,6 +67,7 @@ class Donna : public Piece
 public:
     Donna(bool color, int y, int x);
     Donna(Piece){};
+    bool has_valid_move(Piece (&Board)[8][8], int str_y, int str_x);
     bool is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x) override;
 };
 
@@ -75,6 +77,7 @@ public:
     Torre(bool color, int y, int x);
     Torre(Piece){};
     bool is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x) override;
+    bool has_valid_move(Piece (&Board)[8][8], int str_y, int str_x);
     std::pair<int, int> random_xy(Piece (&Board)[8][8], int str_y, int str_x);
 };
 
@@ -84,6 +87,7 @@ public:
     Alfiere(bool color, int y, int x);
     Alfiere(Piece){};
     bool is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x) override;
+    bool has_valid_move(Piece (&Board)[8][8], int str_y, int str_x);
     std::pair<int, int> random_xy(Piece (&Board)[8][8], int str_y, int str_x);
 };
 
@@ -93,6 +97,7 @@ public:
     Cavallo(bool color, int y, int x);
     Cavallo(Piece){};
     bool is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x) override;
+    bool has_valid_move(Piece (&Board)[8][8], int str_y, int str_x);
     std::pair<int, int> random_xy(Piece (&Board)[8][8], int str_y, int str_x);
 };
 
@@ -102,6 +107,7 @@ public:
     Pedone(bool color, int y, int x);
     Pedone(Piece){};
     bool is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x) override;
+    bool has_valid_move(Piece (&Board)[8][8], int str_y, int str_x);
     std::pair<int, int> random_xy(Piece (&Board)[8][8], int str_y, int str_x);
 };
 
@@ -110,6 +116,7 @@ class Nullo : public Piece
 public:
     Nullo();
     Nullo(Piece){};
+    bool has_valid_move(Piece (&Board)[8][8], int str_y, int str_x);
     bool is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x) override { return false; };
 };
 
