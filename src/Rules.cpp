@@ -253,23 +253,21 @@ bool Chessboard::is_draw(int end_y, int end_x )
        return true;
    //________PER STALLO________
    bool in_white = !(board[end_y][end_x].is_white());//Se ha mosso bianco controllo stallo nero
+   int k_y = king_white[0];
+   int k_x = king_white[1];
+   if(!in_white)
+        k_y = king_black[0];
+        k_x = king_black[1];
    for(int y = 0; y < 8; y++)
    {
-       for(int x = 0; x < 8 && (board[y][x].is_white() == in_white); x++)
+       for(int x = 0; x < 8; x++)
        {
-           for(int p_y = 0; p_y < 8; p_y++)
-           {
-               for(int p_x = 0; p_x < 8; p_x++)
-               {
-                   if(board[y][x].is_valid_move(board, y,x, p_y, p_x))
-                       return false;
-               }
-           }
+            if((board[y][x].print() != ' ')&&(board[y][x].is_white() == in_white)&&(board[y][x].has_valid_move(board, y, x)))
+                return all_directions_threat(k_y, k_x, !in_white);
        }
    }
    return true;
 }
-
 //Ritorna la posizione (y,x) della minaccia nella direzione indicata, (-1,-1) altrimenti
 std::pair<int, int> Chessboard::direction_threat(int king_y, int king_x, bool black_king, int dir_y, int dir_x)
 {
