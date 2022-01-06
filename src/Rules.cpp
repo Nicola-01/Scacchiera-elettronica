@@ -71,47 +71,30 @@ int Chessboard::is_check(bool in_black, int st_y, int st_x, int end_y, int end_x
        //due pezzi minacciano
        if(found && second)
        {
-           std::cout << "\n\nDoppia minaccia\n\n";
+           //std::cout << "\n\nDoppia minaccia\n\n";
            if(is_checkmate_d(k_y, k_x, in_black))
                return 2;
-           std::cout << "\n\nE' SCACCO\n\n";
+           //std::cout << "\n\nE' SCACCO\n\n";
            return 1;
        }
        //un pezzo minaccia
        if(found)
        {
-           std::cout << "\n\n singola minaccia \n\n";
+           //std::cout << "\n\n singola minaccia \n\n";
            if(is_checkmate_s(k_y, k_x, threat_pos, in_black))
                return 2;
-            std::cout << "\n\nE' SCACCO\n\n";
+            //std::cout << "\n\nE' SCACCO\n\n";
             return 1;
        }
+       //Possibile arrocco:
+       if(toupper(moved.print() == 'R'))
+            all_directions_threat(k_y, k_x, in_black);
        return 0;
    }
-   if(king_moved) //se e' stato mosso un re
+   if(!mate) //se e' stato mosso un re
    {
-       if(all_directions_threat(k_y, k_x, in_black)) std::cout<<"\n\n Scacco, mossa non valida\n\n";
+       //if(all_directions_threat(k_y, k_x, in_black)) std::cout<<"\n\n Scacco, mossa non valida\n\n";
        return all_directions_threat(k_y, k_x, in_black);
-   }
-   if(!mate && !king_moved) //verifica che la mossa sia valida
-   {
-       //controllo se il pezzo scoperto da moved minaccia
-       if(is_valid_traj(st_y, st_x, k_y, k_x))
-       {
-           int d_y = st_y - k_y;
-           int d_x = st_x - k_x;
-           if(d_y!=0)
-               d_y = d_y / (std::abs(d_y));
-           if(d_x!=0)
-               d_x = d_x / (std::abs(d_x));
-           std::pair<int, int> threat_pos = direction_threat(k_y, k_x, in_black ,d_y, d_x);
-           if(threat_pos.first > 0)
-           {
-               std::cout << "\n\nE' SCACCO\n\n";
-               return 1;
-           }
-       }
-       return 0;
    }
    return 0;
 }
@@ -127,16 +110,15 @@ bool Chessboard::is_checkmate_d(int k_y, int k_x, bool in_black)
                 if(board[k_y][k_x].is_valid_move(board, k_y, k_x, k_y + y_off, k_x + x_off) 
                 && !all_directions_threat(k_y + y_off, k_x + x_off, in_black))
                 {
-                    std::cout << "\n\n Il re puo muoversi in: (y= " << k_y + y_off<<" , x= "<< k_x + x_off<<"\n\n";
+                    //std::cout << "\n\n Il re puo muoversi in: (y= " << k_y + y_off<<" , x= "<< k_x + x_off<<"\n\n";
                     return false;
                 }
             }
         }
     }
-    std::cout << "\n\nscacco matto\n\n";
+    //std::cout << "\n\nscacco matto\n\n";
     return true;
 }
-
 //Se un pezzo attacca o questo puo' muoversi o un pezzo alleato 
 //Puo' mettersi nella traiettoria
 bool Chessboard::is_checkmate_s(int k_y, int k_x, std::pair<int,int> t_pos, bool in_black)
@@ -162,7 +144,7 @@ bool Chessboard::is_checkmate_s(int k_y, int k_x, std::pair<int,int> t_pos, bool
                    {
                        if(board[y][x].is_valid_move(board, y, x, t_y, t_x))//se si puo' mettere in mezzo
                         {
-                            std::cout << "\n\n Si puo muovere: (y= " << y <<" , x= "<< x<<") --> (y= " << t_y <<" , x= "<< t_x<<")\n\n";
+                            //std::cout << "\n\n Si puo muovere: (y= " << y <<" , x= "<< x<<") --> (y= " << t_y <<" , x= "<< t_x<<")\n\n";
                             return false;
                         }
                    }
@@ -171,7 +153,7 @@ bool Chessboard::is_checkmate_s(int k_y, int k_x, std::pair<int,int> t_pos, bool
 
        }
    }
-   std::cout << "\n\nscacco matto\n\n";
+   //std::cout << "\n\nscacco matto\n\n";
    return true;
 }
 
@@ -291,6 +273,7 @@ bool Chessboard::is_draw(int end_y, int end_x )
 //Ritorna la posizione (y,x) della minaccia nella direzione indicata, (-1,-1) altrimenti
 std::pair<int, int> Chessboard::direction_threat(int king_y, int king_x, bool black_king, int dir_y, int dir_x)
 {
+   if(dir_y == 0 && dir_x == 0){return std::pair<int, int>(-1,-1);}
    int i_x = king_x + dir_x;
    int i_y = king_y + dir_y;
    while(i_x >= 0 && i_x < 8 && i_y >= 0 && i_y < 8)
