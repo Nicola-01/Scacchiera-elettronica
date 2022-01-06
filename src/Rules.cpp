@@ -220,10 +220,8 @@ bool Chessboard::is_draw(int end_y, int end_x )
            }
        }
    }
-   static int piece_number = -1;
+   static int piece_number = p_l.size();
    static int move_counter = 0;
-   if(piece_number == -1)
-       piece_number = p_l.size();
    //_________PER RIPETIZIONE DI POSIZIONE________
    if(piece_number != p_l.size())
    {
