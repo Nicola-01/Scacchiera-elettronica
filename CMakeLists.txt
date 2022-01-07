@@ -19,6 +19,7 @@ src/Scacchiera.cpp
 src/Chessboard.cpp
 src/Piece.cpp
 src/Rules.cpp
+src/Has_valid_move.cpp
 )
 
 add_executable(replay
