@@ -537,7 +537,7 @@ std::pair<int, int> Pedone::random_xy(Piece (&Board)[8][8], int str_y, int str_x
     int end_y, end_x, d_y;
     int cont{0};
     std::pair<int, int> output{-1, -1};
-    Pedone p = ((Pedone)Board[str_y][str_x]);
+    Pedone p = Pedone(Board[str_y][str_x].is_white(), Board[str_y][str_x].get_ex_position_y(), Board[str_y][str_x].get_ex_position_x());
     p.set_move(Board[str_y][str_x].is_moved()); //non so se serva
     do
     {
