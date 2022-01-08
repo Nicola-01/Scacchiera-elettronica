@@ -23,7 +23,7 @@ class ArgumentsException
 {
 };
 
-constexpr int moves_max = 200;
+constexpr int moves_max = 100;
 
 string result_type(int t, string move_line);
 void player_turne(Chessboard& scacchiera, bool white_turne, ofstream& log_file, bool& patta);
@@ -79,7 +79,9 @@ int main(int argc, char *argv[])
             print_red("--- Tocca al computer");
             computer_turne(scacchiera, white_turne, log_file);
         }
-
+        cout << scacchiera;
+        /*cout << "..";
+        cin.get();*/
         white_turne = !white_turne;
 
         if (int check = scacchiera.is_check(!white_turne) > 0)
@@ -93,14 +95,13 @@ int main(int argc, char *argv[])
             (white_turne) ? print_green("Il Bianco ha fatto scacco al Nero") : print_green("Il Nero ha fatto scacco al Bianco");
             // log_file.close();
         }
-        else if (patta || false) //scacchiera.is_draw())
+        else if (patta || scacchiera.is_draw())
         {
             print_green("Partita finita in patta");
             break; // non mi piace molto, valuto
             // log_file.close();
             // return 0;
         }
-        cout << scacchiera;
         n_moves++;
     }
     if (game_type == "cc" && n_moves == moves_max)
@@ -159,8 +160,10 @@ void computer_turne(Chessboard &scacchiera, bool white_turne, ofstream &log_file
                 ;
 
         } while (!scacchiera.is_right_piece(y, x, white_turne));
+        cout << "pezzo selezionato (y,x): " << y << ", " << x << endl;
         line = scacchiera.random_move(y, x, white_turne);
-        //cout << "-- Prova dello spostamento: " << line << endl;
+        cout << "-- Prova dello spostamento: " << line << endl;
+        //cin.get();
     } while (line == "NV NV" || (out = scacchiera.move(line, white_turne)) != 0); //Not Valid
     // cout << out;
     // if (out == 4)

@@ -74,7 +74,7 @@ int main(int argc, char* argv[])
         int num = 0;
         while (!check && getline(in_file, line))
         {
-            if (num == 94)
+            if (num == 4)
                 cout <<"";
             if (scacchiera.move(line, white_turne, true) != 0)
             {
@@ -83,11 +83,11 @@ int main(int argc, char* argv[])
                 throw ReplayException();
             }
             if (replay_type == 'v') {
-                cout << num << "   Mossa: " << line << scacchiera << endl;
+                cout << "--" << num << "   Mossa: " << line << "\n" << scacchiera << endl;
                 this_thread::sleep_for(chrono::milliseconds(10));
             }
             else
-                out_file << "Mossa: " << line << scacchiera << endl;
+                out_file << "Mossa: " << line << "\n" << scacchiera << endl;
             if (check = (scacchiera.is_check(!white_turne) == 2)) // scacco matto, la partita finisce
             {
                 string s = (white_turne) ? "Il Bianco ha fatto scacco matto al Nero" : "Il Nero ha fatto scacco matto al Bianco";

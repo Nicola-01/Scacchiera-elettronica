@@ -86,7 +86,7 @@ int Chessboard::move(string& s_move, bool white_turne, bool replay)
     }
     catch (ArroccoException& e)
     {
-        if (is_check(!white_turne))
+        if (is_check(!white_turne, str_y, str_x, end_y, end_x))
             return 6;
         arrocco = true; // devo controllare se non va sotto scacco spostandosi 
         int d_x = (end_x - str_x)/2; // se negativo il re si è spostato a sx altrimenti a dx

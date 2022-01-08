@@ -22,6 +22,7 @@ private:
     //--- variables
     Piece board[8][8]; //[y][x]
     const std::string pos{"TCADRACT"}; // è la "sequenza" in cui vengono posizionati i pezzi diversi dal pedone
+    //const std::string pos{"T  DR  T"}; // easy arrocco
     int king_white[2]{7, 4}; //y x
     int king_black[2]{0, 4};
     int str[2];
