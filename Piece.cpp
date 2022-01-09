@@ -12,40 +12,40 @@
 
 Re::Re(bool color, int y, int x) : Piece(color, y, x) //costruttore Re
 {
-    set_type((color) ? 'r' : 'R');
-    set_move(false);
+    type = ((color) ? 'r' : 'R');
+    moved = false;
 };
 
 Donna::Donna(bool color, int y, int x) : Piece(color, y, x) //costruttore Donna
 {
-    set_type((color) ? 'd' : 'D');
+    type = ((color) ? 'd' : 'D');
 };
 
 Torre::Torre(bool color, int y, int x) : Piece(color, y, x) //costruttore Torre
 {
-    set_type((color) ? 't' : 'T');
-    set_move(false);
+    type = ((color) ? 't' : 'T');
+    moved = false;
 };
 
 Alfiere::Alfiere(bool color, int y, int x) : Piece(color, y, x) //costruttore Alfiere
 {
-    set_type((color) ? 'a' : 'A');
+    type = ((color) ? 'a' : 'A');
 };
 
 Cavallo::Cavallo(bool color, int y, int x) : Piece(color, y, x) //costruttore Cavallo
 {
-    set_type((color) ? 'c' : 'C');
+    type = ((color) ? 'c' : 'C');
 };
 
 Pedone::Pedone(bool color, int y, int x) : Piece(color, y, x) //costruttore Pedone
 {
-    set_type((color) ? 'p' : 'P');
-    set_move(false);
+    type = ((color) ? 'p' : 'P');
+    ;
 };
 
 Nullo::Nullo() : Piece() //costruttore (Pezzo) Nullo
 {
-    set_type(' ');
+    type = ' ';
 };
 
 //FUNZIONI DI PIECE
@@ -63,7 +63,7 @@ bool Piece::move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_
     {
         ex_position_x = str_x;
         ex_position_y = str_y;
-        set_move(true);
+        moved = true;
         char in = toupper(Board[str_y][str_x].print());
         if (in == 'P' && check_promotion(end_y))
         {
@@ -87,7 +87,7 @@ bool Piece::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y,
     case 'R':
     {
         Re r = Re(Board[str_y][str_x].is_white(), Board[str_y][str_x].get_ex_position_y(), Board[str_y][str_x].get_ex_position_x());
-        r.set_move(Board[str_y][str_x].is_moved());
+        r.moved = Board[str_y][str_x].is_moved();
         control = r.is_valid_move(Board, str_y, str_x, end_y, end_x);
         break;
     }
@@ -100,7 +100,7 @@ bool Piece::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y,
     case 'T':
     {
         Torre t = Torre(Board[str_y][str_x].is_white(), Board[str_y][str_x].get_ex_position_y(), Board[str_y][str_x].get_ex_position_x());
-        t.set_move(Board[str_y][str_x].is_moved());
+        t.moved = Board[str_y][str_x].is_moved();
         control = t.is_valid_move(Board, str_y, str_x, end_y, end_x);
         break;
     }
@@ -119,7 +119,7 @@ bool Piece::is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y,
     case 'P':
     {
         Pedone p = Pedone(Board[str_y][str_x].is_white(), Board[str_y][str_x].get_ex_position_y(), Board[str_y][str_x].get_ex_position_x());
-        p.set_move(Board[str_y][str_x].is_moved());
+        p.moved = Board[str_y][str_x].is_moved();
         control = p.is_valid_move(Board, str_y, str_x, end_y, end_x);
         set_number_move(p.get_number_move());
         break;
@@ -135,24 +135,24 @@ bool Piece::check_arrocco_re(Piece (&Board)[8][8], int end_y, int end_x)
     if (end_x < 4) //end_x == 2
     {
         Torre t = Torre(Board[end_y][end_x - 2].is_white(), Board[end_y][end_x - 2].get_ex_position_y(), Board[end_y][end_x - 2].get_ex_position_y());
-        t.set_move(Board[end_y][end_x - 2].is_moved()); //non so se serva
+        t.moved = Board[end_y][end_x - 2].is_moved(); //non so se serva
         if (!t.is_moved() && Board[end_y][end_x].print() == ' ' && Board[end_y][end_x + 1].print() == ' ' && Board[end_y][end_x - 1].print() == ' ')
         {
             Board[end_y][end_x - 2] = Nullo();
             Board[end_y][end_x + 1] = Torre(is_white(), end_y, end_x + 1);
-            Board[end_y][end_x + 1].set_move(true);
+            Board[end_y][end_x + 1].moved = true;
             return true;
         }
     }
     else //end_x > 4 //end_x == 6
     {
         Torre t = Torre(Board[end_y][end_x + 1].is_white(), Board[end_y][end_x + 1].get_ex_position_y(), Board[end_y][end_x + 1].get_ex_position_y());
-        t.set_move(Board[end_y][end_x + 1].is_moved()); //non so se serva
+        t.moved = Board[end_y][end_x + 1].is_moved(); //non so se serva
         if (!t.is_moved() && Board[end_y][end_x].print() == ' ' && Board[end_y][end_x - 1].print() == ' ')
         {
             Board[end_y][end_x + 1] = Nullo();
             Board[end_y][end_x - 1] = Torre(is_white(), end_y, end_x + 1);
-            Board[end_y][end_x - 1].set_move(true);
+            Board[end_y][end_x - 1].moved = true;
             return true;
         }
     }
@@ -538,7 +538,7 @@ std::pair<int, int> Pedone::random_xy(Piece (&Board)[8][8], int str_y, int str_x
     int cont{0};
     std::pair<int, int> output{-1, -1};
     Pedone p = Pedone(Board[str_y][str_x].is_white(), Board[str_y][str_x].get_ex_position_y(), Board[str_y][str_x].get_ex_position_x());
-    p.set_move(Board[str_y][str_x].is_moved()); //non so se serva
+    p.moved = Board[str_y][str_x].is_moved(); //non so se serva
     do
     {
         end_x = rand() % (3) + (str_x - 1); //3 possibili numeri a partire da quello a sinistra
