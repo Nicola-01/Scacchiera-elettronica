@@ -14,36 +14,35 @@ extern int n_moves;
 class Piece
 {
 public:
-    Piece() : white{false}, ex_position_y{-1}, ex_position_x{-1} {};
-    Piece(bool color, int y, int x, bool m) : white{color}, ex_position_y{y}, ex_position_x{x}, moved{m} {};
-    Piece(bool color, int y, int x) : white{color}, ex_position_y{y}, ex_position_x{x} {};
+    Piece() : white{ false }, ex_position_y{ -1 }, ex_position_x{ -1 } {};
+    Piece(bool color, int y, int x, bool m) : white{ color }, ex_position_y{ y }, ex_position_x{ x }, moved{ m } {};
+    Piece(bool color, int y, int x) : white{ color }, ex_position_y{ y }, ex_position_x{ x } {};
 
-    bool move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x);
-    std::pair<int, int> random_position(Piece (&Board)[8][8], int str_y, int str_x); //ritorna le coordinate sotto forma di stringa
-    virtual bool is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x);
+    bool move(Piece* (&Board)[8][8], int str_y, int str_x, int end_y, int end_x);
+    virtual std::pair<int, int> random_xy(Piece* (&Board)[8][8], int str_y, int str_x) = 0; //ritorna le coordinate sotto forma di stringa
+    virtual bool is_valid_move(Piece* (&Board)[8][8], int str_y, int str_x, int end_y, int end_x) = 0;
 
-    bool has_valid_move(Piece (&Board)[8][8], int str_y, int str_x); //Definito in "Has_valid_move.cpp"
+    bool has_valid_move(Piece* (&Board)[8][8], int str_y, int str_x); //Definito in "Has_valid_move.cpp"
 
     bool is_white() { return white; }; // = true se e' un pezzo bianco
     bool is_moved() { return moved; }
 
-    bool is_end_same_color(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x);
+    bool is_end_same_color(Piece* (&Board)[8][8], int str_y, int str_x, int end_y, int end_x);
     int get_ex_position_y() { return ex_position_y; };
     int get_ex_position_x() { return ex_position_x; };
 
     int get_number_move() { return number_move; };
 
     bool check_boundary(int end_y, int end_x) { return end_y > -1 && end_x > -1 && end_y < 8 && end_x < 8; };
-    bool check_arrocco_re(Piece (&Board)[8][8], int end_y, int end_x);
+    bool check_arrocco_re(Piece* (&Board)[8][8], int end_y, int end_x);
     bool check_promotion(int y) { return y == 0 || y == 7; }; //se arrivato alla fine e' true
 
     char print() { return type; };
 
 protected:
-    void set_move(bool m) { moved = m; };
-    void set_type(char c) { type = c; };
+    // void set_move(bool m) { moved = m; };
+    // void set_type(char c) { type = c; };
     void set_number_move(int n) { number_move = n; }; //numero mossa
-private:
     char type;
     int ex_position_x;
     int ex_position_y;
@@ -56,69 +55,73 @@ class Re : public Piece
 {
 public:
     Re(bool color, int y, int x);
-    Re(Piece){};
-    bool is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x) override;
-    bool has_valid_move(Piece (&Board)[8][8], int str_y, int str_x);
-    std::pair<int, int> random_xy(Piece (&Board)[8][8], int str_y, int str_x);
+    //Re(Piece){};
+    bool is_valid_move(Piece* (&Board)[8][8], int str_y, int str_x, int end_y, int end_x) override;
+    std::pair<int, int> random_xy(Piece* (&Board)[8][8], int str_y, int str_x);
+    bool has_valid_move(Piece* (&Board)[8][8], int str_y, int str_x);
 };
 
 class Donna : public Piece
 {
 public:
     Donna(bool color, int y, int x);
-    Donna(Piece){};
-    bool has_valid_move(Piece (&Board)[8][8], int str_y, int str_x);
-    bool is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x) override;
+    //Donna(Piece){};
+    bool is_valid_move(Piece* (&Board)[8][8], int str_y, int str_x, int end_y, int end_x) override;
+    std::pair<int, int> random_xy(Piece* (&Board)[8][8], int str_y, int str_x);
+    bool has_valid_move(Piece* (&Board)[8][8], int str_y, int str_x);
 };
 
 class Torre : public Piece
 {
 public:
     Torre(bool color, int y, int x);
-    Torre(Piece){};
-    bool is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x) override;
-    bool has_valid_move(Piece (&Board)[8][8], int str_y, int str_x);
-    std::pair<int, int> random_xy(Piece (&Board)[8][8], int str_y, int str_x);
+    //Torre(Piece){};
+    bool is_valid_move(Piece* (&Board)[8][8], int str_y, int str_x, int end_y, int end_x) override;
+    std::pair<int, int> random_xy(Piece* (&Board)[8][8], int str_y, int str_x);
+    bool has_valid_move(Piece* (&Board)[8][8], int str_y, int str_x);
 };
 
 class Alfiere : public Piece
 {
 public:
     Alfiere(bool color, int y, int x);
-    Alfiere(Piece){};
-    bool is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x) override;
-    bool has_valid_move(Piece (&Board)[8][8], int str_y, int str_x);
-    std::pair<int, int> random_xy(Piece (&Board)[8][8], int str_y, int str_x);
+    //Alfiere(Piece){};
+    bool is_valid_move(Piece* (&Board)[8][8], int str_y, int str_x, int end_y, int end_x) override;
+    std::pair<int, int> random_xy(Piece* (&Board)[8][8], int str_y, int str_x);
+    bool has_valid_move(Piece* (&Board)[8][8], int str_y, int str_x);
 };
 
 class Cavallo : public Piece
 {
 public:
     Cavallo(bool color, int y, int x);
-    Cavallo(Piece){};
-    bool is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x) override;
-    bool has_valid_move(Piece (&Board)[8][8], int str_y, int str_x);
-    std::pair<int, int> random_xy(Piece (&Board)[8][8], int str_y, int str_x);
+    //Cavallo(Piece){};
+    bool is_valid_move(Piece* (&Board)[8][8], int str_y, int str_x, int end_y, int end_x) override;
+    std::pair<int, int> random_xy(Piece* (&Board)[8][8], int str_y, int str_x);
+    bool has_valid_move(Piece* (&Board)[8][8], int str_y, int str_x);
 };
 
 class Pedone : public Piece
 {
 public:
     Pedone(bool color, int y, int x);
-    Pedone(Piece){};
-    bool is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x) override;
-    bool has_valid_move(Piece (&Board)[8][8], int str_y, int str_x);
-    std::pair<int, int> random_xy(Piece (&Board)[8][8], int str_y, int str_x);
+    //Pedone(Piece){};
+    bool is_valid_move(Piece* (&Board)[8][8], int str_y, int str_x, int end_y, int end_x) override;
+    std::pair<int, int> random_xy(Piece* (&Board)[8][8], int str_y, int str_x);
+    bool has_valid_move(Piece* (&Board)[8][8], int str_y, int str_x);
 };
 
 class Nullo : public Piece
 {
 public:
     Nullo();
-    Nullo(Piece){};
-    bool has_valid_move(Piece (&Board)[8][8], int str_y, int str_x);
-    bool is_valid_move(Piece (&Board)[8][8], int str_y, int str_x, int end_y, int end_x) override { return false; };
+    //Nullo(Piece){};
+    std::pair<int, int> random_xy(Piece* (&Board)[8][8], int str_y, int str_x);
+    bool is_valid_move(Piece* (&Board)[8][8], int str_y, int str_x, int end_y, int end_x) override { return false; };
+    bool has_valid_move(Piece* (&Board)[8][8], int str_y, int str_x);
 };
+
+
 
 //Eccezioni
 class PromotionException
