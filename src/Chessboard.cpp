@@ -51,7 +51,7 @@ int Chessboard::move(string& s_move, bool white_turne, bool replay)
 
     //cout << str_y << " " << str_x << "   " << end_y << " "  << end_x << endl;
 
-    if (board[str_y][str_x].print() == ' ')
+    if (board[str_y][str_x]->print() == ' ')
         return 2; // nessun pezzo nella posizione indicata  // throw InvalidMoveException();
 
     if (!is_right_piece(str_y, str_x, white_turne))
@@ -61,7 +61,7 @@ int Chessboard::move(string& s_move, bool white_turne, bool replay)
     {
         //cout << "da qui " << end_y;
         //cin.get();
-        if (!board[str_y][str_x].move(board, str_y, str_x, end_y, end_x))
+        if (!board[str_y][str_x]->move(board, str_y, str_x, end_y, end_x))
             return 4; // Mossa non possibil
     }
     catch (PromotionException& e)
@@ -90,7 +90,7 @@ int Chessboard::move(string& s_move, bool white_turne, bool replay)
             return 6;
         arrocco = true; // devo controllare se non va sotto scacco spostandosi 
         int d_x = (end_x - str_x)/2; // se negativo il re si è spostato a sx altrimenti a dx
-        Piece p = board[str_y][str_x + d_x];
+        Piece* p = board[str_y][str_x + d_x];
         board[end_y][str_x + d_x] = board[str_y][str_x]; // sposto il re nella casella intermedia
 
         // modifico la posizione del re per vedere se è scacco
@@ -110,16 +110,16 @@ int Chessboard::move(string& s_move, bool white_turne, bool replay)
         board[str_y][str_x + d_x] = p; //rimetto la torre al suo posto
     }
 
-    Piece gonna_die = board[end_y][end_x];
+    Piece* gonna_die = board[end_y][end_x];
     board[end_y][end_x] = board[str_y][str_x];
-    board[str_y][str_x] = Nullo();
+    board[str_y][str_x] = new Nullo();
 
-    if (board[end_y][end_x].print() == 'R') // Re nero
+    if (board[end_y][end_x]->print() == 'R') // Re nero
     {
         king_black[0] = end_y;
         king_black[1] = end_x;
     }
-    else if (board[end_y][end_x].print() == 'r')
+    else if (board[end_y][end_x]->print() == 'r')
     {
         king_white[0] = end_y;
         king_white[1] = end_x;
@@ -138,7 +138,7 @@ int Chessboard::move(string& s_move, bool white_turne, bool replay)
 
         if (promotion)
         {
-            board[str_y][str_x] = Pedone(white_turne, str_y, str_x);
+            board[str_y][str_x] = new Pedone(white_turne, str_y, str_x);
             s_move.resize(5);
         }
         else if (arrocco) // se è stato fatto un auto scacco perchè si ha fatto un arrocco allora il re viene spostato "in automatico" ma la torre no 
@@ -146,15 +146,15 @@ int Chessboard::move(string& s_move, bool white_turne, bool replay)
             int new_x_torre = (end_x < str_x) ? 3 : 5; // arrocco lungo : arrocco corto
             int old_x_torre = (end_x < str_x) ? 0 : 7; // arrocco lungo : arrocco corto
             board[str_y][old_x_torre] = board[str_y][new_x_torre];
-            board[str_y][new_x_torre] = Nullo();
+            board[str_y][new_x_torre] = new Nullo();
             return 6;
         }
-        else if (board[str_y][str_x].print() == 'R') // Re nero
+        else if (board[str_y][str_x]->print() == 'R') // Re nero
         {
             king_black[0] = str_y;
             king_black[1] = str_x;
         }
-        else if (board[str_y][str_x].print() == 'r')
+        else if (board[str_y][str_x]->print() == 'r')
         {
             king_white[0] = str_y;
             king_white[1] = str_x;
@@ -163,7 +163,7 @@ int Chessboard::move(string& s_move, bool white_turne, bool replay)
         return 5; // scacco, mossa annullata
     }
 
-    if (gonna_die.print() != ' ')
+    if (gonna_die->print() != ' ')
         last_capture = n_moves;
 
     return 0; // mossa valida
@@ -184,7 +184,7 @@ string Chessboard::random_move(int y, int x, bool white_turne)
     string prom = "";
     bool promotion{ false }, arrocco{ false };
     try {
-        a = board[y][x].random_position(board, y, x); // restituisce le cordinate di arrivo
+        a = board[y][x]->random_position(board, y, x); // restituisce le cordinate di arrivo
         if (a.first < 0)
             return "NV NV";
 
@@ -210,7 +210,7 @@ string Chessboard::random_move(int y, int x, bool white_turne)
     catch (PromotionException& e) {
         promotion = true;
         a = e.t;
-        string prom = " " + board[a.first][a.first].print();
+        string prom = " " + board[a.first][a.first]->print();
     }
     catch (ArroccoException& e) {
         arrocco = true;
@@ -220,24 +220,24 @@ string Chessboard::random_move(int y, int x, bool white_turne)
     // restituisce un array di 2, se è lo spostamento possibile da la posizione [y][x] altrimenti -1, -1
 }
 
-Piece Chessboard::inizializer_piece(char p, int y, int x)
+Piece* Chessboard::inizializer_piece(char p, int y, int x)
 {
     switch (toupper(p))
     {
     case 'R':
-        return Re(p == 'r', y, x);
+        return new Re(p == 'r', y, x);
     case 'D':
-        return Donna(p == 'd', y, x);
+        return new Donna(p == 'd', y, x);
     case 'C':
-        return Cavallo(p == 'c', y, x);
+        return new Cavallo(p == 'c', y, x);
     case 'A':
-        return Alfiere(p == 'a', y, x);
+        return new Alfiere(p == 'a', y, x);
     case 'T':
-        return Torre(p == 't', y, x);
+        return new Torre(p == 't', y, x);
     case 'P':
-        return Pedone(p == 'p', y, x);
+        return new Pedone(p == 'p', y, x);
     default:
-        return Nullo();
+        return new Nullo();
     }
 }
 
