@@ -20,14 +20,8 @@ using namespace std;
 int n_moves;
 
 class ArgumentsException{};
-
 class FileNotFoundException{};
-
 class ReplayException {};
-
-constexpr int moves_max = 100;
-
-string result_type(int t, string move_line);
 
 // stampa colorata (Solo su linux)  https://www.tutorialspoint.com/how-to-output-colored-text-to-a-linux-terminal
 void print_red(string s) { cout << ((ON_LINUX) ? "\033[;31m" + s + "\033[0m" : s) << endl; }
@@ -36,8 +30,8 @@ ostream &operator<<(ostream &os, Chessboard &cb);
 
 int main(int argc, char* argv[])
 {
-    // if (system("CLS"))
-    //     system("clear");
+    if (system("CLS"))
+        system("clear");
     string arg;
     char replay_type;
     try
@@ -66,7 +60,7 @@ int main(int argc, char* argv[])
             if (!out_file.is_open())
                 throw FileNotFoundException();
         }
-        Chessboard scacchiera{};
+        Chessboard scacchiera;
         if (replay_type == 'v')
             cout << scacchiera;
         else
