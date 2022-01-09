@@ -10,16 +10,18 @@
 #include <memory>
 #include <vector>
 #include <algorithm>
+#include <string>
 #include <iostream> //per test
 //HELPER FUNCTIONS
 bool is_valid_traj(int p_x, int p_y, int k_x, int k_y);
 void past_positions(std::vector<char> mat, bool empty);
 bool are_equals(std::vector<char> a, std::vector<char> b);
+bool in_bounds(int n);
+std::string string_move(int s_y, int s_x, int e_y, int e_x);
 //Eccezioni
 class three_time_repeated{};
-//if(in_black) -> controllo scacco del re nero tra i pezzi bianchi -> pezzo.is_white() 
 
-///*
+//if(in_black) -> controllo scacco del re nero tra i pezzi bianchi -> pezzo.is_white() 
 //Ritorna 1 se il re indicato da in_black e' sotto scacco
 // 2 se e' anche scacco matto
 // 0 se non e' nulla
@@ -191,7 +193,10 @@ bool Chessboard::is_draw(int end_y, int end_x )
        //b)due re e (un alfiere o un cavallo)
        for(char c : p_l)
            if(toupper(c) == 'A' || toupper(c) == 'C')
-               return true;
+            {
+                std::cout << "\n\nPATTA PER MANCANZA DI MATERIALE\n";
+                return true;
+            }
    }
    if(p_l.size() == 4)
    {
@@ -213,6 +218,7 @@ bool Chessboard::is_draw(int end_y, int end_x )
                        }
                        if(first && (((x+y)%2)==odd))
                        {
+                           std::cout << "\n\nPATTA PER MANCANZA DI MATERIALE\n";
                            return true;
                        }
                    }
@@ -237,6 +243,7 @@ bool Chessboard::is_draw(int end_y, int end_x )
        }
        catch(const three_time_repeated& e)
        {
+           std::cout << "\n\nPATTA PER RIPETIZIONE DI POSIZIONE\n";
            return true;
        }
        piece_number = p_l.size();
@@ -247,6 +254,7 @@ bool Chessboard::is_draw(int end_y, int end_x )
        move_counter = 0;
    }
    move_counter++;
+   std::cout<<"Mosse senza catture o mosse di pedone = "<<move_counter<<"\n";
    if(move_counter >= 50)
        return true;
    //________PER STALLO________
@@ -254,16 +262,86 @@ bool Chessboard::is_draw(int end_y, int end_x )
    int k_y = king_white[0];
    int k_x = king_white[1];
    if(!in_white)
+   {
         k_y = king_black[0];
         k_x = king_black[1];
+   }
    for(int y = 0; y < 8; y++)
    {
        for(int x = 0; x < 8; x++)
        {
+            std::cout << "Analisi del pezzo ( " << y << ", "<<x << ")\n";
             if((board[y][x].print() != ' ')&&(board[y][x].is_white() == in_white)&&(board[y][x].has_valid_move(board, y, x)))
-                return all_directions_threat(k_y, k_x, !in_white);
+            {
+               std::cout << "Analisi del pezzo ( " << y << ", "<<x << ")\n";
+               if(toupper(board[y][x].print()) == 'C')//Cavallo
+               {
+                   for(int off_y = -2; off_y <= 2; off_y++)
+                    {
+                        if(off_y == 0){continue;}
+                        if(off_y%2 == 0)
+                        {
+                            for(int off_x = -1; off_x <= 1; off_x+=2)
+                            {
+                                if(in_bounds(y+off_y)&&in_bounds(x+off_x)&&board[y][x].is_valid_move(board, y, x, y +off_y, x +off_x))
+                                {
+                                    std::string andata = string_move(y,x,y+off_y,x+off_x);
+                                    if(move(andata, board[y][x].is_white()) == 0)
+                                    {
+                                        std::string ritorno = string_move(y+off_y,x+off_x, y, x);
+                                        move(ritorno, board[y][x].is_white());//UNDO MOSSA
+                                        return false;
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            for(int off_x = -2; off_x <= 2; off_x +=4)
+                            {
+                                if(in_bounds(y+off_y)&&in_bounds(x+off_x)&&board[y][x].is_valid_move(board, y, x, y +off_y, x +off_x))
+                                {
+                                    std::string andata = string_move(y,x,y+off_y,x+off_x);
+                                    if(move(andata, board[y][x].is_white()) == 0)
+                                    {
+                                        std::string ritorno = string_move(y+off_y,x+off_x, y, x);
+                                        move(ritorno, board[y][x].is_white());//UNDO MOSSA
+                                        return false;
+                                    }
+                                }
+                            }
+                        }
+                    }
+               }
+               else//Altri pezzi mosse lineari
+               {
+                   for(int dir_y = -1; dir_y <= 1; dir_y ++)
+                   {
+                       for(int dir_x = -1; dir_x <= 1; dir_x ++)
+                       {
+                           int i_y = y + dir_y;
+                           int i_x = x + dir_x;
+                           while(in_bounds(i_y)&&in_bounds(i_x)&&board[y][x].is_valid_move(board, y, x, i_y, i_x))
+                           {
+                               std::string andata = string_move(y,x,i_y, i_x);
+                               if(move(andata, board[y][x].is_white()) == 0)
+                               {
+                                    std::cout << "SI puo' muovere: " << string_move(y,x,i_y,i_x)<<"\n";
+                                    std::string ritorno = string_move(i_y, i_x, y, x);
+                                    move(ritorno, board[y][x].is_white());//UNDO MOSSA
+                                    return false;
+                               }
+                               i_y += dir_y;
+                               i_x += dir_x;
+                           }
+                       }
+                   }
+               }           
+            }
+            std::cout << "Finito pezzo ( " << y << ", "<<x << ")\n";
        }
    }
+   std::cout << "Uscito dal ciclo di is_draw \n";
    return true;
 }
 //Ritorna la posizione (y,x) della minaccia nella direzione indicata, (-1,-1) altrimenti
@@ -317,17 +395,10 @@ std::vector<char> Chessboard::to_char_vector()//Ritorno la matrice per righe
    return v;
 }
 
-//*/
 
 
 // DEFINIZIONE HELPER FUNCTIONS
-///*
-//Ritorna una direzione come schema sotto, -1 se non fa parte della croce di possibile attacco
-/*
-(7)(0)(1)
-(6)(K)(2)
-(5)(4)(3)
-*/
+//Ritorna false se non fa parte della croce di possibile attacco
 bool is_valid_traj(int p_y, int p_x, int k_y, int k_x)
 {
    int x_diff = k_x - p_x;
@@ -374,5 +445,20 @@ bool are_equals(std::vector<char> a, std::vector<char> b)
    }
    return true;
 }
+bool in_bounds(int n)
+{
+    return (n>=0 && n<8);
+}
+std::string string_move(int s_y, int s_x, int e_y, int e_x)
+{
+    std::string s_m;
+    char c_s_x = s_x + 'A';
+    s_m.push_back(c_s_x);
+    s_m.push_back(8 - s_y);
+    char c_e_x = e_x + 'A';
+    s_m.push_back(c_e_x);
+    s_m.push_back(8 - e_y);
+    std::cout << "Ricevo: "<<s_y<<s_x<<e_y<<e_x<< " restituisco: " << s_m<<"\n";
+    return s_m;
 
-//*/
+}

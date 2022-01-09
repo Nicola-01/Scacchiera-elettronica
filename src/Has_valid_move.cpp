@@ -4,6 +4,7 @@
    file: Has_valid_move.cpp
 */
 #include "Piece.h"
+
 bool in_board(int n);
 
 bool Piece::has_valid_move(Piece (&Board)[8][8], int str_y, int str_x)
@@ -98,7 +99,7 @@ bool Cavallo::has_valid_move(Piece (&Board)[8][8], int str_y, int str_x)
         if(off_y == 0){continue;}
         if(off_y%2 == 0)
         {
-            for(int off_x = -1; off_x <= 1; off_x+2)
+            for(int off_x = -1; off_x <= 1; off_x+=2)
             {
                 if(in_board(str_y+off_y)&&in_board(str_x+off_x)&&is_valid_move(Board, str_y, str_x, str_y +off_y, str_x +off_x))
                     return true;
@@ -106,7 +107,7 @@ bool Cavallo::has_valid_move(Piece (&Board)[8][8], int str_y, int str_x)
         }
         else
         {
-            for(int off_x = -2; off_x <= 2; off_x +4)
+            for(int off_x = -2; off_x <= 2; off_x +=4)
             {
                 if(in_board(str_y+off_y)&&in_board(str_x+off_x)&&is_valid_move(Board, str_y, str_x, str_y +off_y, str_x +off_x))
                     return true;
