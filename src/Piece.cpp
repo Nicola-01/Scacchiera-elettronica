@@ -596,7 +596,7 @@ std::pair<int, int> Pedone::random_xy(Piece (&Board)[8][8], int str_y, int str_x
             return output; //se non trova niente ritorna -1-1
         }
         cont++;
-    } while (!(check_boundary(end_y, end_x) && is_valid_move(Board, str_y, str_x, end_y, end_x)));
+    } while (!(check_boundary(end_y, end_x) && p.is_valid_move(Board, str_y, str_x, end_y, end_x)));
     output.first = end_y;
     output.second = end_x;
     return output;
