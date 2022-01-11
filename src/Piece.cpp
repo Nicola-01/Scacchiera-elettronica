@@ -260,7 +260,20 @@ bool Pedone::is_valid_move(Piece *(&Board)[8][8], int str_y, int str_x, int end_
     }
     if (delta_x == 0 && Board[end_y][end_x]->print() != ' ') //non può mangiare in avanti
         return false;
-
+    if (delta_x == 0 && delta_y == 2)
+    {
+        if (Board[str_y][str_x]->print() == 'p') //tornare indietro, si puo' fare sicuramente meglio
+        {
+            //str_y < end_y
+            if (Board[end_y - 1][end_x]->print() != ' ')
+                return false;
+        }
+        else
+        {
+            if (Board[end_y + 1][end_x]->print() != ' ')
+                return false;
+        }
+    }
     if (delta_y == 2)
     {
         if (is_moved()) //moved
@@ -537,6 +550,5 @@ std::pair<int, int> Nullo::random_xy(Piece *(&Board)[8][8], int str_y, int str_x
     std::pair<int, int> output{-1, -1};
     return output;
 };
-
 
 #endif
