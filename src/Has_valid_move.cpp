@@ -7,46 +7,8 @@
 
 bool in_board(int n);
 
-bool Piece::has_valid_move(Piece (&Board)[8][8], int str_y, int str_x)
-{
-    char in = toupper(Board[str_y][str_x].type);
-    switch (in)
-    {
-        case 'R':
-        {
-            Re p = Re(Board[str_y][str_x].is_white(), str_y, str_x);
-            return p.has_valid_move(Board, str_y, str_x);
-        }
-        case 'D':
-        {
-            Donna p = Donna(Board[str_y][str_x].is_white(), str_y, str_x);
-            return p.has_valid_move(Board, str_y, str_x);
-        }
-        case 'T':
-        {
-            Torre p = Torre(Board[str_y][str_x].is_white(), str_y, str_x);
-            return p.has_valid_move(Board, str_y, str_x);
-        }
-        case 'A':
-        {
-            Alfiere p = Alfiere(Board[str_y][str_x].is_white(), str_y, str_x);
-            return p.has_valid_move(Board, str_y, str_x);
-        }
-        case 'C':
-        {
-            Cavallo p = Cavallo(Board[str_y][str_x].is_white(), str_y, str_x);
-            return p.has_valid_move(Board, str_y, str_x);
-        }
-        case 'P':
-        {
-            Pedone p = Pedone(Board[str_y][str_x].is_white(), str_y, str_x);
-            return p.has_valid_move(Board, str_y, str_x);
-        }
-    }
 
-    return false;
-}
-bool Re::has_valid_move(Piece (&Board)[8][8], int str_y, int str_x)
+bool Re::has_valid_move(Piece *(&Board)[8][8], int str_y, int str_x)
 {
     for(int dir_y = -1; dir_y <= 1; dir_y++)
     {
@@ -61,7 +23,7 @@ bool Re::has_valid_move(Piece (&Board)[8][8], int str_y, int str_x)
     }
     return false;
 }
-bool Donna::has_valid_move(Piece (&Board)[8][8], int str_y, int str_x)
+bool Donna::has_valid_move(Piece *(&Board)[8][8], int str_y, int str_x)
 {
    for(int dir_y = -1; dir_y <= 1; dir_y++)
     {
@@ -76,7 +38,7 @@ bool Donna::has_valid_move(Piece (&Board)[8][8], int str_y, int str_x)
     }
     return false;
 }
-bool Torre::has_valid_move(Piece (&Board)[8][8], int str_y, int str_x)
+bool Torre::has_valid_move(Piece *(&Board)[8][8], int str_y, int str_x)
 {
     if(in_board(str_y+1)&&is_valid_move(Board, str_y, str_x, str_y +1, str_x)){return true;}
     if(in_board(str_y-1)&&is_valid_move(Board, str_y, str_x, str_y -1, str_x)){return true;}
@@ -84,7 +46,7 @@ bool Torre::has_valid_move(Piece (&Board)[8][8], int str_y, int str_x)
     if(in_board(str_x-1)&&is_valid_move(Board, str_y, str_x, str_y, str_x -1)){return true;}
     return false;
 }
-bool Alfiere::has_valid_move(Piece (&Board)[8][8], int str_y, int str_x)
+bool Alfiere::has_valid_move(Piece *(&Board)[8][8], int str_y, int str_x)
 {
     if(in_board(str_y-1)&&in_board(str_x-1)&&is_valid_move(Board, str_y, str_x, str_y -1, str_x -1)){return true;}
     if(in_board(str_y-1)&&in_board(str_x+1)&&is_valid_move(Board, str_y, str_x, str_y -1, str_x +1)){return true;}
@@ -92,7 +54,7 @@ bool Alfiere::has_valid_move(Piece (&Board)[8][8], int str_y, int str_x)
     if(in_board(str_y+1)&&in_board(str_x+1)&&is_valid_move(Board, str_y, str_x, str_y +1, str_x +1)){return true;}
     return false;
 }
-bool Cavallo::has_valid_move(Piece (&Board)[8][8], int str_y, int str_x)
+bool Cavallo::has_valid_move(Piece *(&Board)[8][8], int str_y, int str_x)
 {
     for(int off_y = -2; off_y <= 2; off_y++)
     {
@@ -116,7 +78,7 @@ bool Cavallo::has_valid_move(Piece (&Board)[8][8], int str_y, int str_x)
     }
     return false;
 }
-bool Pedone::has_valid_move(Piece (&Board)[8][8], int str_y, int str_x)
+bool Pedone::has_valid_move(Piece *(&Board)[8][8], int str_y, int str_x)
 {
     int off_y = 1;
     if(is_white()){off_y = -1;}
@@ -127,7 +89,7 @@ bool Pedone::has_valid_move(Piece (&Board)[8][8], int str_y, int str_x)
     }
     return false;
 }
-bool Nullo::has_valid_move(Piece (&Board)[8][8], int str_y, int str_x)
+bool Nullo::has_valid_move(Piece *(&Board)[8][8], int str_y, int str_x)
 {
     return false;
 }
