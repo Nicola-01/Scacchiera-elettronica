@@ -22,7 +22,7 @@ public:
     virtual std::pair<int, int> random_xy(Piece *(&Board)[8][8], int str_y, int str_x) = 0; //ritorna le coordinate sotto forma di stringa
     virtual bool is_valid_move(Piece *(&Board)[8][8], int str_y, int str_x, int end_y, int end_x) = 0;
 
-    bool has_valid_move(Piece *(&Board)[8][8], int str_y, int str_x); //Definito in "Has_valid_move.cpp"
+    virtual bool has_valid_move(Piece *(&Board)[8][8], int str_y, int str_x) = 0; //Definito in "Has_valid_move.cpp"
 
     bool is_white() { return white; }; // = true se e' un pezzo bianco
     bool is_moved() { return moved; };
@@ -56,6 +56,7 @@ class Re : public Piece
 public:
     Re(bool color, int y, int x);
     bool is_valid_move(Piece *(&Board)[8][8], int str_y, int str_x, int end_y, int end_x);
+    bool has_valid_move(Piece *(&Board)[8][8], int str_y, int str_x);
     std::pair<int, int> random_xy(Piece *(&Board)[8][8], int str_y, int str_x);
 };
 
@@ -64,6 +65,7 @@ class Donna : public Piece
 public:
     Donna(bool color, int y, int x);
     bool is_valid_move(Piece *(&Board)[8][8], int str_y, int str_x, int end_y, int end_x);
+    bool has_valid_move(Piece *(&Board)[8][8], int str_y, int str_x);
     std::pair<int, int> random_xy(Piece *(&Board)[8][8], int str_y, int str_x);
 };
 
@@ -72,6 +74,7 @@ class Torre : public Piece
 public:
     Torre(bool color, int y, int x);
     bool is_valid_move(Piece *(&Board)[8][8], int str_y, int str_x, int end_y, int end_x);
+    bool has_valid_move(Piece *(&Board)[8][8], int str_y, int str_x);
     std::pair<int, int> random_xy(Piece *(&Board)[8][8], int str_y, int str_x);
 };
 
@@ -80,6 +83,7 @@ class Alfiere : public Piece
 public:
     Alfiere(bool color, int y, int x);
     bool is_valid_move(Piece *(&Board)[8][8], int str_y, int str_x, int end_y, int end_x);
+    bool has_valid_move(Piece *(&Board)[8][8], int str_y, int str_x);
     std::pair<int, int> random_xy(Piece *(&Board)[8][8], int str_y, int str_x);
 };
 
@@ -88,6 +92,7 @@ class Cavallo : public Piece
 public:
     Cavallo(bool color, int y, int x);
     bool is_valid_move(Piece *(&Board)[8][8], int str_y, int str_x, int end_y, int end_x);
+    bool has_valid_move(Piece *(&Board)[8][8], int str_y, int str_x);
     std::pair<int, int> random_xy(Piece *(&Board)[8][8], int str_y, int str_x);
 };
 
@@ -96,6 +101,7 @@ class Pedone : public Piece
 public:
     Pedone(bool color, int y, int x);
     bool is_valid_move(Piece *(&Board)[8][8], int str_y, int str_x, int end_y, int end_x);
+    bool has_valid_move(Piece *(&Board)[8][8], int str_y, int str_x);
     std::pair<int, int> random_xy(Piece *(&Board)[8][8], int str_y, int str_x);
 };
 
@@ -105,6 +111,7 @@ public:
     Nullo();
     std::pair<int, int> random_xy(Piece *(&Board)[8][8], int str_y, int str_x);
     bool is_valid_move(Piece *(&Board)[8][8], int str_y, int str_x, int end_y, int end_x) { return false; };
+    bool has_valid_move(Piece *(&Board)[8][8], int str_y, int str_x);
 };
 
 //Eccezioni
