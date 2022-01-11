@@ -283,6 +283,8 @@ std::pair<int, int> Re::random_xy(Piece *(&Board)[8][8], int str_y, int str_x)
     int end_y, end_x;
     int cont{0};
     std::pair<int, int> output{-1, -1};
+    // if (!has_valid_move(Board, str_y, str_x))
+    //     return output;
     do
     {
         end_x = rand() % (3) + (str_x - 1); //3 possibili numeri a partire da quello a sinistra
@@ -306,6 +308,8 @@ std::pair<int, int> Torre::random_xy(Piece *(&Board)[8][8], int str_y, int str_x
     int end_y, end_x;
     int cont{0};
     std::pair<int, int> output{-1, -1};
+    // if (!has_valid_move(Board, str_y, str_x))
+    //     return output;
     do
     {
         int up_rigth = rand() % 2;
@@ -338,6 +342,8 @@ std::pair<int, int> Cavallo::random_xy(Piece *(&Board)[8][8], int str_y, int str
     int end_y, end_x;
     int cont{0};
     std::pair<int, int> output{-1, -1};
+    // if (!has_valid_move(Board, str_y, str_x))
+    //     return output;
     do
     {
         int random_1 = rand() % 2;
@@ -393,6 +399,8 @@ std::pair<int, int> Alfiere::random_xy(Piece *(&Board)[8][8], int str_y, int str
     srand(time(NULL));
     int end_y, end_x, i;
     std::pair<int, int> output{-1, -1};
+    // if (!has_valid_move(Board, str_y, str_x))
+    //     return output;
     int cont{0};
     do
     {
@@ -430,6 +438,8 @@ std::pair<int, int> Pedone::random_xy(Piece *(&Board)[8][8], int str_y, int str_
     int end_y, end_x, d_y;
     int cont{0};
     std::pair<int, int> output{-1, -1};
+    // if (!has_valid_move(Board, str_y, str_x))
+    //     return output;
     Pedone p = Pedone(Board[str_y][str_x]->is_white(), Board[str_y][str_x]->get_ex_position_y(), Board[str_y][str_x]->get_ex_position_x());
     p.moved = Board[str_y][str_x]->is_moved(); //non so se serva
     do
@@ -501,6 +511,8 @@ std::pair<int, int> Donna::random_xy(Piece *(&Board)[8][8], int str_y, int str_x
     srand(time(NULL));
     int end_y, end_x, d_y;
     std::pair<int, int> output{-1, -1};
+    // if (!has_valid_move(Board, str_y, str_x))
+    //     return output;
     int torre_alfiere = rand() % 2;
     Torre t = Torre(Board[str_y][str_x]->is_white(), Board[str_y][str_x]->get_ex_position_y(), Board[str_y][str_x]->get_ex_position_x());
     Alfiere a = Alfiere(Board[str_y][str_x]->is_white(), Board[str_y][str_x]->get_ex_position_y(), Board[str_y][str_x]->get_ex_position_x());
