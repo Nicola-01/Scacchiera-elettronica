@@ -2,7 +2,7 @@
 Gruppo formato da:
   Nicola Busato   2009663
   Riccardo Miele  2008594
-  
+  Martino Scagnet 2000134
   
   
 Note programma
@@ -11,7 +11,7 @@ Note programma
    - Oltre ai comandi per lo spostamento "A1 H8" e "XX XX" ho aggiunto "clear" e "patta" (case insensitive) rispettivamente per ripulire la console e per fare la patta
    - Ci sono due metodi print_green, print_red che funzionano solo con linux per stampare in verde o in rosso
  * Chessboard   (Nicola Busato 2009663)
-   - Abbiamo deciso di gestire la scacchiera come matrice (8x8) di Piece
+   - Abbiamo deciso di gestire la scacchiera come matrice (8x8) di puntatori di Piece
    - Il random move cattura le eccezioni Arrocco e Promotion che contengono al loro interno un pair(y,x) delle coordinate di arrivo del random move, queste vengono convertite in stringa valida per il metodo move di chessboard e successivamente salvate nel file di log.  
  *
  
