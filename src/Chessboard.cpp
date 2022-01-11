@@ -14,6 +14,7 @@ bool is_valid_string(std::string move);
 
 Chessboard::Chessboard() // inserisco nelle rispettive posizioioni i pezzi
 {
+    board.resize(8, std::vector<Piece *>(8));
     const std::string pos{"TCADRACT"}; // e' la "sequenza" in cui vengono posizionati i pezzi diversi dal pedone
     for (int x = 0; x < 8; x++)
     {
@@ -89,7 +90,7 @@ int Chessboard::move(std::string &s_move, bool white_turne, bool replay) // meto
         arrocco_check = is_check(!white_turne, str_y, str_x, end_y, end_x);
         arrocco = true;                // devo controllare se non va sotto scacco spostandosi
         int d_x = (end_x - str_x) / 2; // se negativo il re si e' spostato a sx altrimenti a dx
-        Piece *p = board[str_y][str_x + d_x];
+        Piece *torre_tmp = board[str_y][str_x + d_x];
         board[end_y][str_x + d_x] = board[str_y][str_x]; // sposto il re nella casella intermedia
 
         // modifico la posizione del re per vedere se e' scacco
@@ -106,11 +107,13 @@ int Chessboard::move(std::string &s_move, bool white_turne, bool replay) // meto
         if (!arrocco_check)
             arrocco_check = is_check(!white_turne, str_y, str_x, end_y, str_x + d_x);
         board[str_y][str_x] = board[end_y][str_x + d_x]; // riptistino lo spostamento
-        board[str_y][str_x + d_x] = p;                   // rimetto la torre al suo posto
+        board[str_y][str_x + d_x] = torre_tmp;                   // rimetto la torre al suo posto
+        // non elimino torre_tmp perchè se no eliminerei l'aria di memoria di board[str_y][str_x + d_x]
     }
 
     Piece *gonna_die = board[end_y][end_x];    // salvo il pezzo che morirà
     board[end_y][end_x] = board[str_y][str_x]; // sposto effettivamente il pezzo
+    delete board[str_y][str_x];                // Libero l'aria di memoria 
     board[str_y][str_x] = new Nullo();         // metto un pezzo nullo al posto del pezzo
 
     if (board[end_y][end_x]->print() == 'r') // controllo se e' stato spostato il re bianco e ne salvo le nuove coordinate
@@ -133,7 +136,7 @@ int Chessboard::move(std::string &s_move, bool white_turne, bool replay) // meto
     {
         board[str_y][str_x] = board[end_y][end_x]; // se e' avenuto lo scacco riposiziono i pezi al loro posto
         board[end_y][end_x] = gonna_die;
-        delete gonna_die; // libero la memoria
+        // non elimino gonna_die perchè se no eliminerei l'aria di memoria di board[end_y][end_x]
 
         if (promotion) // se e' avvenuta una promozione lo riporto come pedone
             board[str_y][str_x] = new Pedone(white_turne, str_y, str_x);
@@ -146,16 +149,17 @@ int Chessboard::move(std::string &s_move, bool white_turne, bool replay) // meto
             board[str_y][new_x_torre] = new Nullo();
             return 6;
         }
+        else if (board[str_y][str_x]->print() == 'r') // Re bianco
+        {
+            king_white[0] = str_y;
+            king_white[1] = str_x;
+        }
         else if (board[str_y][str_x]->print() == 'R') // Re nero
         {
             king_black[0] = str_y;
             king_black[1] = str_x;
         }
-        else if (board[str_y][str_x]->print() == 'r')
-        {
-            king_white[0] = str_y;
-            king_white[1] = str_x;
-        }
+        
 
         return 5; // scacco, mossa annullata
     }

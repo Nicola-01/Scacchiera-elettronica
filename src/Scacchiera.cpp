@@ -80,16 +80,16 @@ int main(int argc, char *argv[])
         cout << scacchiera;         // ristampo la scacchiera
         white_turne = !white_turne; // passo il turno
 
-        if (int check = scacchiera.is_check(!white_turne) > 0) // controllo se e' scacco
+        int check;
+        if (!patta && (check = scacchiera.is_check(!white_turne)) > 0) // controllo se e' scacco e che il player non abbia chiamato la patta
         {
-            if (check == 2) // e' scacco matto
+            if (check == 2) { // e' scacco matto
                 (white_turne) ? print_green("Il Bianco ha fatto scacco matto al Nero") : print_green("Il Nero ha fatto scacco matto al Bianco");
-            else // e' scacco
-                (white_turne) ? print_green("Il Bianco ha fatto scacco al Nero") : print_green("Il Nero ha fatto scacco al Bianco");
-            break;
+                break;
+            }
+            (white_turne) ? print_green("Il Bianco ha fatto scacco al Nero") : print_green("Il Nero ha fatto scacco al Bianco");
         }
-        else if (patta || scacchiera.is_draw()) // patta e' true quando un player scrive "patta"
-        {
+        else if (patta || scacchiera.is_draw()) { // patta e' true quando un player scrive "patta"
             print_green("Partita finita in patta");
             break;
         }
@@ -139,7 +139,9 @@ void computer_turne(Chessboard &scacchiera, bool white_turne, ofstream &log_file
 {
     string line;
     int y, x, out;
+    int nv_cout = 0;
     do {
+        nv_cout++;
         do {
             y = rand() % 8;
             x = rand() % 8;
@@ -151,7 +153,6 @@ void computer_turne(Chessboard &scacchiera, bool white_turne, ofstream &log_file
         cout << "pezzo selezionato (y,x): " << y << ", " << x << endl;
         line = scacchiera.random_move(y, x, white_turne); // genera la mossa nel formato "Ln Ln"
         cout << "-- Prova dello spostamento: " << line << endl;
-        // cin.get();
     } while (line == "NV NV" || (out = scacchiera.move(line, white_turne)) != 0); // il pezzo non ha mosse valide allora ne seleziono un altro, o la mossa genera uno scacco
     // cout << out;
     // if (out == 4)
@@ -173,7 +174,7 @@ string result_type(int err, string move_line) // in base al tipo di errore stamp
     case 4:
         return "La mossa " + move_line + " non e' valida, inserire una mossa valida:";
     case 5:
-        return "Se fai quella finisci sotto scacco, forse e' meglio cambiarla:";
+        return "Se fai quella finisci/resti sotto scacco, forse e' meglio cambiarla:";
     case 6:
         return "Non puoi arroccare, il re e' sotto scacco o passa in una casella in cui sarebbe sotto scacco";
     default:
