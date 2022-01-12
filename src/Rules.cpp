@@ -387,11 +387,9 @@ bool Chessboard::implies_check(int st_y, int st_x, int end_y, int end_x)
     if(move(prova_mossa, board[st_y][st_x]->is_white()) == 0)//La mossa e' valida e non implica scacco
     {
         board[st_y][st_x] = board[ end_y][end_x];
-        board[end_y][end_x] = p_ep;//UNDO MOSSA
-        delete p_ep;
+        board[end_y][end_x] = p_ep;//UNDO
         return false;
     }
-    delete p_ep;
     return true;
 }
 
