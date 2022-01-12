@@ -1,8 +1,5 @@
 //Riccardo Miele 2008594
 
-#ifndef Piece_cpp
-#define Piece_cpp
-
 #include "Piece.h"
 #include <iostream>
 #include <time.h>
@@ -102,8 +99,10 @@ bool Piece::check_arrocco_re(Piece *(&Board)[8][8], int end_y, int end_x)
         //t.moved = Board[end_y][end_x + 1].is_moved(); //non so se serva
         if (!this->is_moved() && Board[end_y][end_x]->print() == ' ' && Board[end_y][end_x - 1]->print() == ' ')
         {
-            *Board[end_y][end_x + 1] = Nullo();
-            *Board[end_y][end_x - 1] = Torre(is_white(), end_y, end_x + 1);
+            delete Board[end_y][end_x + 1];
+            delete Board[end_y][end_x - 1];
+            Board[end_y][end_x + 1] = new Nullo();
+            Board[end_y][end_x - 1] = new Torre(is_white(), end_y, end_x + 1);
             Board[end_y][end_x - 1]->moved = true;
             return true;
         }
@@ -249,7 +248,8 @@ bool Pedone::is_valid_move(Piece *(&Board)[8][8], int str_y, int str_x, int end_
         if ((Board[str_y][end_x]->get_ex_position_y() == 6 || Board[str_y][end_x]->get_ex_position_y() == 1) && toupper(Board[str_y][end_x]->print()) == 'P' && Board[str_y][end_x]->is_moved() && (n_moves - 1) == Board[str_y][end_x]->get_number_move()) //en passant
         {
             {
-                *Board[str_y][end_x] = Nullo(); //en passant in teoria giusto
+                delete Board[str_y][end_x];
+                Board[str_y][end_x] = new Nullo(); //en passant in teoria giusto
                 return true;
             }
         }
@@ -264,13 +264,13 @@ bool Pedone::is_valid_move(Piece *(&Board)[8][8], int str_y, int str_x, int end_
     {
         if (Board[str_y][str_x]->print() == 'p') //tornare indietro, si puo' fare sicuramente meglio
         {
-            //str_y < end_y
-            if (Board[end_y - 1][end_x]->print() != ' ')
+            //str_y > end_y
+            if (Board[end_y + 1][end_x]->print() != ' ')
                 return false;
         }
         else
         {
-            if (Board[end_y + 1][end_x]->print() != ' ')
+            if (Board[end_y - 1][end_x]->print() != ' ')
                 return false;
         }
     }
@@ -550,5 +550,3 @@ std::pair<int, int> Nullo::random_xy(Piece *(&Board)[8][8], int str_y, int str_x
     std::pair<int, int> output{-1, -1};
     return output;
 };
-
-#endif
