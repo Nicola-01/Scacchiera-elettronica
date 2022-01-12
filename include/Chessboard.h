@@ -32,8 +32,8 @@ private:
     std::vector<char> to_char_vector();
 
 public:
-    Chessboard();                     // costruttore, inserisce nella matrice i pezzi nelle rispettive posizioni
-    //~Chessboard() { delete[] board; } // distruttore, devo liverare board
+    Chessboard();  // costruttore, inserisce nella matrice i pezzi nelle rispettive posizioni
+    ~Chessboard(); // distruttore, devo liverare board
 
     int move(std::string &s_move, bool white_turne) { return move(s_move, white_turne, false); } // controlla se lo spostamento e' valido, se e' così esegue lo spostamento
     int move(std::string &s_move, bool white_turne, bool replay);                                // come sopra ma con dei controlli aggiuntivi per il replay

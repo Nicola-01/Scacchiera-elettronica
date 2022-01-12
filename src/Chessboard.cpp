@@ -14,7 +14,6 @@ bool is_valid_string(std::string move);
 
 Chessboard::Chessboard() // inserisco nelle rispettive posizioioni i pezzi
 {
-    board.resize(8, std::vector<Piece *>(8));
     const std::string pos{"TCADRACT"}; // e' la "sequenza" in cui vengono posizionati i pezzi diversi dal pedone
     for (int x = 0; x < 8; x++)
     {
@@ -25,6 +24,12 @@ Chessboard::Chessboard() // inserisco nelle rispettive posizioioni i pezzi
         board[6][x] = inizializer_piece('p', 6, x); // p
         board[7][x] = inizializer_piece(tolower(pos[x]), 7, x);
     }
+}
+
+Chessboard::~Chessboard() {
+    for (int y = 0; y < 8; y++)
+        for (int x = 0; x < 8; x++)
+            delete board[y][x];     //libero le aree di memoria puntate dal array
 }
 
 int Chessboard::move(std::string &s_move, bool white_turne, bool replay) // metodo che gestitsce lo spostamento (validita e controlli)
