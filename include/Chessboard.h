@@ -25,12 +25,14 @@ private:
     int last_capture;        // memorizza la mossa in cui e' avenuta l'ultima cattura, per la patta
 
     //--- methods
+    //_______ Definiti in: src/Rules.cpp _________
     std::pair<int, int> direction_threat(int king_y, int king_x, bool black_king, int dir_y, int dir_x);
     bool all_directions_threat(int k_y, int k_x, bool black_king);
     bool is_checkmate_d(int k_y, int k_x, bool in_black);
     bool is_checkmate_s(int k_y, int k_x, std::pair<int, int> t_pos, bool in_black);
     std::vector<char> to_char_vector();
-
+    bool implies_check(int st_y, int st_x, int end_y, int end_x);
+    //____________________________________________
 public:
     Chessboard();  // costruttore, inserisce nella matrice i pezzi nelle rispettive posizioni
     ~Chessboard(); // distruttore, devo liverare board
@@ -41,15 +43,11 @@ public:
 
     char pices_type(int y, int x) { return board[y][x]->print(); }                                                                           // restituisce il pezzo selezionato
     bool is_right_piece(int y, int x, bool white_turne) { return (board[y][x]->print() != ' ' && board[y][x]->is_white() == white_turne); }; // restituisce se il pezzo e' del player
-
-    // bool is_checkmate(bool in_black, int st_y, int st_x, int end_y, int end_x) { return false; };
-    // int is_check(bool in_black, int st_y, int st_x, int end_y, int end_x) { return false; };
-    // bool is_draw(int end_y, int end_x) { return false; };
-
+    //_______ Definiti in: src/Rules.cpp _________
     bool is_checkmate(bool in_black, int st_y, int st_x, int end_y, int end_x);
     int is_check(bool in_black, int st_y, int st_x, int end_y, int end_x);
     bool is_draw(int end_y, int end_x);
-
+    //____________________________________________
     bool is_checkmate(bool in_black) { return is_checkmate(in_black, str[0], str[1], end[0], end[1]); } // richiama is_chckmate con l'ultimo spostamento valido
     int is_check(bool in_black) { return is_check(in_black, str[0], str[1], end[0], end[1]); }          // richiama is_check con l'ultimo spostamento valido
     bool is_draw() { return is_draw(end[0], end[1]); }                                                  // richiama is_draw con l'ultimo spostamento valido
