@@ -306,6 +306,7 @@ bool Chessboard::is_draw(int end_y, int end_x)
                     {
                         for (int dir_x = -1; dir_x <= 1; dir_x++)
                         {
+                            if (dir_x == 0 && dir_y == 0) { continue; }
                             int i_y = y + dir_y;
                             int i_x = x + dir_x;
                             while (in_bounds(i_y) && in_bounds(i_x))
