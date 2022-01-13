@@ -131,10 +131,12 @@ bool Re::is_valid_move(Piece *(&Board)[8][8], int str_y, int str_x, int end_y, i
 bool Donna::is_valid_move(Piece *(&Board)[8][8], int str_y, int str_x, int end_y, int end_x)
 {
     //Torre t = Board[str_y][str_x];
-    Torre t = Torre(is_white(), str_y, str_x);
-    Alfiere a = Alfiere(is_white(), str_y, str_x);
-    bool control_condition = (a.is_valid_move(Board, str_y, str_x, end_y, end_x) || t.is_valid_move(Board, str_y, str_x, end_y, end_x));
+    Torre* t = new Torre(is_white(), str_y, str_x);
+    Alfiere* a = new Alfiere(is_white(), str_y, str_x);
+    bool control_condition = (a->is_valid_move(Board, str_y, str_x, end_y, end_x) || t->is_valid_move(Board, str_y, str_x, end_y, end_x));
     return control_condition;
+    delete t;
+    delete a;
 };
 
 bool Torre::is_valid_move(Piece *(&Board)[8][8], int str_y, int str_x, int end_y, int end_x)
@@ -452,12 +454,12 @@ std::pair<int, int> Pedone::random_xy(Piece *(&Board)[8][8], int str_y, int str_
     std::pair<int, int> output{-1, -1};
     // if (!has_valid_move(Board, str_y, str_x))
     //     return output;
-    Pedone p = Pedone(Board[str_y][str_x]->is_white(), Board[str_y][str_x]->get_ex_position_y(), Board[str_y][str_x]->get_ex_position_x());
-    p.moved = Board[str_y][str_x]->is_moved(); //non so se serva
+    Pedone* p = new Pedone(Board[str_y][str_x]->is_white(), Board[str_y][str_x]->get_ex_position_y(), Board[str_y][str_x]->get_ex_position_x());
+    p->moved = Board[str_y][str_x]->is_moved(); //non so se serva
     do
     {
         end_x = rand() % (3) + (str_x - 1); //3 possibili numeri a partire da quello a sinistra
-        if (!p.is_moved())                  //si può muovere di due
+        if (!p->is_moved())                  //si può muovere di due
         {
             d_y = 1 + rand() % 2;
         }
@@ -466,7 +468,7 @@ std::pair<int, int> Pedone::random_xy(Piece *(&Board)[8][8], int str_y, int str_
 
             d_y = 1;
         }
-        if (p.is_white())
+        if (p->is_white())
         {
             end_y = str_y - d_y;
         }
@@ -474,7 +476,7 @@ std::pair<int, int> Pedone::random_xy(Piece *(&Board)[8][8], int str_y, int str_
         {
             end_y = str_y + d_y;
         }
-        if (p.check_promotion(end_y) && check_boundary(end_y, end_x) && !is_end_same_color(Board, str_y, str_x, end_y, end_x))
+        if (p->check_promotion(end_y) && check_boundary(end_y, end_x) && !is_end_same_color(Board, str_y, str_x, end_y, end_x))
         {
             int random = rand() % 4; //4 possibili numeri a partire da 0
             delete Board[end_y][end_x];
@@ -512,9 +514,10 @@ std::pair<int, int> Pedone::random_xy(Piece *(&Board)[8][8], int str_y, int str_
             return output; //se non trova niente ritorna -1-1
         }
         cont++;
-    } while (!(check_boundary(end_y, end_x) && p.is_valid_move(Board, str_y, str_x, end_y, end_x)));
+    } while (!(check_boundary(end_y, end_x) && p->is_valid_move(Board, str_y, str_x, end_y, end_x)));
     output.first = end_y;
     output.second = end_x;
+    delete p;
     return output;
 };
 
@@ -541,6 +544,8 @@ std::pair<int, int> Donna::random_xy(Piece *(&Board)[8][8], int str_y, int str_x
             torre_alfiere++;
         }
     }
+    delete t;
+    delete a;
     return output;
 };
 
