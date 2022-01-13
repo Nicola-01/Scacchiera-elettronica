@@ -32,7 +32,7 @@ private:
     bool is_checkmate_d(int k_y, int k_x, bool in_black);
     bool is_checkmate_s(int k_y, int k_x, std::pair<int, int> t_pos, bool in_black);
     std::vector<char> to_char_vector();
-    bool implies_check(int st_y, int st_x, int end_y, int end_x);
+    bool invalid_or_implies_check(int st_y, int st_x, int end_y, int end_x);
 
 public:
     Chessboard();  // costruttore, inserisce nella matrice i pezzi nelle rispettive posizioni

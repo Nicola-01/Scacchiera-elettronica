@@ -120,7 +120,7 @@ bool Chessboard::is_checkmate_d(int k_y, int k_x, bool in_black)
         {
             if ((x_off != 0 || y_off != 0) && in_bounds(k_y + y_off) && in_bounds(k_x + x_off))
             {
-                if (board[k_y][k_x]->is_valid_move(board, k_y, k_x, k_y + y_off, k_x + x_off) && !implies_check(k_y, k_x, k_y + y_off, k_x + x_off))
+                if (!invalid_or_implies_check(k_y, k_x, k_y + y_off, k_x + x_off))
                 {
                    //std::cout << "\n\n Il re puo muoversi in: (y= " << k_y + y_off << " , x= " << k_x + x_off << "\n\n";
                     return false;
@@ -158,7 +158,7 @@ bool Chessboard::is_checkmate_s(int k_y, int k_x, std::pair<int, int> t_pos, boo
                 {
                     for (int t_x = k_x + dir_x; (t_x + dir_x)!=t_pos.second; t_x = t_x + dir_x)
                     {
-                        if (board[y][x]->is_valid_move(board, y, x, t_y, t_x) && !implies_check(y, x, t_y, t_x)) //se si puo' mettere in mezzo senza generare scacco
+                        if (!invalid_or_implies_check(y, x, t_y, t_x)) //se si puo' mettere in mezzo senza generare scacco
                         {
                            //std::cout << "\n\n Si puo muovere: (y= " << y << " , x= " << x << ") --> (y= " << t_y << " , x= " << t_x << ")\n\n";
                             return false;
@@ -294,7 +294,7 @@ bool Chessboard::is_draw(int end_y, int end_x)
                     std::vector<std::pair<int,int>> c_mov = cavallo_moves(y, x);
                     for(int i = 0; i < c_mov.size(); i++)
                     {
-                        if (board[y][x]->is_valid_move(board, y, x, c_mov[i].first, c_mov[i].second) && !implies_check(y, x, c_mov[i].first, c_mov[i].second))
+                        if (!invalid_or_implies_check(y, x, c_mov[i].first, c_mov[i].second))
                         {
                             return false;
                         }
@@ -308,9 +308,9 @@ bool Chessboard::is_draw(int end_y, int end_x)
                         {
                             int i_y = y + dir_y;
                             int i_x = x + dir_x;
-                            while (in_bounds(i_y) && in_bounds(i_x) && board[y][x]->is_valid_move(board, y, x, i_y, i_x))
+                            while (in_bounds(i_y) && in_bounds(i_x))
                             {
-                                if (!implies_check(y, x, i_y, i_x))
+                                if (!invalid_or_implies_check(y, x, i_y, i_x))
                                 {
                                     return false;
                                 }
@@ -381,7 +381,7 @@ bool Chessboard::can_be_eaten(int p_y, int p_x)
                 std::pair<int, int> t_pos = direction_threat(p_y, p_x, !(board[p_y][p_x]->is_white()), dir_y, dir_x);
                 if (in_bounds(t_pos.first) && in_bounds(t_pos.second))
                 {
-                    if(!implies_check(t_pos.first, t_pos.second, p_y, p_x))
+                    if(!invalid_or_implies_check(t_pos.first, t_pos.second, p_y, p_x))
                         return true;
                 }
             }
@@ -402,30 +402,21 @@ std::vector<char> Chessboard::to_char_vector() //Ritorno la matrice per righe
     return v;
 }
 //controllo se la mossa (st_y, st_x) -> (end_y, end_x) implica scacco proprio
-bool Chessboard::implies_check(int st_y, int st_x, int end_y, int end_x)
+bool Chessboard::invalid_or_implies_check(int st_y, int st_x, int end_y, int end_x)
 {
-    std::string prova_mossa = string_move(st_y, st_x, end_y, end_x);
-    Piece *p_ep = board[end_y][end_x];                         //Salvo posizione finale
-    if (move(prova_mossa, board[st_y][st_x]->is_white()) == 0) //La mossa e' valida e non implica scacco
-    {
-        board[st_y][st_x] = board[end_y][end_x];
-        board[end_y][end_x] = p_ep; //UNDO MOSSA, p_ep non viene eliminato: perderei il pezzo puntato in [end_y][end_x]
-        //Se ho testato una mossa di un re devo aggiornare le posizioni a quelle iniziali
-        if (board[st_y][st_x]->print() == 'r') // Re bianco
-        {
-            king_white[0] = st_y;
-            king_white[1] = st_x;
-        }
-        else if (board[st_y][st_x]->print() == 'R') // Re nero
-        {
-            king_black[0] = st_y;
-            king_black[1] = st_x;
-        }
-        return false;
-    }
-    return true;
+    if (!board[st_y][st_x]->is_valid_move(board, st_y, st_x, end_y, end_x))
+        return true;
+    Piece *p_ep = board[end_y][end_x];
+    board[end_y][end_x] = board[st_y][st_x];
+    board[st_y][st_x] = new Nullo(); //DO MOVE
+    bool check = false;
+    if (is_check(!board[end_y][end_x]->is_white(), st_y, st_x, end_y, end_x))
+        check = true;
+    delete board[st_y][st_x]; //Elimino il pezzo nullo inserito per provare la mossa
+    board[st_y][st_x] = board[end_y][end_x];
+    board[end_y][end_x] = p_ep; //  UNDO MOVE
+    return check;
 }
-
 
 //_________________________________________________________________________________________________
 // DEFINIZIONE HELPER FUNCTIONS
