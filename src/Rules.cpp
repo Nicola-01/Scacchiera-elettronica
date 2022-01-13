@@ -61,8 +61,9 @@ int Chessboard::is_check(bool in_black, int st_y, int st_x, int end_y, int end_x
             if (diff_x != 0){diff_x = diff_x / std::abs(diff_x);}
             //std::cout << "Direzione della minaccia possibile rispetto a:(" << k_y << "," << k_x << ") :  (" << diff_y << "," << diff_x << ")\n";
             std::pair<int, int> second_t_pos = direction_threat(k_y, k_x, in_black, diff_y, diff_x);
-            if (second_t_pos.first >= 0)
+            if (in_bounds(second_t_pos.first) && (second_t_pos.first != end_y || second_t_pos.second != end_x))//controllo che il pezzo trovato non sia quello mosso
             {
+                //controllo che il pezzo trovato non sia quello mosso
                 if (found)
                     second = true;
                 else
@@ -156,16 +157,17 @@ bool Chessboard::is_checkmate_s(int k_y, int k_x, std::pair<int, int> t_pos, boo
         {
             if ( (board[y][x]->print() != ' ') && ((board[y][x]->is_white()) == (board[k_y][k_x]->is_white())))
             {
-                for (int t_y = k_y + dir_y; (t_y + dir_y)!=t_pos.first; t_y = t_y + dir_y)
+                int i_x = k_x + dir_x;
+                int i_y = k_y + dir_y;
+                while (i_x != t_pos.second && i_y != t_pos.first)
                 {
-                    for (int t_x = k_x + dir_x; (t_x + dir_x)!=t_pos.second; t_x = t_x + dir_x)
+                    if (!invalid_or_implies_check(y, x, i_y, i_x)) //se si puo' mettere in mezzo senza generare scacco
                     {
-                        if (!invalid_or_implies_check(y, x, t_y, t_x)) //se si puo' mettere in mezzo senza generare scacco
-                        {
-                           //std::cout << "\n\n Si puo muovere: (y= " << y << " , x= " << x << ") --> (y= " << t_y << " , x= " << t_x << ")\n\n";
-                            return false;
-                        }
+                        //std::cout << "\n\n Si puo muovere: (y= " << y << " , x= " << x << ") --> (y= " << t_y << " , x= " << t_x << ")\n\n";
+                        return false;
                     }
+                    i_x = i_x + dir_x;
+                    i_y = i_y + dir_y;
                 }
             }
         }
