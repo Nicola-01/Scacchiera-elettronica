@@ -125,6 +125,8 @@ bool Chessboard::is_checkmate_d(int k_y, int k_x, bool in_black)
                    //std::cout << "\n\n Il re puo muoversi in: (y= " << k_y + y_off << " , x= " << k_x + x_off << "\n\n";
                     return false;
                 }
+                //else
+                    //std::cout << "\n\n Il re NON puo muoversi in: (y= " << k_y + y_off << " , x= " << k_x + x_off << "\n\n";
             }
         }
     }
@@ -363,7 +365,7 @@ bool Chessboard::all_directions_threat(int k_y, int k_x, bool black_king)
                 std::pair<int, int> threat_pos = direction_threat(k_y, k_x, black_king, dir_y, dir_x);
                 if (in_bounds(threat_pos.first) && in_bounds(threat_pos.second))
                 {
-                    //std::cout << "\n\nE' SCACCO\n\n";
+                    //std::cout << "Minaccia in :"<< threat_pos.first<<","<<threat_pos.second<<" : "<<board[threat_pos.first][threat_pos.second]->print()<<"\n";
                     return true;
                 }
             }
@@ -406,16 +408,42 @@ std::vector<char> Chessboard::to_char_vector() //Ritorno la matrice per righe
 bool Chessboard::invalid_or_implies_check(int st_y, int st_x, int end_y, int end_x)
 {
     if (!board[st_y][st_x]->is_valid_move(board, st_y, st_x, end_y, end_x))
+    {
+        //std::cout << " (Mossa non valida) \n";
         return true;
+    }
     Piece *p_ep = board[end_y][end_x];
     board[end_y][end_x] = board[st_y][st_x];
     board[st_y][st_x] = new Nullo(); //DO MOVE
     bool check = false;
+    bool bk_moved =( board[end_y][end_x]->print() == 'R');
+    bool wk_moved = (board[end_y][end_x]->print() == 'r');
+    if (bk_moved)//Aggiorno le posizioni dei re, necessario ad is_check
+    {
+        king_black[0] = end_y;
+        king_black[1] = end_x;
+    } 
+    if (wk_moved)
+    {
+        king_white[0] = end_y;
+        king_white[1] = end_x;
+    }
     if (is_check(!board[end_y][end_x]->is_white(), st_y, st_x, end_y, end_x))
         check = true;
     delete board[st_y][st_x]; //Elimino il pezzo nullo inserito per provare la mossa
     board[st_y][st_x] = board[end_y][end_x];
     board[end_y][end_x] = p_ep; //  UNDO MOVE
+    if (bk_moved)//Resetto le posizioni dei re se testati
+    {
+        king_black[0] = st_y;
+        king_black[1] = st_x;
+    } 
+    if (wk_moved)
+    {
+        king_white[0] = st_y;
+        king_white[1] = st_x;
+    }
+    //if(check){//std::cout<<"La mossa implica scacco\n";}
     return check;
 }
 
