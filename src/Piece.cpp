@@ -229,7 +229,7 @@ bool Pedone::is_valid_move(Piece *(&Board)[8][8], int str_y, int str_x, int end_
     int delta_y = std::abs(str_y - end_y);
     if (is_end_same_color(Board, str_y, str_x, end_y, end_x)) //destinazione diverso colore;
         return false;
-    if (delta_y > 2 || delta_x > 1) //non si può muovere piu' di 2 caselle o non si può muovere in diagonale
+    if (delta_y > 2 || delta_x > 1 || delta_y == 0) //non si può muovere piu' di 2 caselle o non si può muovere in diagonale
         return false;
     if (Board[str_y][str_x]->print() == 'p') //tornare indietro, si puo' fare sicuramente meglio
     {
@@ -526,18 +526,18 @@ std::pair<int, int> Donna::random_xy(Piece *(&Board)[8][8], int str_y, int str_x
     // if (!has_valid_move(Board, str_y, str_x))
     //     return output;
     int torre_alfiere = rand() % 2;
-    Torre t = Torre(Board[str_y][str_x]->is_white(), Board[str_y][str_x]->get_ex_position_y(), Board[str_y][str_x]->get_ex_position_x());
-    Alfiere a = Alfiere(Board[str_y][str_x]->is_white(), Board[str_y][str_x]->get_ex_position_y(), Board[str_y][str_x]->get_ex_position_x());
+    Piece* t = new Torre(Board[str_y][str_x]->is_white(), Board[str_y][str_x]->get_ex_position_y(), Board[str_y][str_x]->get_ex_position_x());
+    Alfiere* a = new Alfiere(Board[str_y][str_x]->is_white(), Board[str_y][str_x]->get_ex_position_y(), Board[str_y][str_x]->get_ex_position_x());
     for (int i = 0; i < 2 && output.first == -1; i++)
     {
         if (torre_alfiere)
         {
-            output = t.random_xy(Board, str_y, str_x);
+            output = t->random_xy(Board, str_y, str_x);
             torre_alfiere--;
         }
         else
         {
-            output = a.random_xy(Board, str_y, str_x);
+            output = a->random_xy(Board, str_y, str_x);
             torre_alfiere++;
         }
     }
