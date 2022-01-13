@@ -118,7 +118,6 @@ int Chessboard::move(std::string &s_move, bool white_turne, bool replay) // meto
 
     Piece *gonna_die = board[end_y][end_x];    // salvo il pezzo che morirà
     board[end_y][end_x] = board[str_y][str_x]; // sposto effettivamente il pezzo
-    delete board[str_y][str_x];                // Libero l'aria di memoria 
     board[str_y][str_x] = new Nullo();         // metto un pezzo nullo al posto del pezzo
 
     if (board[end_y][end_x]->print() == 'r') // controllo se e' stato spostato il re bianco e ne salvo le nuove coordinate
