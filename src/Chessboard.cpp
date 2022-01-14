@@ -14,14 +14,14 @@ bool is_valid_string(std::string move);
 
 Chessboard::Chessboard() // inserisco nelle rispettive posizioioni i pezzi
 {
-    const std::string pos{"T  DR  T"}; // e' la "sequenza" in cui vengono posizionati i pezzi diversi dal pedone
+    const std::string pos{"R       "}; // e' la "sequenza" in cui vengono posizionati i pezzi diversi dal pedone
     for (int x = 0; x < 8; x++)
     {
         board[0][x] = inizializer_piece(pos[x], 0, x);
         board[1][x] = inizializer_piece(' ', 1, x); // P
-        for (int y = 2; y <= 5; y++)
+        for (int y = 3; y <= 6; y++)
             board[y][x] = inizializer_piece(' ', y, x);
-        board[6][x] = inizializer_piece(' ', 6, x); // p
+        board[2][x] = inizializer_piece('p', 6, x); // p
         board[7][x] = inizializer_piece(tolower(pos[x]), 7, x);
     }
 }

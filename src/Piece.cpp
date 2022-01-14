@@ -5,6 +5,10 @@
 #include <time.h>
 #include <stdlib.h>
 
+//helper function
+bool check_promotion(int y) { return y == 0 || y == 7; }; //se arrivato alla fine e' true
+bool check_boundary(int end_y, int end_x) { return end_y > -1 && end_x > -1 && end_y < 8 && end_x < 8; };
+
 //COSTRUTTORI
 
 Re::Re(bool color, int y, int x) : Piece(color, y, x) //costruttore Re
@@ -79,6 +83,7 @@ bool Piece::move(Piece *(&Board)[8][8], int str_y, int str_x, int end_y, int end
 
 bool Piece::check_arrocco_re(Piece *(&Board)[8][8], int end_y, int end_x)
 {
+    std::cout << "arrocco";
     if (end_x < 4) //end_x == 2
     {
         //Torre t = Torre(Board[end_y][end_x - 2].is_white(), Board[end_y][end_x - 2].get_ex_position_y(), Board[end_y][end_x - 2].get_ex_position_y());
@@ -134,9 +139,9 @@ bool Donna::is_valid_move(Piece *(&Board)[8][8], int str_y, int str_x, int end_y
     Torre *t = new Torre(is_white(), str_y, str_x);
     Alfiere *a = new Alfiere(is_white(), str_y, str_x);
     bool control_condition = (a->is_valid_move(Board, str_y, str_x, end_y, end_x) || t->is_valid_move(Board, str_y, str_x, end_y, end_x));
-    return control_condition;
     delete t;
     delete a;
+    return control_condition;
 };
 
 bool Torre::is_valid_move(Piece *(&Board)[8][8], int str_y, int str_x, int end_y, int end_x)
@@ -458,27 +463,31 @@ std::pair<int, int> Pedone::random_xy(Piece *(&Board)[8][8], int str_y, int str_
     p->moved = Board[str_y][str_x]->is_moved(); //non so se serva
     do
     {
-        end_x = rand() % (3) + (str_x - 1); //3 possibili numeri a partire da quello a sinistra
-        if (!p->is_moved())                 //si può muovere di due
-        {
-            d_y = 1 + rand() % 2;
-        }
-        else
-        {
+        end_y = str_y - 1;
+        end_x = str_x;
+        // end_x = rand() % (3) + (str_x - 1); //3 possibili numeri a partire da quello a sinistra
+        // if (!p->is_moved())                 //si può muovere di due
+        // {
+        //     d_y = 1 + rand() % 2;
+        // }
+        // else
+        // {
 
-            d_y = 1;
-        }
-        if (p->is_white())
-        {
-            end_y = str_y - d_y;
-        }
-        else
-        {
-            end_y = str_y + d_y;
-        }
+        //     d_y = 1;
+        // }
+        // if (p->is_white())
+        // {
+        //     end_y = str_y - d_y;
+        // }
+        // else
+        // {
+        //     end_y = str_y + d_y;
+        // }
+        std::cout << "cp" << check_promotion(end_y) << " " << end_y << " == 0, cb" << check_boundary(end_y, end_x) << " == 1, iesc" << !is_end_same_color(Board, str_y, str_x, end_y, end_x) << "== 1" << std::endl; 
         if (check_promotion(end_y) && check_boundary(end_y, end_x) && !is_end_same_color(Board, str_y, str_x, end_y, end_x))
         {
             int random = rand() % 4; //4 possibili numeri a partire da 0
+            std::cout << "random == " << random;
             delete Board[end_y][end_x];
             switch (random)
             {
@@ -554,7 +563,3 @@ std::pair<int, int> Nullo::random_xy(Piece *(&Board)[8][8], int str_y, int str_x
     std::pair<int, int> output{-1, -1};
     return output;
 };
-
-//helper function
-bool check_promotion(int y) { return y == 0 || y == 7; }; //se arrivato alla fine e' true
-bool check_boundary(int end_y, int end_x) { return end_y > -1 && end_x > -1 && end_y < 8 && end_x < 8; };
