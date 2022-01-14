@@ -41,15 +41,15 @@ int Chessboard::move(std::string &s_move, bool white_turne, bool replay) // meto
         arrocco{false},       // segna se e' avvenuto un arrocco,
         arrocco_check{false}; // segna se e' stato fatto scacco mentre il re si sposta
 
-    char prom;              // carattere che rappresenta il tipo di promozione estrapolato dai log oppure e' una mossa del random
+    char prom{' '};              // carattere che rappresenta il tipo di promozione estrapolato dai log oppure e' una mossa del random
     if (s_move.size() == 7) // se la linea ha 7 carattieri allora contiene una promozione es. (H7 H8 b)
     {
         prom = s_move[6];
-        s_move.resize(5); // riporto la strigna a 5 caratteri,
         if (s_move[5] != ' ' ||
-            (white_turne && prom != 'd' && prom != 't' && prom != 'a' && prom != 'c') || // se il pezzo e' bianco la lettera deve essere minuscola
+            (white_turne && (prom != 'd' && prom != 't' && prom != 'a' && prom != 'c')) || // se il pezzo e' bianco la lettera deve essere minuscola
             (!white_turne && prom != 'D' && prom != 'T' && prom != 'A' && prom != 'C'))  // se il pezzo e' nero la lettera deve essere maiuscola
             return 1;                                                                    // il replay se move restituisce una int != 0 da errore
+        s_move.resize(5); // riporto la strigna a 5 caratteri,
     }
 
     for (int i = 0; i < s_move.size(); i++) // rende tutta la stringa maiuscola
@@ -77,7 +77,7 @@ int Chessboard::move(std::string &s_move, bool white_turne, bool replay) // meto
     catch (PromotionException &e) // e' avvenuta una promozione
     {
         promotion = true; // se c'e' stata una promozione ma dopo mi faccio un auto scacco allora quel pezzo deve tornare un pedone
-        if (!replay)      // se sta giocando il player allora devo chiedergli il pezzo
+        if (prom == ' ')      // se sta giocando il player allora devo chiedergli il pezzo
         {
             std::string line;
             do
@@ -193,8 +193,12 @@ std::string Chessboard::random_move(int y, int x, bool white_turne) // crea una 
     {
         promotion = true;
         a = e.t;
-        std::string prom = " " + board[a.first][a.second]->print(); // recupero il tipo di promozione
-        board[a.first][a.second] = new Pedone(white_turne, y, x);   // lo riporto a pedone
+        prom = " "; // se metto prom = " " + board[a.first][a.second]->print(); da problemi
+        prom += board[a.first][a.second]->print(); // recupero il tipo di promozione
+        delete board[a.first][a.second];
+        board[a.first][a.second] = new Nullo();   // lo riporto a pedone
+        delete board[y][x];
+        board[y][x] = new Pedone(white_turne, y, x);   // lo riporto a pedone
     }
     catch (ArroccoException &e)
     {
