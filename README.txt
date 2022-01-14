@@ -4,19 +4,32 @@ Gruppo formato da:
   Riccardo Miele  2008594
   Martino Scagnet 2000134
   
+Note generali
+  Abbiamo creato una schacchiera un po' più inteligente di quanto richiesto, 
+  dopo ogni spostamento dei pezzi viene eseguito un controllo per verificare se quella mossa genera un autoscacco (ovvero il re del giocatore che ha mosso va sotto scacco), 
+  se ciò avviene la mossa viene bloccata e si ritorna alla situazione iniziale richiedendo al giocatore la mossa; 
+  questo è utilizzato anche con le mosse generate dal computer che quindi sono (un po' piu' inteligenti)
   
-Note programma
- * Main         (Nicola Busato 2009663)
-   - Ho aggiunto l'argomento argomento riga di comando "PP" per partite Player vs Player, usato per il debug
+  Vengono controllate tutti i tipi di scacco/scacco matto e patta
+  
+  La scacchera permette l'arrocco (con controllo se il re passa sotto scacco arroccando), promozione (il computer la decide randomicamente il pezzo) e l'en passant
+  
+  
+  
+Note Codice
+ * Scacchiera.cpp   (Nicola Busato 2009663)
+   - Ho aggiunto l'argomento argomento riga di comando "PP" (case insensitive) per partite Player vs Player, usato per il debug
    - Oltre ai comandi per lo spostamento "A1 H8" e "XX XX" ho aggiunto "clear" e "patta" (case insensitive) rispettivamente per ripulire la console e per fare la patta
-   - Ci sono due metodi print_green, print_red che funzionano solo con linux per stampare in verde o in rosso
- * Chessboard   (Nicola Busato 2009663)
-   - Abbiamo deciso di gestire la scacchiera come matrice (8x8) di puntatori di Piece
+   - Ci sono due metodi print_green, print_red che funzionano solo con linux per stampare in verde o in rosso (uso estetici)
+   
+ * Chessboard.cpp   (Nicola Busato 2009663)
+   - abbiamo deciso di realizzare la scacchiera come matrice (8x8) di puntatori di Piece
    - Il random move cattura le eccezioni Arrocco e Promotion che contengono al loro interno un pair(y,x) delle coordinate di arrivo del random move, queste vengono convertite in stringa valida per il metodo move di chessboard e successivamente salvate nel file di log.  
- *
+   La promozione genera una riga di codice formata da [stringa mossa normale] + " " + lettera_pezzo es "A7 A8 d"
+   - il metodo move è utilizzato sia da Scacchiera.cpp che replay.cpp
+   
+ * Replay.cpp       (Nicola Busato 2009663)
+   - E' come se fosse una partita tra due giocatori, con la differenza che le mosse sono lette da file, quindi ci sono tutti i controlli di una partita normale ma con la stampa ad ogni mossa, inoltre se c'e' presente una mossa non valida nei file di log il replay viene interrotto 
  
  *
  
--non funziona l'arrocco (dovrebbe essere sistemato)
--l'alfiere non si puo' muovere più di una casella all'inizio della partita (risolto)
--durante l'arrocco il re non può passare nelle posizioni di scacco (Fatto ma non testato)
