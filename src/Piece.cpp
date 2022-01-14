@@ -88,7 +88,7 @@ bool Piece::check_arrocco_re(Piece *(&Board)[8][8], int end_y, int end_x)
     {
         //Torre t = Torre(Board[end_y][end_x - 2].is_white(), Board[end_y][end_x - 2].get_ex_position_y(), Board[end_y][end_x - 2].get_ex_position_y());
         //t.moved = Board[end_y][end_x - 2].is_moved(); //non so se serva
-        if (!this->is_moved() && Board[end_y][end_x]->print() == ' ' && Board[end_y][end_x + 1]->print() == ' ' && Board[end_y][end_x - 1]->print() == ' ')
+        if (!Board[end_y][end_x - 2]->is_moved() && Board[end_y][end_x]->print() == ' ' && Board[end_y][end_x + 1]->print() == ' ' && Board[end_y][end_x - 1]->print() == ' ')
         {
             delete Board[end_y][end_x - 2];
             delete Board[end_y][end_x + 1];
@@ -102,7 +102,7 @@ bool Piece::check_arrocco_re(Piece *(&Board)[8][8], int end_y, int end_x)
     {
         //Torre t = Torre(Board[end_y][end_x + 1].is_white(), Board[end_y][end_x + 1].get_ex_position_y(), Board[end_y][end_x + 1].get_ex_position_y());
         //t.moved = Board[end_y][end_x + 1].is_moved(); //non so se serva
-        if (!this->is_moved() && Board[end_y][end_x]->print() == ' ' && Board[end_y][end_x - 1]->print() == ' ')
+        if (!Board[end_y][end_x + 1]->is_moved() && Board[end_y][end_x]->print() == ' ' && Board[end_y][end_x - 1]->print() == ' ')
         {
             delete Board[end_y][end_x + 1];
             delete Board[end_y][end_x - 1];
@@ -463,35 +463,20 @@ std::pair<int, int> Pedone::random_xy(Piece *(&Board)[8][8], int str_y, int str_
     p->moved = Board[str_y][str_x]->is_moved(); //non so se serva
     do
     {
-        end_y = str_y - 1;
+        int d_y{1};
         end_x = str_x;
-        /*
         if (!p->is_moved())
             d_y = 1 + rand() % 2;
-        else{
-            d_y = 1;
-        }
-        if (d_y == 2)
-            end_x = 0;
-        else{
-            end_x = rand() % (3) + (str_x - 1); //3 possibili numeri a partire da quello a sinistra
-        }
-        if (p->is_white())
-         {
-            end_y = str_y - d_y;
-         }
-         else
-         {
-             end_y = str_y + d_y;
-         }
-        
-        
-        */
-        std::cout << "cp" << check_promotion(end_y) << " " << end_y << " == 0, cb" << check_boundary(end_y, end_x) << " == 1, iesc" << !is_end_same_color(Board, str_y, str_x, end_y, end_x) << "== 1" << std::endl;
+
+        if (d_y == 1)
+            end_x = rand() % (3) + (str_x - 1); // 3 possibili numeri a partire da quello a sinistra
+
+        end_y = (p->is_white()) ? str_y - d_y : str_y + d_y;
+        // std::cout << "cp" << check_promotion(end_y) << " " << end_y << " == 0, cb" << check_boundary(end_y, end_x) << " == 1, iesc" << !is_end_same_color(Board, str_y, str_x, end_y, end_x) << "== 1" << std::endl;
         if (check_promotion(end_y) && check_boundary(end_y, end_x) && !is_end_same_color(Board, str_y, str_x, end_y, end_x))
         {
             int random = rand() % 4; //4 possibili numeri a partire da 0
-            std::cout << "random == " << random;
+          //  std::cout << "random == " << random;
             delete Board[end_y][end_x];
             switch (random)
             {
