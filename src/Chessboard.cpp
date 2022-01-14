@@ -14,12 +14,7 @@ bool is_valid_string(std::string move);
 
 Chessboard::Chessboard() // inserisco nelle rispettive posizioioni i pezzi
 {
-<<<<<<< HEAD
     const std::string pos{"T   R   T"}; // e' la "sequenza" in cui vengono posizionati i pezzi diversi dal pedone
-=======
-    //const std::string pos{"TCADRACT"}; // e' la "sequenza" in cui vengono posizionati i pezzi diversi dal pedone
-    const std::string pos{"    R   "}; 
->>>>>>> e1786b5d2843a4b4652bb5c103a9edd81e899b30
     for (int x = 0; x < 8; x++)
     {
         board[0][x] = inizializer_piece(pos[x], 0, x);
