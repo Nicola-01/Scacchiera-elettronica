@@ -32,7 +32,7 @@ Chessboard::~Chessboard() {
             delete board[y][x];     //libero le aree di memoria puntate dal array
 }
 
-int Chessboard::move(std::string &s_move, bool white_turne, bool replay) // metodo che gestitsce lo spostamento (validita e controlli)
+int Chessboard::move(std::string &s_move, bool white_turne) // metodo che gestitsce lo spostamento (validita e controlli)
 {
     bool promotion{false},    // segna se e' avvenuta una promozione,
         arrocco{false},       // segna se e' avvenuto un arrocco,

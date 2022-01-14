@@ -61,21 +61,21 @@ int main(int argc, char *argv[]) {
 
     Chessboard scacchiera;
     *os << scacchiera;
-    int num = 0;
+    int num = 1;
     bool console{replay_type == 'v'}; // true se le stampe vanno su console
     while (!check && getline(in_file, line)) {
         // if (num == 4)   // da eliminare
         //     cout << "";
-        if (scacchiera.move(line, white_turne, true) != 0)
+        if (scacchiera.move(line, white_turne) != 0)
         {
             cout << print_red("Il replay contiene mosse non valide, usare un replay valido\n", true);
             cout << line << endl; // da eliminare
             throw ReplayException();
         }
-        *os << "--" << num << "   Mossa: " << line << "\n"
+        *os << "--" << num << "; mossa: " << line << "\n"
             << scacchiera << endl;
         if (console)
-            this_thread::sleep_for(chrono::milliseconds(10)); // pausa tra una stampa e l'altra
+            this_thread::sleep_for(chrono::milliseconds(600)); // pausa tra una stampa e l'altra
 
         if (check = (scacchiera.is_check(!white_turne) == 2)) // scacco matto, la partita finisce
         {
