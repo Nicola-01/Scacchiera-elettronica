@@ -14,16 +14,19 @@ bool is_valid_string(std::string move);
 
 Chessboard::Chessboard() // inserisco nelle rispettive posizioioni i pezzi
 {
-    const std::string pos{"TCADRACT"}; // e' la "sequenza" in cui vengono posizionati i pezzi diversi dal pedone
+    //const std::string pos{"TCADRACT"}; // e' la "sequenza" in cui vengono posizionati i pezzi diversi dal pedone
+    const std::string pos{"    R   "}; 
     for (int x = 0; x < 8; x++)
     {
         board[0][x] = inizializer_piece(pos[x], 0, x);
-        board[1][x] = inizializer_piece('P', 1, x); // P
+        board[1][x] = inizializer_piece(' ', 1, x); // P
         for (int y = 2; y <= 5; y++)
             board[y][x] = inizializer_piece(' ', y, x);
-        board[6][x] = inizializer_piece('p', 6, x); // p
+        board[6][x] = inizializer_piece(' ', 6, x); // p
         board[7][x] = inizializer_piece(tolower(pos[x]), 7, x);
     }
+    board[1][0] = inizializer_piece('p', 2, 0);
+    board[1][7] = inizializer_piece('p', 2, 7);
 }
 
 Chessboard::~Chessboard() {
@@ -145,15 +148,7 @@ int Chessboard::move(std::string &s_move, bool white_turne, bool replay) // meto
         if (promotion) // se e' avvenuta una promozione lo riporto come pedone
             board[str_y][str_x] = new Pedone(white_turne, str_y, str_x);
 
-        else if (arrocco) // se e' stato fatto un auto scacco perchè si ha fatto un arrocco allora il re viene spostato "in automatico" ma la torre no
-        {
-            int new_x_torre = (end_x < str_x) ? 3 : 5; // arrocco lungo : arrocco corto
-            int old_x_torre = (end_x < str_x) ? 0 : 7; // arrocco lungo : arrocco corto
-            board[str_y][old_x_torre] = board[str_y][new_x_torre];
-            board[str_y][new_x_torre] = new Nullo();
-            return 6;
-        }
-        else if (board[str_y][str_x]->print() == 'r') // Re bianco
+        if (board[str_y][str_x]->print() == 'r') // Re bianco
         {
             king_white[0] = str_y;
             king_white[1] = str_x;
@@ -163,7 +158,15 @@ int Chessboard::move(std::string &s_move, bool white_turne, bool replay) // meto
             king_black[0] = str_y;
             king_black[1] = str_x;
         }
-        
+
+        if (arrocco) // se e' stato fatto un auto scacco perchè si ha fatto un arrocco allora il re viene spostato "in automatico" ma la torre no
+        {
+            int new_x_torre = (end_x < str_x) ? 3 : 5; // arrocco lungo : arrocco corto
+            int old_x_torre = (end_x < str_x) ? 0 : 7; // arrocco lungo : arrocco corto
+            board[str_y][old_x_torre] = board[str_y][new_x_torre];
+            board[str_y][new_x_torre] = new Nullo();
+            return 6;
+        }        
 
         return 5; // scacco, mossa annullata
     }

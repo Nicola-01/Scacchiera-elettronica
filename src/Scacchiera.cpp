@@ -64,6 +64,7 @@ int main(int argc, char *argv[])
 
         if (game_type == "pp")
         {
+            cout << "mossa n: " << n_moves << "\n";
             print_green(((white_turne) ? "-= Tocca al bianco =-" : "-= Tocca al nero =-")); // se la partita e' tra due giocatori scrivo di chi e' il turono
             player_turne(scacchiera, white_turne, log_file, patta);
         }
@@ -84,10 +85,10 @@ int main(int argc, char *argv[])
         if (!patta && (check = scacchiera.is_check(!white_turne)) > 0) // controllo se e' scacco e che il player non abbia chiamato la patta
         {
             if (check == 2) { // e' scacco matto
-                (white_turne) ? print_green("Il Bianco ha fatto scacco matto al Nero") : print_green("Il Nero ha fatto scacco matto al Bianco");
+                (white_turne) ? print_green("Il Nero ha fatto scacco matto al Bianco") : print_green("Il Bianco ha fatto scacco matto al Nero");
                 break;
             }
-            (white_turne) ? print_green("Il Bianco ha fatto scacco al Nero") : print_green("Il Nero ha fatto scacco al Bianco");
+            (white_turne) ? print_green("Il Nero ha fatto scacco al Bianco") : print_green("Il Bianco ha fatto scacco al Nero");
         }
         else if (patta || scacchiera.is_draw()) { // patta e' true quando un player scrive "patta"
             print_green("Partita finita in patta");
@@ -150,9 +151,9 @@ void computer_turne(Chessboard &scacchiera, bool white_turne, ofstream &log_file
             // if (y == 0 && x == 4 && !white_turne || y == 7 && x == 4 && white_turne)
             //     ;
         } while (!scacchiera.is_right_piece(y, x, white_turne)); // controllo se il pezzo e' giusto se no genero altre coordinate
-        cout << "pezzo selezionato (y,x): " << y << ", " << x << endl;
+        //cout << "pezzo selezionato (y,x): " << y << ", " << x << endl;
         line = scacchiera.random_move(y, x, white_turne); // genera la mossa nel formato "Ln Ln"
-        cout << "-- Prova dello spostamento: " << line << endl;
+        //cout << "-- Prova dello spostamento: " << line << endl;
     } while (line == "NV NV" || (out = scacchiera.move(line, white_turne)) != 0); // il pezzo non ha mosse valide allora ne seleziono un altro, o la mossa genera uno scacco
     // cout << out;
     // if (out == 4)
