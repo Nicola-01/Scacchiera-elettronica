@@ -14,16 +14,23 @@ bool is_valid_string(std::string move);
 
 Chessboard::Chessboard() // inserisco nelle rispettive posizioioni i pezzi
 {
+<<<<<<< HEAD
     const std::string pos{"T   R   T"}; // e' la "sequenza" in cui vengono posizionati i pezzi diversi dal pedone
+=======
+    //const std::string pos{"TCADRACT"}; // e' la "sequenza" in cui vengono posizionati i pezzi diversi dal pedone
+    const std::string pos{"    R   "}; 
+>>>>>>> e1786b5d2843a4b4652bb5c103a9edd81e899b30
     for (int x = 0; x < 8; x++)
     {
         board[0][x] = inizializer_piece(pos[x], 0, x);
         board[1][x] = inizializer_piece(' ', 1, x); // P
-        for (int y = 3; y <= 6; y++)
+        for (int y = 2; y <= 5; y++)
             board[y][x] = inizializer_piece(' ', y, x);
-        board[2][x] = inizializer_piece('p', 6, x); // p
+        board[6][x] = inizializer_piece(' ', 6, x); // p
         board[7][x] = inizializer_piece(tolower(pos[x]), 7, x);
     }
+    board[1][0] = inizializer_piece('p', 2, 0);
+    board[1][7] = inizializer_piece('p', 2, 7);
 }
 
 Chessboard::~Chessboard() {
@@ -38,15 +45,15 @@ int Chessboard::move(std::string &s_move, bool white_turne, bool replay) // meto
         arrocco{false},       // segna se e' avvenuto un arrocco,
         arrocco_check{false}; // segna se e' stato fatto scacco mentre il re si sposta
 
-    char prom;              // carattere che rappresenta il tipo di promozione estrapolato dai log oppure e' una mossa del random
+    char prom{' '};              // carattere che rappresenta il tipo di promozione estrapolato dai log oppure e' una mossa del random
     if (s_move.size() == 7) // se la linea ha 7 carattieri allora contiene una promozione es. (H7 H8 b)
     {
         prom = s_move[6];
-        s_move.resize(5); // riporto la strigna a 5 caratteri,
         if (s_move[5] != ' ' ||
-            (white_turne && prom != 'd' && prom != 't' && prom != 'a' && prom != 'c') || // se il pezzo e' bianco la lettera deve essere minuscola
+            (white_turne && (prom != 'd' && prom != 't' && prom != 'a' && prom != 'c')) || // se il pezzo e' bianco la lettera deve essere minuscola
             (!white_turne && prom != 'D' && prom != 'T' && prom != 'A' && prom != 'C'))  // se il pezzo e' nero la lettera deve essere maiuscola
             return 1;                                                                    // il replay se move restituisce una int != 0 da errore
+        s_move.resize(5); // riporto la strigna a 5 caratteri,
     }
 
     for (int i = 0; i < s_move.size(); i++) // rende tutta la stringa maiuscola
@@ -74,7 +81,7 @@ int Chessboard::move(std::string &s_move, bool white_turne, bool replay) // meto
     catch (PromotionException &e) // e' avvenuta una promozione
     {
         promotion = true; // se c'e' stata una promozione ma dopo mi faccio un auto scacco allora quel pezzo deve tornare un pedone
-        if (!replay)      // se sta giocando il player allora devo chiedergli il pezzo
+        if (prom == ' ')      // se sta giocando il player allora devo chiedergli il pezzo
         {
             std::string line;
             do
@@ -145,15 +152,7 @@ int Chessboard::move(std::string &s_move, bool white_turne, bool replay) // meto
         if (promotion) // se e' avvenuta una promozione lo riporto come pedone
             board[str_y][str_x] = new Pedone(white_turne, str_y, str_x);
 
-        else if (arrocco) // se e' stato fatto un auto scacco perchè si ha fatto un arrocco allora il re viene spostato "in automatico" ma la torre no
-        {
-            int new_x_torre = (end_x < str_x) ? 3 : 5; // arrocco lungo : arrocco corto
-            int old_x_torre = (end_x < str_x) ? 0 : 7; // arrocco lungo : arrocco corto
-            board[str_y][old_x_torre] = board[str_y][new_x_torre];
-            board[str_y][new_x_torre] = new Nullo();
-            return 6;
-        }
-        else if (board[str_y][str_x]->print() == 'r') // Re bianco
+        if (board[str_y][str_x]->print() == 'r') // Re bianco
         {
             king_white[0] = str_y;
             king_white[1] = str_x;
@@ -163,7 +162,15 @@ int Chessboard::move(std::string &s_move, bool white_turne, bool replay) // meto
             king_black[0] = str_y;
             king_black[1] = str_x;
         }
-        
+
+        if (arrocco) // se e' stato fatto un auto scacco perchè si ha fatto un arrocco allora il re viene spostato "in automatico" ma la torre no
+        {
+            int new_x_torre = (end_x < str_x) ? 3 : 5; // arrocco lungo : arrocco corto
+            int old_x_torre = (end_x < str_x) ? 0 : 7; // arrocco lungo : arrocco corto
+            board[str_y][old_x_torre] = board[str_y][new_x_torre];
+            board[str_y][new_x_torre] = new Nullo();
+            return 6;
+        }        
 
         return 5; // scacco, mossa annullata
     }
@@ -190,8 +197,12 @@ std::string Chessboard::random_move(int y, int x, bool white_turne) // crea una 
     {
         promotion = true;
         a = e.t;
-        std::string prom = " " + board[a.first][a.second]->print(); // recupero il tipo di promozione
-        board[a.first][a.second] = new Pedone(white_turne, y, x);   // lo riporto a pedone
+        prom = " "; // se metto prom = " " + board[a.first][a.second]->print(); da problemi
+        prom += board[a.first][a.second]->print(); // recupero il tipo di promozione
+        delete board[a.first][a.second];
+        board[a.first][a.second] = new Nullo();   // lo riporto a pedone
+        delete board[y][x];
+        board[y][x] = new Pedone(white_turne, y, x);   // lo riporto a pedone
     }
     catch (ArroccoException &e)
     {
