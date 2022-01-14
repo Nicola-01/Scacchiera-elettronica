@@ -83,7 +83,7 @@ bool Piece::move(Piece *(&Board)[8][8], int str_y, int str_x, int end_y, int end
 
 bool Piece::check_arrocco_re(Piece *(&Board)[8][8], int end_y, int end_x)
 {
-    std::cout << "arrocco";
+   // std::cout << "arrocco";
     if (end_x < 4) //end_x == 2
     {
         //Torre t = Torre(Board[end_y][end_x - 2].is_white(), Board[end_y][end_x - 2].get_ex_position_y(), Board[end_y][end_x - 2].get_ex_position_y());
@@ -127,7 +127,7 @@ bool Re::is_valid_move(Piece *(&Board)[8][8], int str_y, int str_x, int end_y, i
         return false;
     if (delta_x > 1 && (Board[str_y][str_x]->is_moved() || !check_arrocco_re(Board, end_y, end_x)))
     {
-        std::cout << is_moved() << check_arrocco_re(Board, end_y, end_x);
+       // std::cout << is_moved() << check_arrocco_re(Board, end_y, end_x);
         return false; //percorso > 1
     }
     return true;
@@ -250,7 +250,7 @@ bool Pedone::is_valid_move(Piece *(&Board)[8][8], int str_y, int str_x, int end_
     }
     if (delta_x == delta_y && Board[end_y][end_x]->print() == ' ')
     {
-        std::cout << Board[str_y][end_x]->get_number_move() << n_moves - 1 << std::endl;
+        //std::cout << Board[str_y][end_x]->get_number_move() << n_moves - 1 << std::endl;
         if ((Board[str_y][end_x]->get_ex_position_y() == 6 || Board[str_y][end_x]->get_ex_position_y() == 1) && toupper(Board[str_y][end_x]->print()) == 'P' && Board[str_y][end_x]->is_moved() && (n_moves - 1) == Board[str_y][end_x]->get_number_move()) //en passant
         {
             {
