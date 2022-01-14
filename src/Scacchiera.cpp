@@ -75,10 +75,10 @@ int main(int argc, char *argv[])
         }
         else
         {
-            print_red("--- Tocca al computer"); // turno computer
+            //print_red("--- Tocca al computer"); // turno computer
             computer_turne(scacchiera, white_turne, log_file);
         }
-        cout << scacchiera;         // ristampo la scacchiera
+        //cout << scacchiera;         // ristampo la scacchiera
         white_turne = !white_turne; // passo il turno
 
         int check;
@@ -158,8 +158,9 @@ void computer_turne(Chessboard &scacchiera, bool white_turne, ofstream &log_file
     // cout << out;
     // if (out == 4)
     //     cout << "waa";
-    cout << n_moves + 1 << " ";
-    cout << " Mossa computer: " << line << endl; // stampo la mossa del pc
+    //cout << n_moves + 1 << " ";
+    //cout << " Mossa computer: " << line << endl; // stampo la mossa del pc
+    cout << line << "\n";
     log_file << line + "\n";    // salvo la mossa sul file di log
 }
 

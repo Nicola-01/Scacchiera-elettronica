@@ -14,18 +14,16 @@ bool is_valid_string(std::string move);
 
 Chessboard::Chessboard() // inserisco nelle rispettive posizioioni i pezzi
 {
-    const std::string pos{"T   R   T"}; // e' la "sequenza" in cui vengono posizionati i pezzi diversi dal pedone
+    const std::string pos{"TCADRACT"}; // e' la "sequenza" in cui vengono posizionati i pezzi diversi dal pedone
     for (int x = 0; x < 8; x++)
     {
         board[0][x] = inizializer_piece(pos[x], 0, x);
-        board[1][x] = inizializer_piece(' ', 1, x); // P
+        board[1][x] = inizializer_piece('P', 1, x); // P
         for (int y = 2; y <= 5; y++)
             board[y][x] = inizializer_piece(' ', y, x);
-        board[6][x] = inizializer_piece(' ', 6, x); // p
+        board[6][x] = inizializer_piece('p', 6, x); // p
         board[7][x] = inizializer_piece(tolower(pos[x]), 7, x);
     }
-    board[1][0] = inizializer_piece('p', 2, 0);
-    board[1][7] = inizializer_piece('p', 2, 7);
 }
 
 Chessboard::~Chessboard() {
@@ -144,6 +142,10 @@ int Chessboard::move(std::string &s_move, bool white_turne, bool replay) // meto
         board[end_y][end_x] = gonna_die;
         // non elimino gonna_die perchè se no eliminerei l'aria di memoria di board[end_y][end_x]
 
+        if (toupper(board[str_y][str_x]->print()) == 'P' && (str_y == 1 || str_y == 6)) // non cosntrollo il colore
+            board[str_y][str_x]->set_move(false); // e' come se non si fosse mosso,
+        // non ho controllato il colore del pezzo perche' anche se fosse nero a str_y = 6 non si potrebbe comunque muovere di +2 perche' uscirebbe dalla scacchiera
+
         if (promotion) // se e' avvenuta una promozione lo riporto come pedone
             board[str_y][str_x] = new Pedone(white_turne, str_y, str_x);
 
@@ -164,6 +166,8 @@ int Chessboard::move(std::string &s_move, bool white_turne, bool replay) // meto
             int old_x_torre = (end_x < str_x) ? 0 : 7; // arrocco lungo : arrocco corto
             board[str_y][old_x_torre] = board[str_y][new_x_torre];
             board[str_y][new_x_torre] = new Nullo();
+            board[str_y][old_x_torre]->set_move(false); // è come se non si fosse mai mossa
+            board[str_y][str_x]->set_move(false);
             return 6;
         }        
 
