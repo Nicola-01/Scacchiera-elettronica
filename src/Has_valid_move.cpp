@@ -14,7 +14,7 @@ bool Re::has_valid_move(Piece *(&Board)[8][8], int str_y, int str_x)
     {
         for (int dir_x = -1; dir_x <= 1; dir_x++)
         {
-            if ((dir_x != 0 || dir_y != 0) && in_board(str_y) && in_board(str_x))
+            if ((dir_x != 0 || dir_y != 0) && in_board(str_y + dir_y) && in_board(str_x + dir_x))
             {
                 if (is_valid_move(Board, str_y, str_x, str_y + dir_y, str_x + dir_x))
                     return true;

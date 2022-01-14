@@ -409,7 +409,7 @@ std::vector<char> Chessboard::to_char_vector() //Ritorno la matrice per righe
 //controllo se la mossa (st_y, st_x) -> (end_y, end_x) implica scacco proprio
 bool Chessboard::invalid_or_implies_check(int st_y, int st_x, int end_y, int end_x)
 {
-    if (!board[st_y][st_x]->is_valid_move(board, st_y, st_x, end_y, end_x))
+    if ((!in_bounds(end_y)||!in_bounds(end_x)) && !board[st_y][st_x]->is_valid_move(board, st_y, st_x, end_y, end_x))
     {
         //std::cout << " (Mossa non valida) \n";
         return true;
