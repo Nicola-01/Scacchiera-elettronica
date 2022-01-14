@@ -15,7 +15,7 @@ class Piece
 {
 public:
     Piece() : white{false}, ex_position_y{-1}, ex_position_x{-1} {};
-    Piece(bool color, int y, int x, bool m) : white{color}, ex_position_y{y}, ex_position_x{x}, moved{m} {};
+   // Piece(bool color, int y, int x, bool m) : white{color}, ex_position_y{y}, ex_position_x{x}, moved{m} {};
     Piece(bool color, int y, int x) : white{color}, ex_position_y{y}, ex_position_x{x} {};
 
     bool move(Piece *(&Board)[8][8], int str_y, int str_x, int end_y, int end_x);
@@ -30,21 +30,18 @@ public:
     bool is_end_same_color(Piece *(&Board)[8][8], int str_y, int str_x, int end_y, int end_x);
     int get_ex_position_y() { return ex_position_y; };
     int get_ex_position_x() { return ex_position_x; };
-
     int get_number_move() { return number_move; };
 
     Piece(const Piece&) = delete;
     Piece& operator=(const Piece&) = delete;
 
-    bool check_boundary(int end_y, int end_x) { return end_y > -1 && end_x > -1 && end_y < 8 && end_x < 8; };
     bool check_arrocco_re(Piece *(&Board)[8][8], int end_y, int end_x);
-    bool check_promotion(int y) { return y == 0 || y == 7; }; //se arrivato alla fine e' true
-
+    
     char print() { return type; };
+    void set_move(bool m) { moved = m; };
 
 protected:
-    // void set_move(bool m) { moved = m; };
-    // void set_type(char c) { type = c; };
+        // void set_type(char c) { type = c; };
     void set_number_move(int n) { number_move = n; }; //numero mossa
     char type;
     int ex_position_x;
