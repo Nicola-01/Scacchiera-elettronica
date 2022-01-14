@@ -342,7 +342,7 @@ std::pair<int, int> Chessboard::direction_threat(int king_y, int king_x, bool bl
     while (in_bounds(i_x)&&in_bounds(i_y))
     {
         //std::cout << "In: " << i_y << ", " << i_x << " ce un  (" << board[i_y][i_x]->print() << ")\n";
-        if ((board[i_y][i_x]->print() != ' ') && board[i_y][i_x]->is_valid_move(board, i_y, i_x, king_y, king_x))
+        if ((board[i_y][i_x]->print() != ' ') && in_bounds(king_y) && in_bounds(king_x) && board[i_y][i_x]->is_valid_move(board, i_y, i_x, king_y, king_x))
         {
             //std::cout << "Minaccia in: (" << i_y << "," << i_x << ")\n";
             return std::pair<int, int>(i_y, i_x);
@@ -409,7 +409,7 @@ std::vector<char> Chessboard::to_char_vector() //Ritorno la matrice per righe
 //controllo se la mossa (st_y, st_x) -> (end_y, end_x) implica scacco proprio
 bool Chessboard::invalid_or_implies_check(int st_y, int st_x, int end_y, int end_x)
 {
-    if ((!in_bounds(end_y)||!in_bounds(end_x)) && !board[st_y][st_x]->is_valid_move(board, st_y, st_x, end_y, end_x))
+    if (!in_bounds(end_y) || !in_bounds(end_x) || !board[st_y][st_x]->is_valid_move(board, st_y, st_x, end_y, end_x))
     {
         //std::cout << " (Mossa non valida) \n";
         return true;
