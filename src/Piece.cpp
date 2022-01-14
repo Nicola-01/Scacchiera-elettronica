@@ -465,25 +465,29 @@ std::pair<int, int> Pedone::random_xy(Piece *(&Board)[8][8], int str_y, int str_
     {
         end_y = str_y - 1;
         end_x = str_x;
-        // end_x = rand() % (3) + (str_x - 1); //3 possibili numeri a partire da quello a sinistra
-        // if (!p->is_moved())                 //si può muovere di due
-        // {
-        //     d_y = 1 + rand() % 2;
-        // }
-        // else
-        // {
-
-        //     d_y = 1;
-        // }
-        // if (p->is_white())
-        // {
-        //     end_y = str_y - d_y;
-        // }
-        // else
-        // {
-        //     end_y = str_y + d_y;
-        // }
-        std::cout << "cp" << check_promotion(end_y) << " " << end_y << " == 0, cb" << check_boundary(end_y, end_x) << " == 1, iesc" << !is_end_same_color(Board, str_y, str_x, end_y, end_x) << "== 1" << std::endl; 
+        /*
+        if (!p->is_moved())
+            d_y = 1 + rand() % 2;
+        else{
+            d_y = 1;
+        }
+        if (d_y == 2)
+            end_x = 0;
+        else{
+            end_x = rand() % (3) + (str_x - 1); //3 possibili numeri a partire da quello a sinistra
+        }
+        if (p->is_white())
+         {
+            end_y = str_y - d_y;
+         }
+         else
+         {
+             end_y = str_y + d_y;
+         }
+        
+        
+        */
+        std::cout << "cp" << check_promotion(end_y) << " " << end_y << " == 0, cb" << check_boundary(end_y, end_x) << " == 1, iesc" << !is_end_same_color(Board, str_y, str_x, end_y, end_x) << "== 1" << std::endl;
         if (check_promotion(end_y) && check_boundary(end_y, end_x) && !is_end_same_color(Board, str_y, str_x, end_y, end_x))
         {
             int random = rand() % 4; //4 possibili numeri a partire da 0

@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\rickw\Desktop\scacchiera\Scacchiera-elettronica\src\Scacchiera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\rickw\Desktop\scacchiera\Scacchiera-elettronica\src\Chessboard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\rickw\Desktop\scacchiera\Scacchiera-elettronica\src\Piece.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\rickw\Desktop\scacchiera\Scacchiera-elettronica\src\Rules.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\rickw\Desktop\scacchiera\Scacchiera-elettronica\src\Has_valid_move.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\rickw\Desktop\scacchiera\Scacchiera-elettronica\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{CF4080E4-FC74-308C-9B7D-F1FFBEF8A03F}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
