@@ -84,7 +84,7 @@ int main(int argc, char *argv[])
             //print_red("--- Tocca al computer"); // turno computer
             computer_turne(scacchiera, white_turne, log_file);
         }
-        //cout << scacchiera;         // ristampo la scacchiera
+        cout << scacchiera;         // ristampo la scacchiera
         white_turne = !white_turne; // passo il turno
 
         int check, draw;

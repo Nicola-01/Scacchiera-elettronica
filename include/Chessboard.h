@@ -49,7 +49,7 @@ public:
     
     bool is_checkmate(bool in_black) { return is_checkmate(in_black, str[0], str[1], end[0], end[1]); } // richiama is_chckmate con l'ultimo spostamento valido
     int is_check(bool in_black) { return is_check(in_black, str[0], str[1], end[0], end[1]); }          // richiama is_check con l'ultimo spostamento valido
-    bool is_draw() { return is_draw(end[0], end[1]); }                                                  // richiama is_draw con l'ultimo spostamento valido
+    int is_draw() { return is_draw(end[0], end[1]); }                                                  // richiama is_draw con l'ultimo spostamento valido
 };
 
 #endif

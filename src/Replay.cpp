@@ -75,7 +75,7 @@ int main(int argc, char *argv[]) {
         *os << "--" << num << "; mossa: " << line << "\n"
             << scacchiera << endl;
         if (console)
-            this_thread::sleep_for(chrono::milliseconds(600)); // pausa tra una stampa e l'altra
+            this_thread::sleep_for(chrono::milliseconds(6)); // pausa tra una stampa e l'altra
 
         if (check = (scacchiera.is_check(!white_turne) == 2)) // scacco matto, la partita finisce
         {
@@ -86,7 +86,8 @@ int main(int argc, char *argv[]) {
         num++;
     }
     if (!check) {
-        string s = "La partita e' finita in patta";
+        int draw = scacchiera.is_draw();
+        string s = (draw == 4) ? "La partita e' finita in stallo" : "La partita e' finita in patta";
         *os << print_green(s, console);
     }
 
