@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
     if (system("CLS")) system("clear"); // cancello la console
     Chessboard scacchiera;
     cout << scacchiera; // stampo la scacchiera
-    bool white_turne{true}, patta{false};
+    bool white_turne{ true }, patta{ false };
 
     srand(time(NULL));                                     // metto un seed al ranodm, se non lo facessi darebbe semopre lo stesso ordine di numeri
     int player = (game_type == "pc") ? rand() % 2 + 1 : 0; // 0, se non e' un giocatore, 1 se e' bianco, 2 se e' nero
@@ -84,8 +84,8 @@ int main(int argc, char *argv[])
             //print_red("--- Tocca al computer"); // turno computer
             computer_turne(scacchiera, white_turne, log_file);
         }
-        cout << scacchiera;         // ristampo la scacchiera
-        white_turne = !white_turne; // passo il turno
+        //cout << scacchiera;         // ristampo la scacchiera
+        white_turne = !white_turne;   // passo il turno
 
         int check, draw;
         if (!patta && (check = scacchiera.is_check(!white_turne)) > 0) // controllo se e' scacco e che il player non abbia chiamato la patta
@@ -97,16 +97,14 @@ int main(int argc, char *argv[])
             (white_turne) ? print_green("Il Nero ha fatto scacco al Bianco") : print_green("Il Bianco ha fatto scacco al Nero");
         }
         else if (patta || (draw = scacchiera.is_draw()) > 0) { // patta e' true quando un player scrive "patta"
-            if(patta)
-                print_green("Partita finita in patta, chiamata dal giocatore");
-            else 
-                print_green(draw_type[draw]);
+            (patta) ? print_green("Partita finita in patta, chiamata dal giocatore") :  print_green(draw_type[draw]);
             break;
         }
         n_moves++;
     }
     if (game_type == "cc" && n_moves == moves_max)
         print_red("Partita finita in patta, raggiunto il numero massimo di mosse");
+    cout << scacchiera;
     log_file.close();
     return 0;
 }

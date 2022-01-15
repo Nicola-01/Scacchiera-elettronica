@@ -63,7 +63,7 @@ int main(int argc, char *argv[]) {
     *os << scacchiera;
     int num = 1;
     bool console{replay_type == 'v'}; // true se le stampe vanno su console
-    while (!check && getline(in_file, line)) {
+    while (getline(in_file, line)) {
         // if (num == 4)   // da eliminare
         //     cout << "";
         if (scacchiera.move(line, white_turne) != 0)
@@ -77,12 +77,23 @@ int main(int argc, char *argv[]) {
         if (console)
             this_thread::sleep_for(chrono::milliseconds(6)); // pausa tra una stampa e l'altra
 
-        if (check = (scacchiera.is_check(!white_turne) == 2)) // scacco matto, la partita finisce
-        {
-            string s = (white_turne) ? "Il Bianco ha fatto scacco matto al Nero" : "Il Nero ha fatto scacco matto al Bianco";
-            *os << print_green(s, console);
-        }
         white_turne = !white_turne;
+        int check_type;
+        if ((check_type = scacchiera.is_check(!white_turne)) > 0) // scacco matto, la partita finisce
+        {
+            if (check_type == 2)
+            {
+                string s = (white_turne) ? "Il Nero ha fatto scacco matto al Bianco" : "Il Bianco ha fatto scacco matto al Nero";
+                *os << print_green(s, console);
+                check = true;
+                // se il replay è valido il il log ha finito le righe altrimenti il log è sbaglaito
+            }
+            else
+            {
+                string s = (white_turne) ? "Il Nero ha fatto scacco al Bianco" : "Il Bianco ha fatto scacco al Nero";
+                *os << print_green(s, console);
+            }
+        }
         num++;
     }
     if (!check) {
