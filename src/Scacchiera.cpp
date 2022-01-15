@@ -21,6 +21,12 @@ int n_moves; // variabile globale tra i file per il numero di mosse
 class ArgumentsException{}; // Errore se gli argomenti passati su riga di comando sono sbagliati
 
 constexpr int moves_max = 100;
+// Le patte si dividono in 4 tipologie
+const string draw_type[] = {"",                                                            // 0
+                            "Patta, numero di pezzi insufficente",                         // 1
+                            "Patta, ripetizioni di mosse",                                 // 2
+                            "patta, 50 mosse senza cattura o senza spostamenti di pedoni", // 3
+                            "Stallo, non ci sono più mosse valide"};                       // 4
 
 // dichiarazione helper function
 string result_type(int t, string move_line);
@@ -81,7 +87,7 @@ int main(int argc, char *argv[])
         //cout << scacchiera;         // ristampo la scacchiera
         white_turne = !white_turne; // passo il turno
 
-        int check;
+        int check, draw;
         if (!patta && (check = scacchiera.is_check(!white_turne)) > 0) // controllo se e' scacco e che il player non abbia chiamato la patta
         {
             if (check == 2) { // e' scacco matto
@@ -90,8 +96,11 @@ int main(int argc, char *argv[])
             }
             (white_turne) ? print_green("Il Nero ha fatto scacco al Bianco") : print_green("Il Bianco ha fatto scacco al Nero");
         }
-        else if (patta || scacchiera.is_draw()) { // patta e' true quando un player scrive "patta"
-            print_green("Partita finita in patta");
+        else if (patta || (draw = scacchiera.is_draw()) > 0) { // patta e' true quando un player scrive "patta"
+            if(patta)
+                print_green("Partita finita in patta, chiamata dal giocatore");
+            else 
+                print_green(draw_type[draw]);
             break;
         }
         n_moves++;
