@@ -26,7 +26,7 @@ Note Codice
    - abbiamo deciso di realizzare la scacchiera come matrice (8x8) di puntatori di Piece
    - Il random move cattura le eccezioni Arrocco e Promotion che contengono al loro interno un pair(y,x) delle coordinate di arrivo del random move, queste vengono convertite in stringa valida per il metodo move di chessboard e successivamente salvate nel file di log.  
    La promozione genera una riga di codice formata da [stringa mossa normale] + " " + lettera_pezzo es "A7 A8 d"
-   - il metodo move è utilizzato sia da Scacchiera.cpp che replay.cpp
+   - il metodo move è utilizzato sia da Scacchiera.cpp che replay.cpp e restituisce un intero che rappresenta il tipo di errore
    
  * Replay.cpp       (Nicola Busato 2009663)
    - E' come se fosse una partita tra due giocatori, con la differenza che le mosse sono lette da file, quindi ci sono tutti i controlli di una partita normale ma con la stampa ad ogni mossa, inoltre se c'e' presente una mossa non valida nei file di log il replay viene interrotto 
