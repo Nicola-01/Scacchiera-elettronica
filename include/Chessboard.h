@@ -41,9 +41,8 @@ public:
     Chessboard();  // costruttore, inserisce nella matrice i pezzi nelle rispettive posizioni
     ~Chessboard(); // distruttore, devo liverare board
 
-    int move(std::string &s_move, bool white_turne) { return move(s_move, white_turne, false); } // controlla se lo spostamento e' valido, se e' così esegue lo spostamento
-    int move(std::string &s_move, bool white_turne, bool replay);                                // come sopra ma con dei controlli aggiuntivi per il replay
-    std::string random_move(int y, int x, bool white_turne);                                     // restituise la mossa (stile mossa player) che il computer esegue
+    int move(std::string &s_move, bool white_turne);            // controlla se lo spostamento e' valido, se e' così esegue lo spostamento
+    std::string random_move(int y, int x, bool white_turne);    // restituise la mossa (stile mossa player) che il computer esegue
 
     char pices_type(int y, int x) { return board[y][x]->print(); }                                                                           // restituisce il pezzo selezionato
     bool is_right_piece(int y, int x, bool white_turne) { return (board[y][x]->print() != ' ' && board[y][x]->is_white() == white_turne); }; // restituisce se il pezzo e' del player
