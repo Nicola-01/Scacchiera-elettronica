@@ -166,7 +166,8 @@ void computer_turne(Chessboard &scacchiera, bool white_turne, ofstream &log_file
     // if (out == 4)
     //     cout << "waa";
     //cout << n_moves + 1 << " ";
-    print_green("Mossa computer: ");
+    string s = (white_turne) ? "Bianco" : "Nero";
+    print_green("Mossa " + s + ": ");
     cout << line << "\n";
     //cout << "Mossa computer: " << line << endl; // stampo la mossa del pc
     log_file << line + "\n";    // salvo la mossa sul file di log
