@@ -70,13 +70,13 @@ int main(int argc, char *argv[])
 
         if (game_type == "pp")
         {
-            cout << "mossa n: " << n_moves << "\n";
+            //cout << "mossa n: " << n_moves << "\n";
             print_green(((white_turne) ? "-= Tocca al bianco =-" : "-= Tocca al nero =-")); // se la partita e' tra due giocatori scrivo di chi e' il turono
             player_turne(scacchiera, white_turne, log_file, patta);
         }
         else if (player == 1 && white_turne || player == 2 && !white_turne) // controllo di chi e' il turno
         {
-            print_green("--- Tocca a te"); // turno giocatore
+            //print_green("--- Tocca a te"); // turno giocatore
             player_turne(scacchiera, white_turne, log_file, patta);
         }
         else
@@ -115,7 +115,7 @@ void player_turne(Chessboard &scacchiera, bool white_turne, ofstream &log_file, 
 {
     int output_type;
     string line;
-    print_green("Inserire la mossa: ");
+    print_green("La tua mossa: ");
     getline(cin, line);
     while ((output_type = scacchiera.move(line, white_turne)) != 0) // il metodo move rende line maiuscolo
     {
@@ -166,8 +166,9 @@ void computer_turne(Chessboard &scacchiera, bool white_turne, ofstream &log_file
     // if (out == 4)
     //     cout << "waa";
     //cout << n_moves + 1 << " ";
-    //cout << " Mossa computer: " << line << endl; // stampo la mossa del pc
+    print_green("Mossa computer: ");
     cout << line << "\n";
+    //cout << "Mossa computer: " << line << endl; // stampo la mossa del pc
     log_file << line + "\n";    // salvo la mossa sul file di log
 }
 
