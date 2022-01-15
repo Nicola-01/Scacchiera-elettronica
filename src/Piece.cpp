@@ -123,9 +123,9 @@ bool Re::is_valid_move(Piece *(&Board)[8][8], int str_y, int str_x, int end_y, i
     int delta_y = std::abs(str_y - end_y);
     if (is_end_same_color(Board, str_y, str_x, end_y, end_x))
         return false; //destinazione stesso colore;
-    if (delta_y > 1)
+    if (delta_y > 1 || delta_x > 2)
         return false;
-    if (delta_x > 1 && (Board[str_y][str_x]->is_moved() || !check_arrocco_re(Board, end_y, end_x)))
+    if (delta_x == 2 && (Board[str_y][str_x]->is_moved() || !check_arrocco_re(Board, end_y, end_x)))
     {
        // std::cout << is_moved() << check_arrocco_re(Board, end_y, end_x);
         return false; //percorso > 1
