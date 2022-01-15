@@ -189,8 +189,8 @@ bool Chessboard::is_checkmate(bool in_black, int st_y, int st_x, int end_y, int 
     }
     return false;
 }
-
-bool Chessboard::is_draw(int end_y, int end_x)
+//is_draw: 0 = Non patta, 1 = MATERIALE INSUFF, 2 = RIPETIZIONE DI POSIZIONE, 3 = 50 MOSSE SENZA PEDONI O CATTURE, 4 = STALLO
+int Chessboard::is_draw(int end_y, int end_x)
 {
     std::vector<char> p_l;
     for (int x = 0; x < 8; x++)
@@ -205,7 +205,7 @@ bool Chessboard::is_draw(int end_y, int end_x)
     //Si suppone che ci debbano essere per forza due re
     //a) Re contro Re
     if (p_l.size() < 3)
-        return true;
+        return 1;
     if (p_l.size() == 3)
     {
         //b)due re e (un alfiere o un cavallo)
@@ -213,7 +213,7 @@ bool Chessboard::is_draw(int end_y, int end_x)
             if (toupper(c) == 'A' || toupper(c) == 'C')
             {
                 //std::cout << "\n\nPATTA PER MANCANZA DI MATERIALE\n";
-                return true;
+                return 1;
             }
     }
     if (p_l.size() == 4)
@@ -237,7 +237,7 @@ bool Chessboard::is_draw(int end_y, int end_x)
                         if (first && (((x + y) % 2) == odd))
                         {
                             //std::cout << "\n\nPATTA PER MANCANZA DI MATERIALE\n";
-                            return true;
+                            return 1;
                         }
                     }
                 }
@@ -263,7 +263,7 @@ bool Chessboard::is_draw(int end_y, int end_x)
         catch (const three_time_repeated &e)
         {
             //std::cout << "\n\nPATTA PER RIPETIZIONE DI POSIZIONE\n";
-            return true;
+            return 2;
         }
         piece_number = p_l.size();
     }
@@ -275,7 +275,7 @@ bool Chessboard::is_draw(int end_y, int end_x)
     move_counter++;
     //std::cout<<"Mosse senza catture o mosse di pedone = "<<move_counter<<"\n";
     if (move_counter >= 50)
-        return true;
+        return 3;
     //________PER STALLO________
     bool in_white = !(board[end_y][end_x]->is_white()); //Se ha mosso bianco controllo stallo nero
     int k_y = king_white[0];
@@ -300,7 +300,7 @@ bool Chessboard::is_draw(int end_y, int end_x)
                     {
                         if (!invalid_or_implies_check(y, x, c_mov[i].first, c_mov[i].second))
                         {
-                            return false;
+                            return 0;
                         }
                     }
                 }
@@ -317,7 +317,7 @@ bool Chessboard::is_draw(int end_y, int end_x)
                             {
                                 if (!invalid_or_implies_check(y, x, i_y, i_x))
                                 {
-                                    return false;
+                                    return 0;
                                 }
                                 i_y += dir_y;
                                 i_x += dir_x;
@@ -330,7 +330,7 @@ bool Chessboard::is_draw(int end_y, int end_x)
         }
     }
     //std::cout << "Uscito dal ciclo di is_draw \n";
-    return true;
+    return 4;
 }
 
 //Ritorna la posizione (y,x) della minaccia nella direzione indicata, (-1,-1) altrimenti
