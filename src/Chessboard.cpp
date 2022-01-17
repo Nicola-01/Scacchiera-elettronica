@@ -147,7 +147,10 @@ int Chessboard::move(std::string &s_move, bool white_turne) // metodo che gestit
         // non ho controllato il colore del pezzo perche' anche se fosse nero a str_y = 6 non si potrebbe comunque muovere di +2 perche' uscirebbe dalla scacchiera
 
         if (promotion) // se e' avvenuta una promozione lo riporto come pedone
+        {
+            delete board[str_y][str_x]; // libero la memoria
             board[str_y][str_x] = new Pedone(white_turne, str_y, str_x);
+        }
 
         if (board[str_y][str_x]->print() == 'r') // Re bianco
         {
@@ -164,6 +167,7 @@ int Chessboard::move(std::string &s_move, bool white_turne) // metodo che gestit
         {
             int new_x_torre = (end_x < str_x) ? 3 : 5; // arrocco lungo : arrocco corto
             int old_x_torre = (end_x < str_x) ? 0 : 7; // arrocco lungo : arrocco corto
+            delete board[str_y][old_x_torre];
             board[str_y][old_x_torre] = board[str_y][new_x_torre];
             board[str_y][new_x_torre] = new Nullo();
             board[str_y][old_x_torre]->set_move(false); // è come se non si fosse mai mossa
