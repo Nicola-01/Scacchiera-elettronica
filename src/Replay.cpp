@@ -68,16 +68,13 @@ int main(int argc, char *argv[]) {
     int num = 1;
     bool console{replay_type == 'v'}; // true se le stampe vanno su console
     while (getline(in_file, line)) {
-        // if (num == 4)   // da eliminare
-        //     cout << "";
         if (scacchiera.move(line, white_turne) != 0)
         {
-            cout << print_red("Il replay contiene mosse non valide, usare un replay valido\n", true);
-            cout << line << endl; // da eliminare
+            cout << print_red("Il replay contiene mosse non valide, usare un replay valido\nLa mossa seguente non Ã¨ valida: ", true);
+            cout << line << endl;
             throw ReplayException();
         }
-        *os << "Mossa " << num << ": " << line << "\n"
-            << scacchiera << endl; // stampo il numero della mossa
+        *os << "Mossa " << num << ": " << line << "\n" << scacchiera; // stampo il numero della mossa e la scacchiera
         if (console)
             this_thread::sleep_for(chrono::milliseconds(600)); // pausa tra una stampa e l'altra
 
@@ -90,18 +87,18 @@ int main(int argc, char *argv[]) {
                 string s = (white_turne) ? "Il Nero ha fatto scacco matto al Bianco" : "Il Bianco ha fatto scacco matto al Nero";
                 *os << print_green(s, console);
                 check = true;
-                // se il replay è valido il il log ha finito le righe altrimenti il log è sbaglaito altrimenti potevo mettere un brack
+                // se il replay e' valido il il log ha finito le righe altrimenti il log e' sbaglaito altrimenti potevo mettere un brack
             }
             else
             {
-                string s = (white_turne) ? "Il Nero ha fatto scacco al Bianco" : "Il Bianco ha fatto scacco al Nero";
+                string s = (white_turne) ? "Il Nero ha fatto scacco al Bianco\n" : "Il Bianco ha fatto scacco al Nero\n";
                 *os << print_green(s, console);
             }
         }
         num++;
     }
     if (!check) {
-        int draw = scacchiera.is_draw();    // controllo solo se è uno stallo, altrimenti è patta
+        int draw = scacchiera.is_draw();    // controllo solo se e' uno stallo, altrimenti e' patta
         string s = (draw == 4) ? "La partita e' finita in stallo" : "La partita e' finita in patta";
         *os << print_green(s, console);
     }

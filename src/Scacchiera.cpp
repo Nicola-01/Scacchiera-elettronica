@@ -43,6 +43,7 @@ void print_green(string s) { cout << ((ON_LINUX) ? "\033[;32m" + s + "\033[0m" :
 
 int main(int argc, char *argv[])
 {
+    if (system("CLS")) system("clear"); // cancello la console
     string game_type = argv[1];                // recupero il secondo parametro, il primo e' il nome del eseguibile
     for (int i = 0; i < game_type.size(); i++) // rendo minuscolo l'argomento
         game_type[i] = tolower(game_type[i]);
@@ -55,7 +56,6 @@ int main(int argc, char *argv[])
 
     ofstream log_file("../log.txt"); // svuoto il file per i log se e' già stato scritto
 
-    if (system("CLS")) system("clear"); // cancello la console
     Chessboard scacchiera;
     cout << scacchiera; // stampo la scacchiera
     bool white_turne{ true }, patta{ false };
