@@ -36,9 +36,10 @@ void computer_turne(Chessboard &scacchiera, bool white_turne, ofstream &log_file
 ostream &operator<<(ostream &os, Chessboard &cb);
 
 // dichiarazione e definizione helper function
+// stampa colorata (Solo su linux)  https://www.tutorialspoint.com/how-to-output-colored-text-to-a-linux-terminal
 void print_red(string s) { cout << ((ON_LINUX) ? "\033[;31m" + s + "\033[0m" : s) << endl; }
 void print_green(string s) { cout << ((ON_LINUX) ? "\033[;32m" + s + "\033[0m" : s) << endl; }
-// stampa colorata (Solo su linux)  https://www.tutorialspoint.com/how-to-output-colored-text-to-a-linux-terminal
+
 
 int main(int argc, char *argv[])
 {
@@ -62,16 +63,16 @@ int main(int argc, char *argv[])
     srand(time(NULL));                                     // metto un seed al ranodm, se non lo facessi darebbe semopre lo stesso ordine di numeri
     int player = (game_type == "pc") ? rand() % 2 + 1 : 0; // 0, se non e' un giocatore, 1 se e' bianco, 2 se e' nero
     if (player != 0)
-        print_green((player == 1) ? "Giochi con il bianco" : "Giochi con il nero");
+        print_green((player == 1) ? "<<Giochi con il bianco>>" : "<<Giochi con il nero>>");
 
     while (game_type != "cc" || game_type == "cc" && n_moves < moves_max) // se la partita e' player vs computer o player vs player va avanti finche' il giocatore non scrive "patta", altrimenti si ferma a moves_max
     {
-        // if (system("CLS")) system("clear"); // suoto la console
+        // if (system("CLS")) system("clear"); // suoto la console, pensavo di pulire la console e ristampare la scacchiera (riga 87)   <<funzionalità disattivata>>
+        print_green(((white_turne) ? "\n-= Tocca al bianco =-" : "\n-= Tocca al nero =-")); // se la partita e' tra due giocatori scrivo di chi e' il turono
 
         if (game_type == "pp")
         {
-            //cout << "mossa n: " << n_moves << "\n";
-            print_green(((white_turne) ? "-= Tocca al bianco =-" : "-= Tocca al nero =-")); // se la partita e' tra due giocatori scrivo di chi e' il turono
+            //print_green(((white_turne) ? "-= Tocca al bianco =-" : "-= Tocca al nero =-")); // se la partita e' tra due giocatori scrivo di chi e' il turono
             player_turne(scacchiera, white_turne, log_file, patta);
         }
         else if (player == 1 && white_turne || player == 2 && !white_turne) // controllo di chi e' il turno
@@ -153,23 +154,12 @@ void computer_turne(Chessboard &scacchiera, bool white_turne, ofstream &log_file
         do {
             y = rand() % 8;
             x = rand() % 8;
-            /*y = (white_turne) ? 6 : 1;*/
-            // cout << "--y x " << y << " " << x << endl;
-            // if (y == 0 && x == 4 && !white_turne || y == 7 && x == 4 && white_turne)
-            //     ;
         } while (!scacchiera.is_right_piece(y, x, white_turne)); // controllo se il pezzo e' giusto se no genero altre coordinate
-        //cout << "pezzo selezionato (y,x): " << y << ", " << x << endl;
         line = scacchiera.random_move(y, x, white_turne); // genera la mossa nel formato "Ln Ln"
-        //cout << "-- Prova dello spostamento: " << line << endl;
     } while (line == "NV NV" || (out = scacchiera.move(line, white_turne)) != 0); // il pezzo non ha mosse valide allora ne seleziono un altro, o la mossa genera uno scacco
-    // cout << out;
-    // if (out == 4)
-    //     cout << "waa";
-    //cout << n_moves + 1 << " ";
-    string s = (white_turne) ? "Bianco" : "Nero";
-    print_green("Mossa " + s + ": ");
+    //string s = (white_turne) ? "Bianco" : "Nero";
+    //print_green("Mossa " + s + ": ");
     cout << line << "\n";
-    //cout << "Mossa computer: " << line << endl; // stampo la mossa del pc
     log_file << line + "\n";    // salvo la mossa sul file di log
 }
 

@@ -23,10 +23,14 @@ class ArgumentsException{}; // Errore se gli argomenti passati su riga di comand
 class FileNotFoundException{}; // Errore se il file non esiste
 class ReplayException{}; // Errore se il file di log contiene mosse non valide
 
+// dichiarazione e definizione helper function
 // stampa colorata (Solo su linux)  https://www.tutorialspoint.com/how-to-output-colored-text-to-a-linux-terminal
+// sono leggermente diveres da quelle di scacchiera.cpp
 string print_red(string s, bool console) { return ((ON_LINUX && console) ? "\033[;31m" + s + "\033[0m" : s) + "\n"; }
 string print_green(string s, bool console) { return ((ON_LINUX && console) ? "\033[;32m" + s + "\033[0m" : s) + "\n"; }
-ostream &operator<<(ostream &os, Chessboard &cb);
+
+// dichiarazione helper function
+ostream& operator<<(ostream& os, Chessboard& cb);
 
 int n_moves; // variabile globale tra i file per il numero di mosse
 
@@ -44,7 +48,7 @@ int main(int argc, char *argv[]) {
     }
 
     string line;
-    ifstream in_file(argv[2]); // "apro" il file passato come parametro
+    ifstream in_file(argv[2]); // apro il file passato come parametro
     ofstream out_file;
     ostream *os = &cout;
 
@@ -53,7 +57,7 @@ int main(int argc, char *argv[]) {
         throw FileNotFoundException();
 
     if (replay_type == 'f') {
-        out_file.open(argv[3]);  // "apro" il file passato come parametro
+        out_file.open(argv[3]);  // apro il file passato come parametro
         if (!out_file.is_open()) // controllo se il file esiste
             throw FileNotFoundException();
         os = &out_file;
@@ -72,10 +76,10 @@ int main(int argc, char *argv[]) {
             cout << line << endl; // da eliminare
             throw ReplayException();
         }
-        *os << "--" << num << "; mossa: " << line << "\n"
-            << scacchiera << endl;
+        *os << "Mossa " << num << ": " << line << "\n"
+            << scacchiera << endl; // stampo il numero della mossa
         if (console)
-            this_thread::sleep_for(chrono::milliseconds(6)); // pausa tra una stampa e l'altra
+            this_thread::sleep_for(chrono::milliseconds(600)); // pausa tra una stampa e l'altra
 
         white_turne = !white_turne;
         int check_type;
@@ -86,7 +90,7 @@ int main(int argc, char *argv[]) {
                 string s = (white_turne) ? "Il Nero ha fatto scacco matto al Bianco" : "Il Bianco ha fatto scacco matto al Nero";
                 *os << print_green(s, console);
                 check = true;
-                // se il replay è valido il il log ha finito le righe altrimenti il log è sbaglaito
+                // se il replay è valido il il log ha finito le righe altrimenti il log è sbaglaito altrimenti potevo mettere un brack
             }
             else
             {
@@ -97,7 +101,7 @@ int main(int argc, char *argv[]) {
         num++;
     }
     if (!check) {
-        int draw = scacchiera.is_draw();
+        int draw = scacchiera.is_draw();    // controllo solo se è uno stallo, altrimenti è patta
         string s = (draw == 4) ? "La partita e' finita in stallo" : "La partita e' finita in patta";
         *os << print_green(s, console);
     }

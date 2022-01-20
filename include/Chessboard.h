@@ -25,10 +25,11 @@ private:
     int last_capture;        // memorizza la mossa in cui e' avenuta l'ultima cattura, per la patta
 
     //--- methods
-    //_______ Definiti in: src/Rules.cpp _________
+    //_______ Definiti in: src/Rules.cpp (Martino Scagnet 2000134) _________
     bool is_checkmate(bool in_black, int st_y, int st_x, int end_y, int end_x);
     int is_check(bool in_black, int st_y, int st_x, int end_y, int end_x);
     int is_draw(int end_y, int end_x);
+
     std::pair<int, int> direction_threat(int king_y, int king_x, bool black_king, int dir_y, int dir_x);
     bool all_directions_threat(int k_y, int k_x, bool black_king);
     bool can_be_eaten(int p_y, int p_x);
@@ -36,6 +37,7 @@ private:
     bool is_checkmate_s(int k_y, int k_x, std::pair<int, int> t_pos, bool in_black);
     std::vector<char> to_char_vector();
     bool invalid_or_implies_check(int st_y, int st_x, int end_y, int end_x);
+    //______
 
 public:
     Chessboard();  // costruttore, inserisce nella matrice i pezzi nelle rispettive posizioni
