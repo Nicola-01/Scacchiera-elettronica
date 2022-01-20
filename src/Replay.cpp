@@ -75,8 +75,7 @@ int main(int argc, char *argv[]) {
             throw ReplayException();
         }
         *os << "Mossa " << num << ": " << line << "\n" << scacchiera; // stampo il numero della mossa e la scacchiera
-        if (console)
-            this_thread::sleep_for(chrono::milliseconds(600)); // pausa tra una stampa e l'altra
+        
 
         white_turne = !white_turne;
         int check_type;
@@ -95,6 +94,7 @@ int main(int argc, char *argv[]) {
                 *os << print_green(s, console);
             }
         }
+        if (console) this_thread::sleep_for(chrono::milliseconds(700)); // pausa tra una stampa e l'altra
         num++;
     }
     if (!check) {
