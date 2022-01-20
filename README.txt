@@ -9,13 +9,17 @@ Note generali
   se ciò avviene la mossa viene bloccata e si ritorna alla situazione iniziale chiedendo al giocatore una nuova mossa; 
   questo è utilizzato anche con le mosse generate dal computer che quindi sono (un po') piu' intelligenti.
   In alcuni casi durante le partite computer vs computer in caso di scacco la mossa ci impiega più tempo a generarsi perchè il random deve creare uno spostamento che bocchi lo scacco.
-  
-  Vengono controllati tutti i tipi di scacco/scacco matto e patta.
-  
-  La scacchiera permette l'arrocco (con controllo dello scacco del re durante il movimento d'arrocco), la promozione (il computer decide randomicamente il pezzo a cui promuovere) e l'en passant.
-  
-  
-  
+
+Regole che abbiamo sviluppato:
+  Funziona ogni rilevazione di scacco e scacco matto
+  Regole patta funzionanti:
+     1. stallo, quando il giocatore a cui tocca muovere non può eseguire alcuna mossa legale ed il suo re NON si trova sotto scacco
+     2. I giocatori si accordano per la patta (esiste il comando PATTA, basta che 1 dei 2 giocatori (in caso di partitr Player vs Player) lo scriva)
+     3. Non ci sono abbastanza pezzi sulla scacchiera per poter forzare lo scacco matto (per esempio: un Re ed un Alfiere contro un Re)
+     4. Se la medesima posizione si ripresenta per la terza volta nel corso della partita (non necessariamente per tre volte consecutive)
+     5. Sono state giocate 50 mosse consecutive senza che uno dei due giocatori abbia spostato un pedone o catturato un pezzo
+     
+  Inoltre è permesso: l' Arrocco, la Promozione e l' En passant. 
   
 Note Codice
  * Scacchiera.cpp   (Nicola Busato 2009663)
@@ -26,7 +30,8 @@ Note Codice
  * Chessboard.cpp   (Nicola Busato 2009663)
    - abbiamo deciso di realizzare la scacchiera come matrice (8x8) di puntatori di Piece
    - Il random move cattura le eccezioni Arrocco e Promotion che contengono al loro interno un pair(y,x) delle coordinate di arrivo del random move, queste vengono convertite in stringa valida per il metodo move di chessboard e successivamente salvate nel file di log.  
-   La promozione genera una riga di codice formata da [stringa mossa normale] + " " + lettera_pezzo es "A7 A8 d"
+   - La promozione genera una riga di codice formata da [stringa mossa normale] + " " + lettera_pezzo es "A7 A8 d"; la promozione del computer è decisa randomicamente
+   - Anche l'arrocco genera un errore questo permette di controllare se il re e sotto scacco anche durante il movimento del arrocco
    - il metodo move è utilizzato sia da Scacchiera.cpp che replay.cpp e restituisce un intero che rappresenta il tipo di errore
    
  * Replay.cpp       (Nicola Busato 2009663)
