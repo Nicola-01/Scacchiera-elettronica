@@ -45,7 +45,7 @@ NOTE CODICE
 	controllo inoltre che non vi siano cavalli che lo possano catturare.
    - La patta rileva ed identifica tutti i casi: Materiale insufficiente, stessa posizione ripetuta 3 volte, 50 mosse senza catture o movimenti di pedone, stallo (il              giocatore di cui è il turno non ha mosse valide disponibili). Nel caso venga rilevato uno dei casi la partita termina automaticamente in patta.
  
-   * Piece.cpp	(Riccardo Miele 2008594)
+ * Piece.cpp	(Riccardo Miele 2008594)
   - La validità della mossa è controllata dall'is_valid_move del pezzo selezionato che ritorna un booleano che sarà uguale a quello ritornato da move ma in caso positivo la       funzione move modifica le ex posizioni, controlla i casi di promozione e arrocco (ritornando una eccezione).
   - Il random genera coordinate casuali per lo spostamento del pezzo, c'è un contatore che in caso fa terminare il ciclo dopo un tot di iterazioni quindi può ritornare falsi     negativi in quanto una mossa possibile può anche non essere generata (è randomico), se non ci sono coordinate valide ritorna la coppia -1,-1.
   
