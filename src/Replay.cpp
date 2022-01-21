@@ -69,9 +69,9 @@ int main(int argc, char *argv[]) {
     bool console{replay_type == 'v'}; // true se le stampe vanno su console
     while (getline(in_file, line)) {
         if(line.size()==6)  // elimino il carattere di fine riga (su fedora e windows non serve, le stringhe lette da file erano lunghe 5, su ubuntu le stesse stringe erano lunghe 6)
-            line.resize(5)
+            line.resize(5);
         else if(line.size()==8) 
-            line.resize(7)
+            line.resize(7);
             
         if (scacchiera.move(line, white_turne) != 0)
         {
