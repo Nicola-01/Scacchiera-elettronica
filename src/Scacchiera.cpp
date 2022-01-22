@@ -24,7 +24,7 @@ constexpr int moves_max = 100;
 // Le patte si dividono in 4 tipologie
 const string draw_type[] = {"",                                                            // 0
                             "Patta, numero di pezzi insufficente",                         // 1
-                            "Patta, ripetizioni di mosse",                                 // 2
+                            "Patta, ripetizioni di posizione",                             // 2
                             "patta, 50 mosse senza cattura o senza spostamenti di pedoni", // 3
                             "Stallo, non ci sono più mosse valide"};                       // 4
 
